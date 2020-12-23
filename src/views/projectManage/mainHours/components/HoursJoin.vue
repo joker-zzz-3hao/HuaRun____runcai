@@ -3,7 +3,7 @@
     <div class="operating-area">
 
       <div class="operating-box-group">
-            <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
+            <el-button plain @click="back()" class="tl-btn amt-border-slip">
           返回
           <span class="lines"></span>
         </el-button>
@@ -142,6 +142,28 @@
               </el-date-picker>
             </dd>
           </dl>
+            <dl class="dl-item">
+            <dt>组织</dt>
+            <dd>
+               <el-cascader
+               clearable
+          v-model="orgId"
+          ref="cascader"
+          :options="treeData"
+          :show-all-levels="false"
+          :props="{
+            checkStrictly: true,
+            value: 'orgId',
+            label: 'orgName',
+            children: 'sonTree',
+            emitPath:false
+          }"
+          @change="changeOrg"
+          popper-class="tl-cascader-popper"
+          class="tl-cascader"
+        ></el-cascader>
+            </dd>
+          </dl>
            <dl class="dl-item">
             <dd>
               <el-input
@@ -173,11 +195,13 @@
             class="tl-table"
             @select="selectUser"
              @select-all="selectUser"
-            row-key="id"
+             @selection-change="selectUser"
+            row-key="weeklyId"
           >
           <el-table-column
               :reserve-selection="true"
               type="selection"
+              column-key="index"
               width="55"
             >
             </el-table-column>
@@ -319,6 +343,8 @@ export default {
       beginWeekDate: '',
       endWeekDate: '',
       submitInfo: {},
+      treeData: [],
+      orgId: '',
     };
   },
 
@@ -333,6 +359,7 @@ export default {
     }),
   },
   mounted() {
+    this.getOrgTree();
     this.server.allocate({
       projectId: this.$route.query.projectId,
     }).then((res) => {
@@ -355,6 +382,21 @@ export default {
     });
   },
   methods: {
+    back() {
+      this.$router.push({ name: 'mainHours', query: { projectId: this.$route.query.projectId } });
+    },
+    changeOrg() {
+    //  console.log(this.$refs.cascader);
+      this.$refs.cascader.dropDownVisible = false;
+      this.searchList();
+    },
+    getOrgTree() {
+      this.server.getOrg({}).then((res) => {
+        if (res.code == 200) {
+          this.treeData = res.data;
+        }
+      });
+    },
     changeProject() {
       this.searchList();
       this.projectDetailJoin();
@@ -430,6 +472,7 @@ export default {
       this.server.submitAllocateUserWork(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('调配完成');
+          this.selection = [];
           this.searchList();
         }
       });
@@ -448,6 +491,7 @@ export default {
         currentProjectId: this.$route.query.projectId,
         projectId: this.formData.projectId,
         keyWord: this.keyWord,
+        orgId: this.orgId,
         pageSize: this.pageSize,
         currentPage: this.currentPage,
         beginWeekDate: this.beginWeekDate,
