@@ -130,8 +130,8 @@
           </div>
         </div>
       </div>
-      <div class="operating-box-group">
-        <div class="operating-box">
+      <div class="operating-box">
+        <div class="dl-list">
           <dl class="dl-item">
             <dt>按时间</dt>
             <dd>
@@ -173,23 +173,23 @@
               ></el-cascader>
             </dd>
           </dl>
-          <dl class="dl-item">
-            <dd>
-              <el-input
-                maxlength="64"
-                clearable
-                v-model="keyWord"
-                placeholder="成员姓名，工作项"
-                class="tl-input-search"
-              >
-                <i class="el-icon-search" slot="prefix" @click="searchList"></i>
-              </el-input>
-              <el-button plain class="tl-btn light" @click="searchList">
-                搜索
-              </el-button>
-            </dd>
-          </dl>
         </div>
+        <dl class="dl-item">
+          <dd>
+            <el-input
+              maxlength="64"
+              clearable
+              v-model="keyWord"
+              placeholder="成员姓名，工作项"
+              class="tl-input-search"
+            >
+              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+            </el-input>
+            <el-button plain class="tl-btn light" @click="searchList">
+              搜索
+            </el-button>
+          </dd>
+        </dl>
       </div>
       <tl-crcloud-table
         :total="total"
