@@ -105,7 +105,8 @@
             <em v-money="{ value: externalConsultants+internalConsultant, precision: 2 }"></em
             ><span>元</span
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
-            =外部同事成本({{externalConsultants}}) + 内部同事成本({{internalConsultant}})
+            =外部同事成本({{externalConsultants}}{{projectConfirmCurrency|| "人民币"}}) +
+             内部同事成本({{internalConsultant}}{{projectConfirmCurrency|| "人民币"}})
           </dd>
         </dl>
 
