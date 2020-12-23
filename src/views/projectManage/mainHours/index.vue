@@ -112,9 +112,10 @@
             ></em
             ><span>元</span
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
-            =外部同事成本({{ externalConsultants }}) + 内部同事成本({{
+            =外部同事成本({{ externalConsultants
+            }}{{ projectConfirmCurrency || "人民币" }}) + 内部同事成本({{
               internalConsultant
-            }})
+            }}{{ projectConfirmCurrency || "人民币" }})
           </dd>
         </dl>
       </div>
