@@ -422,8 +422,9 @@ export default {
         this.tableData = res.data.content;
         this.tableData.forEach((item, index) => {
           this.tableData[index].checkNull = false;
-          this.tableData[index].key = (new Date()).getTime();
+          this.tableData[index].key = index;
         });
+        console.log(this.tableData);
         this.total = res.data.total;
       });
     },
@@ -487,11 +488,12 @@ export default {
     },
     addUser() {
       this.tableData.push({ key: (new Date()).getTime(), supplementTime: 0.5 });
+      this.$refs.table.doLayout();
       this.total += 1;
     },
-    deleteMember(index, row) {
+    deleteMember(index) {
       this.tableData.splice(index, 1);
-      this.$refs.table.toggleRowSelection(row, false);
+      // this.$refs.table.toggleRowSelection(row, false);
       this.total -= 1;
       this.selectUserAdd();
     },
