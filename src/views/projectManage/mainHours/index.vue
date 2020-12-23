@@ -121,14 +121,14 @@
             ><span>元</span
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
             <em
-              ><span>=</span><span>外部同事成本(</span
-              ><em v-money="{ value: externalConsultants, precision: 2 }">{{
-                externalConsultants
+              ><span>=</span><span>外部顾问成本(</span
+              ><em v-money="{ value: externalConsultants||0, precision: 2 }">{{
+                externalConsultants || 0
               }}</em
               ><span
-                >{{ projectConfirmCurrency || "人民币" }}) + 内部同事成本(</span
-              ><em v-money="{ value: projectConfirmCurrency, precision: 2 }">{{
-                internalConsultant
+                >{{ projectConfirmCurrency || "人民币" }}) + 内部顾问成本(</span
+              ><em v-money="{ value: projectConfirmCurrency || 0, precision: 2 }">{{
+                internalConsultant || 0
               }}</em
               ><span>{{ projectConfirmCurrency || "人民币" }})</span></em
             >
