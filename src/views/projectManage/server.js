@@ -144,4 +144,9 @@ export default class Server extends ServerBase {
   queryProjectCostUsed(param) {
     return this._ajaxPost('gateway/project-service/project/query/queryProjectCostUsed', param);
   }
+
+  // 查询组织
+  getOrg(param) {
+    return this._ajaxPost('gateway/system-service/sys/organization/getOrg', param);
+  }
 }

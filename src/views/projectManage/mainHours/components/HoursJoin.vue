@@ -142,6 +142,28 @@
               </el-date-picker>
             </dd>
           </dl>
+            <dl class="dl-item">
+            <dt>组织</dt>
+            <dd>
+               <el-cascader
+               clearable
+          v-model="orgId"
+          ref="cascader"
+          :options="treeData"
+          :show-all-levels="false"
+          :props="{
+            checkStrictly: true,
+            value: 'orgId',
+            label: 'orgName',
+            children: 'sonTree',
+            emitPath:false
+          }"
+          @change="changeOrg"
+          popper-class="tl-cascader-popper"
+          class="tl-cascader"
+        ></el-cascader>
+            </dd>
+          </dl>
            <dl class="dl-item">
             <dd>
               <el-input
@@ -319,6 +341,8 @@ export default {
       beginWeekDate: '',
       endWeekDate: '',
       submitInfo: {},
+      treeData: [],
+      orgId: '',
     };
   },
 
@@ -333,6 +357,7 @@ export default {
     }),
   },
   mounted() {
+    this.getOrgTree();
     this.server.allocate({
       projectId: this.$route.query.projectId,
     }).then((res) => {
@@ -355,6 +380,18 @@ export default {
     });
   },
   methods: {
+    changeOrg() {
+    //  console.log(this.$refs.cascader);
+      this.$refs.cascader.dropDownVisible = false;
+      this.searchList();
+    },
+    getOrgTree() {
+      this.server.getOrg({}).then((res) => {
+        if (res.code == 200) {
+          this.treeData = res.data;
+        }
+      });
+    },
     changeProject() {
       this.searchList();
       this.projectDetailJoin();
@@ -430,6 +467,7 @@ export default {
       this.server.submitAllocateUserWork(params).then((res) => {
         if (res.code == 200) {
           this.$message.success('调配完成');
+          this.selection = [];
           this.searchList();
         }
       });
@@ -448,6 +486,7 @@ export default {
         currentProjectId: this.$route.query.projectId,
         projectId: this.formData.projectId,
         keyWord: this.keyWord,
+        orgId: this.orgId,
         pageSize: this.pageSize,
         currentPage: this.currentPage,
         beginWeekDate: this.beginWeekDate,
