@@ -53,6 +53,12 @@
                 {{ projectInfo.orgName }}
               </dd>
             </dl>
+            <dl class="dl-item project-type">
+              <dt><span>项目类型</span></dt>
+              <dd>
+                {{ CONST.PROJECT_TYPE_MAP[projectInfo.projectTypeCode] }}
+              </dd>
+            </dl>
             <dl class="dl-item">
               <dt><span>内部顾问预算</span></dt>
               <dd>
@@ -78,12 +84,6 @@
                 ></em
                 ><span>元</span
                 ><span>({{ projectInfo.currency || "人民币" }})</span>
-              </dd>
-            </dl>
-            <dl class="dl-item project-type">
-              <dt><span>项目类型</span></dt>
-              <dd>
-                {{ CONST.PROJECT_TYPE_MAP[projectInfo.projectTypeCode] }}
               </dd>
             </dl>
             <dl class="dl-item project-type">
