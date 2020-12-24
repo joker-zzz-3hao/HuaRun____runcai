@@ -551,16 +551,16 @@ export default {
           this.$message.error('外部调入成本超过预算成本');
           return false;
         }
-        if (res.data.innerCost > (costPrice.insideBudget - costPrice.internalConsultant)) {
-          this.$message.error('内部调入成本超过预算成本');
-          return false;
-        }
-        if ((res.data.innerCost + res.data.extendCost)
-         > (costPrice.insideBudget + costPrice.outerConsultBudget)
-         - (costPrice.internalConsultant + costPrice.externalConsultants)) {
-          this.$message.error('调入成本超过预算成本');
-          return false;
-        }
+        // if (res.data.innerCost > (costPrice.insideBudget - costPrice.internalConsultant)) {
+        //   this.$message.error('内部调入成本超过预算成本');
+        //   return false;
+        // }
+        // if ((res.data.innerCost + res.data.extendCost)
+        //  > (costPrice.insideBudget + costPrice.outerConsultBudget)
+        //  - (costPrice.internalConsultant + costPrice.externalConsultants)) {
+        //   this.$message.error('调入成本超过预算成本');
+        //   return false;
+        // }
         this.$refs.HoursList.show(this.selection, res.data);
       });
     },

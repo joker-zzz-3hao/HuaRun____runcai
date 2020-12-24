@@ -6237,7 +6237,33 @@
 
 .project-description .dl-item dt span {
   color: #acb6bf;
-  min-width: 86px;
+  min-width: 100px;
+}
+
+.allocate .title-info {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  color: #acb6bf;
+}
+
+.allocate .title-info em {
+  margin: 0 6px;
+  color: #685df1;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.allocate .title-info span {
+  margin: 0 10px;
+}
+
+.allocate .title-info div:first-child span {
+  margin: 0 0 0 10px;
+}
+
+.allocate .title-info div:last-child {
+  margin: 0 0 0 60px;
 }
 
 .project-description .dl-item dd {

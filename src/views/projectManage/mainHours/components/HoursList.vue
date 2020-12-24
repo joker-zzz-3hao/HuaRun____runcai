@@ -2,82 +2,82 @@
   <el-dialog
     :append-to-body="true"
     :visible="visible"
-    @close="close"
+    :modal-append-to-body="true"
     :before-close="close"
+    @closed="closed"
     :title="info.projectNameCn"
     :close-on-click-modal="false"
-    width="900px"
+    class="tl-dialog"
+    custom-class="allocate"
+    width="1000px"
   >
-  <div class="project-info">
-    <div class="project-description">
+    <!-- <div class="project-info">
+      <div class="project-description">
+        <div>
+          <dl class="dl-item">
+            <dt>
+              <span>确认后，工时将汇总到{{ projectName }}项目中</span>
+            </dt>
+            <dd>
 
-      <div >
-  <dl class="dl-item">
-          <dt><span>确认后，工时将汇总到{{projectName}}项目中</span></dt>
-          <dd>
-
-            已选{{info.userCount}}位，共计工时{{info.weekTimeCount}}天
-          </dd>
-        </dl>
-           <dl class="dl-item">
-              <dt>共计人力成本</dt>
-             <dd>
-              <em
-                v-money="{
-                  value: info.extendCost+info.innerCost,
-                  precision: 2,
-                }"
-              ></em
-              ><span>元</span
-              ><span>人民币</span>
-                =内部顾问预算({{info.innerCost}}人民币)+外部顾问预算({{info.extendCost}}人民币)
             </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt>共计人力成本</dt>
+            <dd>
 
-        </dl>
-
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div> -->
+    <div class="title-info">
+      <div>
+        已选<em>{{ info.userCount }}</em
+        >位<span>共计工时</span><em>{{ info.weekTimeCount }}</em
+        >天
+      </div>
+      <div>
+        共计人力成本<em
+          v-money="{
+            value: info.extendCost + info.innerCost,
+            precision: 2,
+          }"
+        ></em
+        >元人民币<span>=</span>内部顾问预算<em>{{ info.innerCost }}</em
+        >人民币<span>+</span>外部顾问预算<em>{{ info.extendCost }}</em
+        >人民币
       </div>
     </div>
-     </div>
-      <tl-crcloud-table
-        :total="total"
-        :currentPage.sync="currentPage"
-        :pageSize.sync="pageSize"
-        @searchList="searchList"
-      >
-        <div slot="tableContainer" class="table-container project-members">
-          <el-table
-            :data="tableData"
-            class="tl-table"
-            row-key="workId"
-          >
-
-            <el-table-column prop="applyTime" label="姓名" min-width="170">
-              <template slot-scope="scope">
-                <span>{{ scope.row.userName }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="职级" prop="userLevel" min-width="200px">
-                <template slot-scope="scope">
-              {{getName(scope.row.userLevel,levelList)}}
-                </template>
-            </el-table-column>
-               <el-table-column label="工时(天)" prop="weekTime" min-width="200px">
-            </el-table-column>
-            <!-- <el-table-column label="人力成本" prop="employeePrice"  min-width="200px">
+    <tl-crcloud-table
+      :total="total"
+      :currentPage.sync="currentPage"
+      :pageSize.sync="pageSize"
+      @searchList="searchList"
+    >
+      <div slot="tableContainer" class="table-container project-members">
+        <el-table :data="tableData" class="tl-table" row-key="workId">
+          <el-table-column prop="applyTime" label="姓名" min-width="170">
+            <template slot-scope="scope">
+              <span>{{ scope.row.userName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="职级" prop="userLevel" min-width="200px">
+            <template slot-scope="scope">
+              {{ getName(scope.row.userLevel, levelList) }}
+            </template>
+          </el-table-column>
+          <el-table-column label="工时(天)" prop="weekTime" min-width="200px">
+          </el-table-column>
+          <!-- <el-table-column label="人力成本" prop="employeePrice"  min-width="200px">
 
             </el-table-column> -->
 
-             <el-table-column
-              prop="submitTime"
-              label="提交时间"
-              min-width="180"
-            >
-
-            </el-table-column>
-
-          </el-table>
-        </div>
-      </tl-crcloud-table>
+          <el-table-column prop="submitTime" label="提交时间" min-width="180">
+          </el-table-column>
+        </el-table>
+      </div>
+    </tl-crcloud-table>
     <div slot="footer" class="dialog-footer">
       <el-button plain class="tl-btn amt-border-fadeout" @click="close"
         >取消</el-button
