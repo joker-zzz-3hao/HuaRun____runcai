@@ -148,7 +148,7 @@
               <el-table-column label="用户类型" min-width="100">
                 <template slot-scope="scope">
                   <el-select
-                    @change="checkNull(scope.row)"
+
                     v-if="!scope.row.userId"
                     v-model="scope.row.belongingType"
                     placeholder="类型"
@@ -172,7 +172,7 @@
               <el-table-column prop="userPost" label="职能" min-width="120">
                 <template slot-scope="scope">
                   <el-select
-                    @change="checkNull(scope.row)"
+
                     v-if="!scope.row.userId"
                     v-model="scope.row.userPost"
                     placeholder="职能"
@@ -202,7 +202,7 @@
                   <el-select
                     v-if="!scope.row.userId"
                     v-model="scope.row.userCompany"
-                    @change="checkNull(scope.row)"
+
                     placeholder="公司"
                     popper-class="select-dialog"
                     class="tl-select"
