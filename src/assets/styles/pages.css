@@ -6101,10 +6101,6 @@
   margin: 20px 0 0 0;
 }
 
-.add-member .txt-list li {
-  height: 30px;
-}
-
 .custom-dialog .el-form-item__content {
   display: flex;
   align-items: center;
