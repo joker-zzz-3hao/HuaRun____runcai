@@ -1,11 +1,5 @@
 <template>
   <div class="working-hours hours-join">
-    <div class="operating-area">
-      <el-button plain @click="back()" class="tl-btn amt-border-slip">
-        返回
-        <span class="lines"></span>
-      </el-button>
-    </div>
     <div class="cont-area">
       <div class="operating-box">
         <dl class="dl-item">
@@ -28,6 +22,10 @@
             </el-select>
           </dd>
         </dl>
+        <el-button plain @click="back()" class="tl-btn amt-border-slip">
+          返回
+          <span class="lines"></span>
+        </el-button>
       </div>
       <div class="project-info">
         <div class="project-description">
@@ -87,7 +85,7 @@
               </dd>
             </dl>
             <dl class="dl-item project-type">
-              <dt><span>已用人力成本</span></dt>
+              <dt><span>已确认人力成本</span></dt>
               <dd>
                 <em
                   v-money="{
@@ -100,23 +98,22 @@
                 ><span>元</span
                 ><span>({{ projectInfo.currency || "人民币" }})</span>
                 <em
-                  ><span>=</span><span>外部顾问成本(</span
+                  ><span>=</span><span>外部顾问已确认人力成本</span
                   ><em
                     v-money="{
                       value: projectCost.externalConsultants || 0,
                       precision: 2,
                     }"
                     >{{ projectCost.externalConsultants || 0 }}</em
-                  ><span
-                    >{{ projectInfo.currency || "人民币" }}) +
-                    内部顾问成本(</span
+                  ><span>{{ projectInfo.currency || "人民币" }}</span
+                  ><span>+</span><span>内部顾问已确认人力成本</span
                   ><em
                     v-money="{
                       value: projectCost.internalConsultant || 0,
                       precision: 2,
                     }"
                     >{{ projectCost.internalConsultant || 0 }}</em
-                  ><span>{{ projectInfo.currency || "人民币" }})</span></em
+                  ><span>{{ projectInfo.currency || "人民币" }}</span></em
                 >
               </dd>
             </dl>

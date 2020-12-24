@@ -1,13 +1,5 @@
 <template>
   <div class="working-hours-collection">
-    <div class="operating-area">
-      <div class="operating-box">
-        <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
-          返回
-          <span class="lines"></span>
-        </el-button>
-      </div>
-    </div>
     <div class="cont-area">
       <div class="project-description">
         <dl>
@@ -29,6 +21,14 @@
               "
               >工时补录记录>></a
             >
+            <el-button
+              plain
+              @click="$router.back()"
+              class="tl-btn amt-border-slip"
+            >
+              返回
+              <span class="lines"></span>
+            </el-button>
           </dt>
         </dl>
         <div class="dl-list">
@@ -61,7 +61,8 @@
               <em
                 v-money="{
                   value:
-                    (projectCost.externalConsultants + projectCost.internalConsultant)||0,
+                    projectCost.externalConsultants +
+                      projectCost.internalConsultant || 0,
                   precision: 2,
                 }"
               ></em
@@ -148,7 +149,6 @@
               <el-table-column label="用户类型" min-width="100">
                 <template slot-scope="scope">
                   <el-select
-
                     v-if="!scope.row.userId"
                     v-model="scope.row.belongingType"
                     placeholder="类型"
@@ -172,7 +172,6 @@
               <el-table-column prop="userPost" label="职能" min-width="120">
                 <template slot-scope="scope">
                   <el-select
-
                     v-if="!scope.row.userId"
                     v-model="scope.row.userPost"
                     placeholder="职能"
@@ -202,7 +201,6 @@
                   <el-select
                     v-if="!scope.row.userId"
                     v-model="scope.row.userCompany"
-
                     placeholder="公司"
                     popper-class="select-dialog"
                     class="tl-select"
@@ -226,7 +224,6 @@
                     v-model="scope.row.time"
                     type="daterange"
                     range-separator="至"
-
                     value-format="yyyy-MM-dd"
                     @change="changeMinMax(scope.row, scope.$index)"
                     start-placeholder="开始日期"
