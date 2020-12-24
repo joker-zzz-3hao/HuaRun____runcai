@@ -143,7 +143,7 @@ const PROJECT_ORG_TYPE = {
 };
 
 const ALLOCATESTATUS_TYPE = {
-  1: '填写',
+  1: '周报',
   2: '调入',
   3: '调出',
 };
