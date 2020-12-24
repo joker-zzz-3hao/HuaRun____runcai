@@ -424,6 +424,7 @@ export default {
 
         projectId: this.formData.projectId,
       }).then((res) => {
+        sessionStorage.setItem('costPrice', JSON.stringify(res.data));
         this.projectBudgetAmount = res.data.projectBudgetAmount || 0;
         this.projectBudgetCurrency = res.data.projectBudgetCurrency;
         this.projectConfirmAmount = res.data.projectConfirmAmount || 0;

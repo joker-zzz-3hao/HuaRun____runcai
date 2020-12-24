@@ -306,6 +306,7 @@ export default {
   data() {
     return {
       userId: '',
+      costPrice: {},
       baseInfo: {},
       options: [],
       weekBegin: '',
@@ -388,6 +389,7 @@ export default {
         this.searchList();
         this.projectDetailJoin();
         this.queryProjectCostUsed();
+        this.queryProjectCostUsedTiw();
       }
     });
   },
@@ -407,6 +409,13 @@ export default {
         }
       });
     },
+    queryProjectCostUsedTiw() {
+      this.server.queryProjectCostUsed({
+        projectId: this.$route.query.projectId,
+      }).then((res) => {
+        this.costPrice = res.data;
+      });
+    },
     queryProjectCostUsed() {
       this.server.queryProjectCostUsed({
         projectId: this.formData.projectId,
@@ -418,6 +427,7 @@ export default {
       this.searchList();
       this.projectDetailJoin();
       this.queryProjectCostUsed();
+      this.queryProjectCostUsedTiw();
     },
     unique(arr) {
       // Set数据结构，它类似于数组，其成员的值都是唯一的
@@ -496,6 +506,7 @@ export default {
           this.searchList();
           this.projectDetailJoin();
           this.queryProjectCostUsed();
+          this.queryProjectCostUsedTiw();
         }
       });
     },
@@ -536,18 +547,20 @@ export default {
         allocateWorkDetailVoList: this.selection,
       }).then((res) => {
         console.log(res);
+        const { costPrice } = this;
         res.data.projectNameCn = this.projectInfo.projectNameCn;
         this.submitInfo = res.data;
-        if (res.data.extendCost > this.projectInfo.insideBudget) {
+        if (res.data.extendCost > (costPrice.outerConsultBudget - costPrice.externalConsultants)) {
           this.$message.error('外部调入成本超过预算成本');
           return false;
         }
-        if (res.data.innerCost > this.projectInfo.outerConsultBudget) {
+        if (res.data.innerCost > (costPrice.insideBudget - costPrice.internalConsultant)) {
           this.$message.error('内部调入成本超过预算成本');
           return false;
         }
         if ((res.data.innerCost + res.data.extendCost)
-         > (this.projectInfo.insideBudget + this.projectInfo.outerConsultBudget)) {
+         > (costPrice.insideBudget + costPrice.outerConsultBudget)
+         - (costPrice.internalConsultant + costPrice.externalConsultants)) {
           this.$message.error('调入成本超过预算成本');
           return false;
         }
