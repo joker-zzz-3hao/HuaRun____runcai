@@ -2,7 +2,7 @@
   <div class="working-hours-collection detaile">
     <div class="operating-area">
       <div class="operating-box">
-        <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
+        <el-button plain @click="back()" class="tl-btn amt-border-slip">
           返回
           <span class="lines"></span>
         </el-button>
@@ -114,6 +114,13 @@ export default {
     this.searchList();
   },
   methods: {
+    back() {
+      if (this.$route.query.page) {
+        this.$router.push({ name: 'mainHours', query: { projectId: this.$route.query.projectId } });
+      } else {
+        this.$router.back();
+      }
+    },
     searchList() {
       this.server.querySupplementHistory({
         projectId: this.$route.query.projectId,

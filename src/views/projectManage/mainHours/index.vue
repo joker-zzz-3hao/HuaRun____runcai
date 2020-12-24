@@ -51,7 +51,7 @@
         <dd>
             <el-button plain @click="$router.push({
                   name: 'queryHistory',
-                  query: { projectId: formData.projectId },
+                  query: { projectId: formData.projectId,page:1 },
                 })" class="tl-btn amt-border-slip">
         包含人力工时补录成本<span v-money="{   value: queryPrice,
                   precision: 2,}"></span>元>>
