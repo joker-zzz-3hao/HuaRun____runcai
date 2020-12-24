@@ -6097,6 +6097,10 @@
   color: #c0c4cc;
 }
 
+.add-member .el-dialog__footer {
+  margin: 20px 0 0 0;
+}
+
 .custom-dialog .el-form-item__content {
   display: flex;
   align-items: center;
@@ -6216,7 +6220,7 @@
   margin-right: 0;
 }
 
-.project-description .dl-item:nth-child(6) {
+.hours-join .project-description .dl-item:nth-child(6) {
   flex: 1 0 100%;
   width: 100%;
 }

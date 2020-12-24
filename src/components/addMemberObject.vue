@@ -13,23 +13,19 @@
       class="tl-dialog"
       custom-class="add-member"
     >
-      <el-form ref="form" :model="form" label-width="80px" class="tl-form">
-        <el-form-item label="选择成员" class="tl-label-self">
-          <tl-select-member
-            @click.native.stop
-            @getMember="selectMb"
-            :orgUserId="orgUserId"
-            :rouleType="rouleType"
-            :selectListed="selectListed"
-            :disabledId="disabledId"
-            @selectUserCheck="selectUserCheck"
-            :objectType="objectType"
-            :userType="userType"
-            :DisuserId="DisuserId"
-            @filterMembers="filterMembers"
-          ></tl-select-member>
-        </el-form-item>
-      </el-form>
+      <tl-select-member
+        @click.native.stop
+        @getMember="selectMb"
+        :orgUserId="orgUserId"
+        :rouleType="rouleType"
+        :selectListed="selectListed"
+        :disabledId="disabledId"
+        @selectUserCheck="selectUserCheck"
+        :objectType="objectType"
+        :userType="userType"
+        :DisuserId="DisuserId"
+        @filterMembers="filterMembers"
+      ></tl-select-member>
       <div slot="footer" class="dialog-footer">
         <el-button
           :loading="loading"

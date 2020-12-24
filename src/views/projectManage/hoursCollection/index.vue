@@ -423,6 +423,7 @@ export default {
     },
     clearSelection() {
       this.searchList();
+      this.queryProjectCostUsed();
       this.$refs.table.clearSelection();
     },
     searchList() {
