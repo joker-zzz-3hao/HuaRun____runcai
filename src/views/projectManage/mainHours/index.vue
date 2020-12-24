@@ -49,16 +49,15 @@
       </div>
       <dl class="dl-item">
         <dd>
-           <a
-           style="margin-right:20px"
-              @click="
-                $router.push({
+            <el-button plain @click="$router.push({
                   name: 'queryHistory',
-                  query: { projectId: $route.query.projectId },
-                })
-              "
-              >工时补录记录>></a
-            >
+                  query: { projectId: formData.projectId },
+                })" class="tl-btn amt-border-slip">
+        包含人力工时补录成本<span v-money="{   value: queryPrice,
+                  precision: 2,}"></span>元>>
+        <span class="lines"></span>
+      </el-button>
+
           <el-button
             type="primary"
             class="tl-btn amt-bg-slip"
@@ -302,6 +301,7 @@ export default {
       externalConsultants: 0,
       insideBudget: 0,
       outerConsultBudget: 0,
+      queryPrice: 0,
     };
   },
 
@@ -325,6 +325,15 @@ export default {
   methods: {
     goToHours() {
       this.$router.push({ path: '/HoursJoin', query: { projectId: this.formData.projectId } });
+    },
+    getMoneyPrice() {
+      this.server.querySupplementHistory({ projectId: this.formData.projectId }).then((res) => {
+        const list = res.data;
+        this.queryPrice = 0;
+        list.forEach((item) => {
+          this.queryPrice += item.laborCost;
+        });
+      });
     },
     showHistory() {
       this.$refs.hoursHistory.show(this.formData.projectId);
@@ -395,6 +404,7 @@ export default {
       this.timeSheetList();
       this.summaryList();
       this.searchList();
+      this.getMoneyPrice();
     },
     summaryList() {
       this.server.summaryList({ projectId: this.formData.projectId }).then((res) => {
@@ -451,6 +461,7 @@ export default {
             this.timeSheetList();
             this.summaryList();
             this.searchList();
+            this.getMoneyPrice();
           }
         }
       });
