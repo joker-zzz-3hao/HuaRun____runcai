@@ -1,209 +1,316 @@
 <template>
-  <div class="project-info">
-    <div class="project-description">
-      <dl>
-        <dt>
-          <el-dropdown trigger="click" v-show="baseInfo.projectStatus == '0'">
-            <span class="el-dropdown-link">
-              <i class="el-icon-more"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="closeProject"
-                >结束项目</el-dropdown-item
-              >
-            </el-dropdown-menu>
-          </el-dropdown>
+  <div class="working-hours-collection">
+    <div class="cont-area">
+      <div class="project-description">
+        <dl>
+          <dt>
+            <span
+              :class="{
+                'is-ongoing': baseInfo.projectStatus == '0',
+                'is-over': baseInfo.projectStatus == '1',
+              }"
+              >{{ CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus] }}</span
+            >
+            <em>{{ projectInfo.projectNameCn }}</em>
+            <a
+              @click="
+                $router.push({
+                  name: 'queryHistory',
+                  query: { projectId: $route.query.projectId },
+                })
+              "
+              >工时补录记录>></a
+            >
+            <el-button
+              plain
+              @click="$router.back()"
+              class="tl-btn amt-border-slip"
+            >
+              返回
+              <span class="lines"></span>
+            </el-button>
+          </dt>
+        </dl>
+        <div class="dl-list">
+          <dl class="dl-item">
+            <dt><span>内部顾问预算</span></dt>
+            <dd>
+              <em
+                v-money="{ value: projectInfo.insideBudget, precision: 2 }"
+              ></em
+              ><span>元</span
+              ><span>({{ projectInfo.currency || "人民币" }})</span>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>外部顾问预算</span></dt>
+            <dd>
+              <em
+                v-money="{
+                  value: projectInfo.outerConsultBudget,
+                  precision: 2,
+                }"
+              ></em
+              ><span>元</span
+              ><span>({{ projectInfo.currency || "人民币" }})</span>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>项目已确立人力成本</span></dt>
+            <dd>
+              <em
+                v-money="{
+                  value:
+                    projectCost.externalConsultants +
+                      projectCost.internalConsultant || 0,
+                  precision: 2,
+                }"
+              ></em
+              ><span>元</span
+              ><span>({{ projectInfo.currency || "人民币" }})</span>
+            </dd>
+          </dl>
+
+          <dl class="dl-item">
+            <dt><span>项目经理</span></dt>
+            <dd>
+              <em>{{ projectInfo.projectManager || "--" }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>项目时间</span></dt>
+            <dd>
+              <em>{{ projectInfo.projectBeginDate || "--" }}</em
+              ><span> 至 </span
+              ><em>{{ projectInfo.projectEndDate || "--" }}</em>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="dl-card-panel project-members">
+        <dt class="card-title">
+          <em>项目成员</em>
         </dt>
-
-      </dl>
-      <div class="dl-list">
-
-        <dl class="dl-item">
-          <dt><span>项目总预算</span></dt>
-          <dd>
-            <em v-money="{ value: baseInfo.projectBudget, precision: 2 }"></em
-            ><span>元</span
-            ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>项目已确立人力成本</span></dt>
-          <dd>
-            <em>{{
-              baseInfo.projectInputType || "--"
-            }}</em>
-          </dd>
-        </dl>
-
-        <dl class="dl-item">
-          <dt><span>项目经理</span></dt>
-          <dd>
-            <em>{{ baseInfo.projectApplyDate || "--" }}</em>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>项目时间</span></dt>
-          <dd>
-            <em>{{ baseInfo.projectBeginDate || "--" }}</em
-            ><span>至</span><em>{{ baseInfo.projectEndDate || "--" }}</em>
-          </dd>
-        </dl>
+        <tl-crcloud-table
+          :total="total"
+          :currentPage.sync="currentPage"
+          :pageSize.sync="pageSize"
+          @searchList="searchList"
+        >
+          <div slot="tableContainer" class="table-container">
+            <el-table
+              :data="tableData"
+              class="tl-table"
+              ref="table"
+              row-key="key"
+              @select="selectUser"
+              @select-all="selectUser"
+              @selection-change="selectUser"
+            >
+              <el-table-column
+                reserve-selection
+                type="selection"
+                column-key="index"
+                width="40"
+              >
+              </el-table-column>
+              <el-table-column prop="userName" label="姓名" min-width="110">
+                <template slot-scope="scope">
+                  <el-input
+                    placeholder="姓名"
+                    v-if="!scope.row.userId"
+                    @input="checkNull(scope.row)"
+                    v-model="scope.row.userName"
+                  ></el-input>
+                  <span v-else>{{ scope.row.userName }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="级别" prop="userLevel" min-width="100">
+                <template slot-scope="scope">
+                  <el-select
+                    @change="selectLevel(scope.row)"
+                    v-if="!scope.row.userId"
+                    v-model="scope.row.userLevel"
+                    placeholder="级别"
+                    popper-class="select-dialog"
+                    class="tl-select"
+                  >
+                    <el-option
+                      v-for="item in levelList"
+                      :key="item.value"
+                      :label="item.meaning"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                  <span v-else>{{ scope.row.userLevel }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="用户类型" min-width="100">
+                <template slot-scope="scope">
+                  <el-select
+                    v-if="!scope.row.userId"
+                    v-model="scope.row.belongingType"
+                    placeholder="类型"
+                    filterable
+                    popper-class="select-dialog"
+                    class="tl-select"
+                  >
+                    <el-option
+                      v-for="(item, index) in CONST.BELONGINGTYPE"
+                      :key="index"
+                      :label="item.label"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                  <span v-else>
+                   <span v-if="scope.row.ldapType=='Full-Time'">内部</span>
+                    <span v-if="scope.row.ldapType=='Contractor'">外部</span>
+                     <span v-if="scope.row.ldapType=='OTHER'">其他</span>
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="userPost" label="职能" min-width="120">
+                <template slot-scope="scope">
+                  <el-select
+                    v-if="!scope.row.userId"
+                    v-model="scope.row.userPost"
+                    placeholder="职能"
+                    filterable
+                    popper-class="select-dialog"
+                    class="tl-select"
+                  >
+                    <el-option
+                      v-for="(item, index) in funcList"
+                      :key="index + item.meaning"
+                      :label="item.meaning"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                  <span v-else>{{
+                    getName(scope.row.userPost, funcList)
+                  }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="userCompany"
+                label="所属公司"
+                min-width="100"
+              >
+                <template slot-scope="scope">
+                  <el-select
+                    v-if="!scope.row.userId"
+                    v-model="scope.row.userCompany"
+                    placeholder="公司"
+                    popper-class="select-dialog"
+                    class="tl-select"
+                  >
+                    <el-option
+                      v-for="item in companyList"
+                      :key="item.value"
+                      :label="item.meaning"
+                      :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                  <span v-else>{{
+                    getName(scope.row.userCompany, companyList)
+                  }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="time" label="工时时间范围" min-width="250">
+                <template slot-scope="scope">
+                  <el-date-picker
+                    v-model="scope.row.time"
+                    type="daterange"
+                    range-separator="至"
+                 :picker-options="pickerOptions"
+                    value-format="yyyy-MM-dd"
+                    @change="changeMinMax(scope.row, scope.$index)"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                  >
+                  </el-date-picker>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="createDate"
+                label="补录工时(天)"
+                min-width="110"
+              >
+                <template slot-scope="scope">
+                  <el-input-number
+                    controls-position="right"
+                    v-model="scope.row.supplementTime"
+                    :min="0.5"
+                    :step="0.5"
+                    :step-strictly="true"
+                    :max="scope.row.max"
+                    @change="selectUserAdd"
+                    :disabled="!scope.row.time"
+                    :precision="1"
+                    class="tl-input-number"
+                  ></el-input-number>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="createDate"
+                label="工时内容"
+                min-width="180"
+              >
+                <template slot-scope="scope">
+                  <el-input
+                    placeholder="请输入内容"
+                    @input="checkNull(scope.row)"
+                    v-model="scope.row.supplementContent"
+                  ></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="60">
+                <template slot-scope="scope">
+                  <el-button
+                    v-if="!scope.row.userId"
+                    @click="deleteMember(scope.$index, scope.row)"
+                    type="text"
+                    class="tl-btn"
+                    >移除</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+            <div class="flex-jc">
+              <el-button plain class="tl-btn" @click="addUser()"
+                ><i class="el-icon-plus"></i><em>添加成员</em></el-button
+              >
+            </div>
+          </div>
+        </tl-crcloud-table>
       </div>
     </div>
-    <div class="dl-card-panel project-members">
-      <dt class="card-title">
-        <em>项目成员</em
-        >
-      </dt>
-      <tl-crcloud-table
-      :total="total"
-        :currentPage.sync="currentPage"
-        :pageSize.sync="pageSize"
-        @searchList="searchList">
-        <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" class="tl-table">
-                <el-table-column
-      type="selection"
-      width="55">
-    </el-table-column>
-            <el-table-column prop="userName" label="姓名" min-width="140">
-              <template slot-scope="scope">
-                <div class="user-info" @click="setManager(scope.row)">
-                  <img
-                    v-if="hasValue(scope.row.headUrl)"
-                    :src="scope.row.headUrl"
-                    alt
-                  />
-                  <div v-else-if="scope.row.userName" class="user-name">
-                    <em>{{
-                      scope.row.userName.substring(
-                        scope.row.userName.length - 2
-                      )
-                    }}</em>
-                  </div>
-                </div>
-                <div class="user-name-txt">
-                  <em>{{ scope.row.userName }}</em>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="级别" min-width="120">
-              <template slot-scope="scope">
-                <div
-                  v-if="scope.row.projectUserType == '1'"
-                  :class="{ 'is-focus': scope.row.projectUserType == '1' }"
-                >
-                  <i class="el-icon-medal"></i>
-                  <span>项目经理</span>
-                </div>
-                <div
-                  v-else-if="scope.row.projectUserType == '0'"
-                  @click="setManager(scope.row)"
-                >
-                  <el-tooltip
-                    effect="dark"
-                    placement="top"
-                    popper-class="tl-tooltip-popper"
-                  >
-                    <div slot="content">设置项目经理</div>
-                    <span class="can-click">
-                      <i class="el-icon-medal"></i>
-                      <span>--</span>
-                    </span>
-                  </el-tooltip>
-                </div>
-                <div v-else>--</div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="userLevelName" label="职能" min-width="120">
-              <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.userLevelName)">{{
-                  scope.row.userLevelName
-                }}</span>
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="orgName" label="所属公司" min-width="160">
-              <template slot-scope="scope">
-                <span v-if="hasValue(scope.row.orgName)">{{
-                  scope.row.orgName
-                }}</span>
-                <span v-else>--</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="time" label="工时时间范围" min-width="250" >
-              <template slot-scope="scope">
-                   <el-date-picker
-                      v-model="scope.row.time"
-                      type="daterange"
-                      range-separator="至"
-                      @change="changeMinMax(scope.row.time,scope.$index)"
-                      start-placeholder="开始日期"
-                      end-placeholder="结束日期">
-                    </el-date-picker>
-              </template>
-            </el-table-column>
-            <el-table-column prop="createDate" label="补录工时(天)" min-width="180">
-              <template slot-scope="scope">
-                     <el-input-number
-                controls-position="right"
-                v-model="scope.row.date"
-                :min="0"
-                :max="scope.row.max"
-                :disabled="!scope.row.time"
-                :precision="0"
-                class="tl-input-number"
-              ></el-input-number>
-              </template>
-            </el-table-column>
-   <el-table-column prop="createDate" label="工时内容" min-width="180">
-              <template>
-               <el-input placeholder="请输入内容"></el-input>
-              </template>
-            </el-table-column>
-            <el-table-column
-              fixed="right"
-              label="操作"
-              width="100"
-
-            >
-              <template slot-scope="scope">
-                <el-button
-
-                  @click="deleteMember(scope.$index)"
-                  type="text"
-                  class="tl-btn"
-                  >移除</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
-          <el-button type="text" @click="addUser()">添加成员</el-button>
-        </div>
-      </tl-crcloud-table>
-    </div>
-  <div>
-
-  </div>
-      <div class="footer-panel">
+    <div class="footer-panel">
       <span
-        >已选择<em>0</em
-        >位成员，工时<em>11</em>天  人力成本<em>5000</em>人民币</span
+        >已选择<em>{{ selection.length }}</em
+        >位成员，工时<em>{{ hours }}</em
+        >天</span
       >
-        <el-button
 
+      <el-button
         type="primary"
         class="tl-btn amt-bg-slip"
+        @click="showhoursRecord"
         >确定</el-button
       >
-      <el-button
-        plain
-        class="tl-btn amt-border-fadeout"
+      <el-button plain class="tl-btn amt-border-fadeout" @click="$router.back()"
         >取消</el-button
       >
-
     </div>
-  <tl-hours-record ref="hoursRecord"></tl-hours-record>
+    <tl-hours-record
+      ref="hoursRecord"
+      :selection="selection"
+      @success="clearSelection"
+    ></tl-hours-record>
   </div>
 </template>
 
@@ -224,75 +331,31 @@ export default {
       currentPage: 1,
       pageSize: 10,
       server,
+      selection: [],
+      hours: 0,
       isTalentAdmin: false,
       showAddMember: false,
       checkManager: false,
-      tableDataRow: [{
-        id: 1,
-        userName: '111',
-        time: '',
-        disabled: true,
-      }, {
-        id: 1,
-        userName: '111',
-        disabled: true,
-        time: '',
-      }, {
-        id: 1,
-        userName: '111',
-        disabled: true,
-        time: '',
-      }, {
-        id: 1,
-        userName: '111',
-        disabled: true,
-        time: '',
-      }, {
-        id: 1,
-        userName: '111',
-        disabled: true,
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '111',
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '111',
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '111',
-        time: '',
-      }, {
-        id: 1,
-        userName: '111',
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '111',
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '222',
-        time: '',
-      }, {
-        id: 1,
-        disabled: true,
-        userName: '112221',
-        time: '',
-      }],
+      funcList: [],
+      companyList: [],
+      levelList: [],
+      tableData: [],
       isManage: false,
       openFlag: false,
       codes: [],
       pWidth: '',
       emWidth: '',
       DisuserId: {},
+      checkbool: false,
+      projectInfo: {},
+      projectCost: {},
+      pickerOptions: {
+        disabledDate(time) {
+        // return time.getTime() < Date.now() - 8.64e7  //当前时间以后可以选择当前时间
+          return time.getTime() > (new Date()).getTime();
+        // 小于当前时间可以选择当天
+        },
+      },
     };
   },
   components: {
@@ -312,23 +375,95 @@ export default {
     ...mapState('common', {
       userInfo: (state) => state.userInfo,
       listenerWidth: (state) => state.listenerWidth,
-      projectInfo: (state) => state.projectInfo,
     }),
+
   },
   mounted() {
-    console.log(this.projectInfo);
+    this.projectInfo = JSON.parse(sessionStorage.getItem('projectInfo'));
+    this.getUserList();
     this.searchList();
-
+    this.queryProjectCostUsed();
     this.server.queryByCodes({
       codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
     }).then((res) => {
       if (res.code == '200') {
         this.codes = res.data;
+        this.codes.forEach((item) => {
+          switch (item.code) {
+            case 'PROJECT_EMPLOYEE_LEVEL':
+              this.levelList = item.subList;
+              break;
+            case 'PROJECT_TECH_TYPE':
+              this.funcList = item.subList;
+              break;
+            case 'PROJECT_EMPLOYEE_COMPANY':
+              this.companyList = item.subList;
+              break;
+            default:
+              break;
+          }
+        });
       }
     });
   },
   methods: {
-    changeMinMax(time, index) {
+
+    disabledDate(date) {
+      console.log(date);
+      const now = (new Date()).getTime();
+      return date < now;
+    },
+    queryProjectCostUsed() {
+      this.server.queryProjectCostUsed({
+        projectId: this.$route.query.projectId,
+      }).then((res) => {
+        this.projectCost = res.data;
+      });
+    },
+    selectLevel(row) {
+      this.checkNull(row);
+    },
+    selectable(row) {
+      console.log(row);
+      // eslint-disable-next-line max-len
+      return row.checkNull;
+    },
+    getUserList() {
+      this.server.projectUserList({}).then((res) => {
+        if (res.code == '200') {
+          this.projectManagerList = res.data;
+        }
+      });
+    },
+    clearSelection() {
+      this.searchList();
+      this.queryProjectCostUsed();
+      this.$refs.table.clearSelection();
+    },
+    searchList() {
+      this.server.queryProjectUserList({
+        projectId: this.$route.query.projectId,
+        currentPage: this.currentPage,
+        pageSize: this.pageSize,
+      }).then((res) => {
+        this.tableData = res.data.content;
+        this.tableData.forEach((item, index) => {
+          this.tableData[index].checkNull = false;
+          this.tableData[index].key = index;
+        });
+        console.log(this.tableData);
+        this.total = res.data.total;
+      });
+    },
+    getName(code, arr) {
+      const name = arr.filter((item) => item.value == code);
+      if (name.length == 0) {
+        return '';
+      }
+      return name[0].meaning;
+    },
+    changeMinMax(row, index) {
+      const { time } = row;
       let weekBegin;
       let weekEnd;
       if (time) {
@@ -339,183 +474,94 @@ export default {
 
         console.log(time);
         const oneDate = 24 * 60 * 60 * 1000;
-        const startTime = weekBegin.getTime();
-        const endTime = weekEnd.getTime();
+        // eslint-disable-next-line no-useless-escape
+        const startTime = new Date(weekBegin.split(/[- : \/]/)).getTime();
+        // eslint-disable-next-line no-useless-escape
+        const endTime = new Date(weekEnd.split(/[- : \/]/)).getTime();
         const cheTime = (endTime - startTime) / oneDate;
-        this.tableData[index].max = cheTime;
-        this.tableData[index].date = '';
-        console.log(cheTime);
+        this.tableData[index].max = (cheTime + 1);
+        this.tableData[index].supplementTime = 0.5;
       } else {
-        this.tableData[index].date = '';
+        this.tableData[index].supplementTime = 0.5;
         this.tableData[index].disabled = true;
       }
     },
-    searchList() {
-      // this.tableDataRow = this.tableDataRow
-      const list = this.getPageTable(this.tableDataRow, this.currentPage, this.pageSize);
-      this.tableData = list.list;
-      this.total = list.total;
-    },
+    // searchList() {
+    //   // this.tableDataRow = this.tableDataRow
+    //   const list = this.getPageTable(this.tableDataRow, this.currentPage, this.pageSize);
+    //   this.tableData = list.list;
+    //   this.total = list.total;
+    // },
     showhoursRecord() {
-      this.$refs.hoursRecord.show();
+      if (this.selection.length == 0) {
+        this.$message.success('请勾选补录工时人员');
+        return false;
+      }
+      console.log(this.selection);
+      const check = this.selection.some((item) => !item.userName
+       || !item.userPost || !item.userLevel || !item.time || !item.supplementTime || !item.supplementContent);
+      if (check) {
+        this.$message.success('有必填项未填写');
+        return false;
+      }
+
+      const selection = this.selection.map((item) => ({
+        userLevel: item.userLevel,
+        userCompany: item.userCompany,
+        userPost: item.userPost == 'Project-Mng' ? '' : item.userPost,
+        supplementTime: item.supplementTime,
+        belongingType: item.belongingType || item.ldapType == 'Full-Time' ? 1 : 2,
+      }));
+      this.server.queryCalculatingMoney({ userList: selection }).then((res) => {
+        if (res.code == 200) {
+          if (res.data.insideBudget > this.projectInfo.insideBudget
+           - this.projectCost.internalConsultant) {
+            this.$message.error('人力成本超过项目已确立人力成本');
+            return false;
+          }
+          if (res.data.outerConsultBudget > this.projectInfo.outerConsultBudget
+           - this.projectCost.externalConsultants) {
+            this.$message.error('人力成本超过项目已确立人力成本');
+            return false;
+          }
+          if ((res.data.insideBudget + res.data.outerConsultBudget)
+          > (this.projectInfo.outerConsultBudget + this.projectInfo.insideBudget)
+          - (this.projectCost.internalConsultant + this.projectCost.externalConsultants)) {
+            this.$message.error('人力成本超过项目已确立人力成本');
+            return false;
+          }
+          this.$refs.hoursRecord.show(res.data);
+        }
+      });
     },
     addUser() {
-      this.tableData.push({
-        type: 1,
-        userName: '11',
-      });
+      this.tableData.push({ key: (new Date()).getTime(), supplementTime: 0.5 });
+      this.$refs.table.doLayout();
+      this.total += 1;
     },
     deleteMember(index) {
       this.tableData.splice(index, 1);
+      // this.$refs.table.toggleRowSelection(row, false);
+      this.total -= 1;
+      this.selectUserAdd();
     },
-    closeProject() {
-      this.$xconfirm({
-        title: '结束项目',
-        content: '确定结束该项目吗?结束后将不可进行管理。',
-      }).then(() => {
-        this.server.closeProject({
-          projectId: this.$route.query.projectId || '',
-        }).then((res) => {
-          if (res.code == '200') {
-            this.$router.push({
-              name: 'projectManage',
-            });
-          }
-        });
+    selectUser(selection) {
+      this.selection = selection;
+      console.log(this.selection);
+      let hours = 0;
+      selection.forEach((item) => {
+        hours += item.supplementTime || 0;
       });
+      this.hours = hours;
     },
-    setManager(data) {
-      const self = this;
-      if (data.projectUserType == '0') {
-        let managerName = '';
-        self.baseInfo.projectUserVoList.forEach((item) => {
-          if (item.projectUserType == '1') {
-            managerName = item.userName;
-          }
-        });
-        let content = '';
-        if (managerName == '') {
-          content = `是否设置「${data.userName}」为项目经理?`;
-        } else {
-          content = `当前项目已设置「${managerName}」为项目经理，是否替换成「${data.userName}」?`;
-        }
-        self.$xconfirm({
-          title: '设置项目经理',
-          content,
-        }).then(() => {
-          self.server.setProjectManager({
-            userId: data.userId,
-            projectId: data.projectId,
-          }).then((res) => {
-            if (res.code == '200') {
-              // 1，进入项目详情页优先检测项目经理信息是否完整，如果不完整就弹框提示，让其在弹框中完善项目经理信息，否则不弹框
-              // 2，设置完项目经理后，如果自己不是项目经理或者租户管理员就跳转项目管理列表，否则还在当前页
-              let isManager = false;
-              self.userInfo.roleList.forEach((item) => {
-                if (item.roleCode == 'TENANT_ADMIN') {
-                  isManager = true;
-                }
-              });
-              if (data.userId == self.userInfo.userId) {
-                isManager = true;
-              }
-              if (isManager == true) {
-                self.searchProject();
-              } else {
-                self.$router.push({
-                  name: 'projectManage',
-                });
-              }
-            }
-          });
-        });
-      }
-    },
-    addMembers() {
-      this.showAddMember = true;
-      this.$nextTick(() => {
-        this.$refs.addMember.show();
+    selectUserAdd() {
+      let hours = 0;
+      this.selection.forEach((item) => {
+        hours += item.supplementTime || 0;
       });
+      this.hours = hours;
     },
-    addSuccess() {
-      this.showAddMember = false;
-      this.searchProject();
-    },
-    checkSuccess() {
-      this.checkManager = false;
-      this.searchProject();
-    },
-    searchProject() {
-      this.server.projectDetail({
-        projectId: this.$route.query.projectId || '',
-      }).then((res) => {
-        if (res.code == '200') {
-          this.baseInfo = res.data;
+  },
 
-          this.isManage = false;
-          this.DisuserId = {};
-          if (this.baseInfo.projectUserVoList) {
-            this.baseInfo.projectUserVoList.forEach((item) => {
-              this.DisuserId[item.userId] = true;
-              if (item.projectUserType == '1') {
-                if (item.userId == this.userInfo.userId) {
-                  this.isManage = true;
-                }
-              }
-            });
-          }
-        }
-      });
-    },
-  },
-  watch: {
-    'baseInfo.projectDescription': {
-      handler(val) {
-        console.log(val);
-        this.$nextTick(() => {
-          this.pWidth = document.getElementById('projectDesc').clientWidth;
-          this.emWidth = document.getElementById('projectDescInside').clientWidth;
-        });
-      },
-    },
-    'baseInfo.projectId': {
-      handler() {
-        let flag = false;
-        if (this.baseInfo.projectUserVoList.length > 0) {
-          console.log(this.baseInfo.projectUserVoList);
-          this.DisuserId = {};
-          this.baseInfo.projectUserVoList.forEach((item) => {
-            this.DisuserId[item.userId] = true;
-            if (this.baseInfo.projectManagerCode.toLocaleLowerCase() == item.userAccount.toLocaleLowerCase()) {
-              if (this.hasValue(item.userCompany) && this.hasValue(item.userLevel)) {
-                flag = true;
-              }
-            }
-            if (item.projectUserType == '1') {
-              if (item.userId == this.userInfo.userId) {
-                this.isManage = true;
-              }
-            }
-          });
-        } else {
-          flag = false;
-        }
-        if (flag == false) {
-          this.checkManager = true;
-          this.$nextTick(() => {
-            this.$refs.checkManager.show();
-          });
-        }
-      },
-    },
-    listenerWidth: {
-      handler(val) {
-        console.log(val);
-        this.pWidth = document.getElementById('projectDesc').clientWidth;
-        this.emWidth = document.getElementById('projectDescInside').clientWidth;
-      },
-      deep: true,
-    },
-  },
 };
 </script>

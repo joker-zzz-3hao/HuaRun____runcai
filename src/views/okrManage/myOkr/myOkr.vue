@@ -248,21 +248,33 @@
               <!-- kr更新进展 -->
               <template slot="progress-krbar" slot-scope="props">
                 <el-tooltip
-                  :disabled="!['1', 1, 3, '3'].includes(item.okrMain.status)"
+                  :disabled="
+                    !['1', 1, '2', 2, 3, '3', '4', 4].includes(
+                      item.okrMain.status
+                    )
+                  "
                   effect="dark"
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 >
                   <div slot="content">
-                    <em>更新进展</em>
+                    <em v-show="['1', 1, 3, '3'].includes(item.okrMain.status)">
+                      更新进展</em
+                    >
+                    <em v-show="['2', 2, 4, '4'].includes(item.okrMain.status)">
+                      OKR记事本</em
+                    >
                   </div>
                   <tl-process
                     :class="{
-                      update: ['1', 1, 3, '3'].includes(item.okrMain.status),
+                      update: ['1', 1, '2', 2, 3, '3', '4', 4].includes(
+                        item.okrMain.status
+                      ),
                     }"
                     @click.native="
-                      ['1', 1, 3, '3'].includes(item.okrMain.status) &&
-                        openUpdate(props.okritem)
+                      ['1', 1, '2', 2, 3, '3', '4', 4].includes(
+                        item.okrMain.status
+                      ) && openUpdate(props.okritem, item.okrMain.status)
                     "
                     :data="parseInt(props.okritem.okrDetailProgress, 10)"
                   ></tl-process>
@@ -318,6 +330,7 @@
       :okrItem="okrItem"
       :periodId="okrCycle.periodId"
       :periodName="okrCycle.periodName"
+      :okrItemStatus="okrItemStatus"
       @success="updateSearch()"
     ></tl-okr-update>
     <tl-okr-history
@@ -411,6 +424,7 @@ export default {
       checkjudgeData: {},
       orgId: '',
       recallokrExist: false,
+      okrItemStatus: '',
     };
   },
   computed: {
@@ -604,7 +618,8 @@ export default {
       });
     },
     // 打开更新进度
-    openUpdate(val) {
+    openUpdate(val, status) {
+      this.okrItemStatus = status;
       this.okrItem = val;
       this.currentView = 'tl-okr-update';
       this.updateExist = true;

@@ -43,7 +43,7 @@
               ></el-option>
             </el-select>
           </dt>
-          <dd class="tag-kind">
+          <dd class="tag-kind" v-if="thisPageOrgOkrList.length > 0">
             <el-radio-group v-model="orgSelectData">
               <el-radio
                 class="tl-radio"
@@ -62,9 +62,7 @@
               </el-radio>
             </el-radio-group>
           </dd>
-          <dd class="tag-kind" v-if="thisPageOrgOkrList.length < 1">
-            暂无可支撑的OKR
-          </dd>
+          <dd class="tag-kind" v-else>暂无可支撑的OKR</dd>
         </dl>
         <dl class="dl-list" v-show="configItemCodeOKR == 'O'">
           <dt class="list-title">
@@ -84,7 +82,7 @@
               ></el-option>
             </el-select>
           </dt>
-          <dd class="tag-kind">
+          <dd class="tag-kind" v-if="thisPageMyOkrList.length > 0">
             <el-radio-group v-model="personalSelectData">
               <el-radio
                 class="tl-radio"
@@ -103,9 +101,7 @@
               </el-radio>
             </el-radio-group>
           </dd>
-          <dd class="tag-kind" v-if="thisPageMyOkrList.length < 1">
-            暂无可支撑的OKR
-          </dd>
+          <dd class="tag-kind" v-else>暂无可支撑的OKR</dd>
         </dl>
         <dl class="dl-list">
           <dt class="list-title">
@@ -122,17 +118,21 @@
                 >{{ culture.cultureName }}</el-checkbox
               >
             </el-checkbox-group> -->
-            <el-radio-group v-model="valueSelectData">
-              <el-radio
-                class="tl-radio"
-                v-for="(culture, index) in cultureList"
-                :label="culture.id"
-                :key="culture.id"
-                @click.native="cultureChange($event, index, culture)"
-              >
-                <em>{{ culture.cultureName }}</em>
-              </el-radio>
-            </el-radio-group>
+            <div
+              v-for="(culture, index) in cultureList"
+              :key="culture.id"
+              class="radio-list"
+            >
+              <el-radio-group v-model="valueSelectData">
+                <el-radio
+                  class="tl-radio"
+                  :label="culture.id"
+                  @click.native="cultureChange($event, index, culture)"
+                >
+                  <em>{{ culture.cultureName }}</em>
+                </el-radio>
+              </el-radio-group>
+            </div>
           </dd>
         </dl>
       </div>
