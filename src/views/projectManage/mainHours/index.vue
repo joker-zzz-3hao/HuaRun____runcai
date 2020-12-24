@@ -49,6 +49,15 @@
       </div>
       <dl class="dl-item">
         <dd>
+            <el-button plain @click="$router.push({
+                  name: 'queryHistory',
+                  query: { projectId: formData.projectId },
+                })" class="tl-btn amt-border-slip">
+        包含人力工时补录成本<span v-money="{   value: queryPrice,
+                  precision: 2,}"></span>元>>
+        <span class="lines"></span>
+      </el-button>
+
           <el-button
             type="primary"
             class="tl-btn amt-bg-slip"
@@ -59,6 +68,7 @@
           <a v-if="!projectList.length == 0" @click="showHistory"
             >历史调入记录>></a
           >
+
         </dd>
       </dl>
     </div>
@@ -121,14 +131,14 @@
             ><span>元</span
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
             <em
-              ><span>=</span><span>外部同事成本(</span
-              ><em v-money="{ value: externalConsultants, precision: 2 }">{{
-                externalConsultants
+              ><span>=</span><span>外部顾问成本(</span
+              ><em v-money="{ value: externalConsultants||0, precision: 2 }">{{
+                externalConsultants || 0
               }}</em
               ><span
-                >{{ projectConfirmCurrency || "人民币" }}) + 内部同事成本(</span
-              ><em v-money="{ value: projectConfirmCurrency, precision: 2 }">{{
-                internalConsultant
+                >{{ projectConfirmCurrency || "人民币" }}) + 内部顾问成本(</span
+              ><em v-money="{ value: projectConfirmCurrency || 0, precision: 2 }">{{
+                internalConsultant || 0
               }}</em
               ><span>{{ projectConfirmCurrency || "人民币" }})</span></em
             >
@@ -294,6 +304,7 @@ export default {
       externalConsultants: 0,
       insideBudget: 0,
       outerConsultBudget: 0,
+      queryPrice: 0,
     };
   },
 
@@ -317,6 +328,15 @@ export default {
   methods: {
     goToHours() {
       this.$router.push({ path: '/HoursJoin', query: { projectId: this.formData.projectId } });
+    },
+    getMoneyPrice() {
+      this.server.querySupplementHistory({ projectId: this.formData.projectId }).then((res) => {
+        const list = res.data;
+        this.queryPrice = 0;
+        list.forEach((item) => {
+          this.queryPrice += item.laborCost;
+        });
+      });
     },
     showHistory() {
       this.$refs.hoursHistory.show(this.formData.projectId);
@@ -387,6 +407,7 @@ export default {
       this.timeSheetList();
       this.summaryList();
       this.searchList();
+      this.getMoneyPrice();
     },
     summaryList() {
       this.server.summaryList({ projectId: this.formData.projectId }).then((res) => {
@@ -443,6 +464,7 @@ export default {
             this.timeSheetList();
             this.summaryList();
             this.searchList();
+            this.getMoneyPrice();
           }
         }
       });
