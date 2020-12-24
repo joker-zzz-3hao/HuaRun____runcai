@@ -538,6 +538,19 @@ export default {
         console.log(res);
         res.data.projectNameCn = this.projectInfo.projectNameCn;
         this.submitInfo = res.data;
+        if (res.data.extendCost > this.projectInfo.insideBudget) {
+          this.$message.error('外部调入成本超过预算成本');
+          return false;
+        }
+        if (res.data.innerCost > this.projectInfo.outerConsultBudget) {
+          this.$message.error('内部调入成本超过预算成本');
+          return false;
+        }
+        if ((res.data.innerCost + res.data.extendCost)
+         > (this.projectInfo.insideBudget + this.projectInfo.outerConsultBudget)) {
+          this.$message.error('调入成本超过预算成本');
+          return false;
+        }
         this.$refs.HoursList.show(this.selection, res.data);
       });
     },
