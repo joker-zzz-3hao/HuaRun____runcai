@@ -166,7 +166,7 @@
             </el-table-column>
             <el-table-column prop="userLevel" label="职级" min-width="100">
               <template slot-scope="scope">
-                <span>{{ scope.row.userLevel }}</span>
+                <span>{{ getName(scope.row.userLevel,levelList) }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="ldapType" label="成员类型" min-width="100">
