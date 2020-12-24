@@ -6097,6 +6097,14 @@
   color: #c0c4cc;
 }
 
+.add-member .el-dialog__footer {
+  margin: 20px 0 0 0;
+}
+
+.add-member .txt-list li {
+  height: 30px;
+}
+
 .custom-dialog .el-form-item__content {
   display: flex;
   align-items: center;

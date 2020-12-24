@@ -897,11 +897,11 @@
   align-self: start;
 }
 
-.tl-item-cont {
+/* .tl-item-cont {
   padding: 20px;
   border: 1px solid #d5dde3;
   border-radius: 4px;
-}
+} */
 
 .tl-item-cont .tl-input-search {
   margin: 0 0 16px 0;
@@ -2630,10 +2630,6 @@
   line-height: 32px;
   background: #bcc4cc;
   font-size: 12px;
-}
-
-.tl-transfer-select .txt-list li {
-  margin: 0 0 8px 0;
 }
 
 .tl-transfer-select .txt-list li:last-child {
