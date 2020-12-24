@@ -150,7 +150,7 @@
                 <template slot-scope="scope">
                   <el-select
                     v-if="!scope.row.userId"
-                    v-model="scope.row.belongingType"
+                    v-model="scope.row.ldapType"
                     placeholder="类型"
                     filterable
                     popper-class="select-dialog"
@@ -510,7 +510,7 @@ export default {
         userCompany: item.userCompany,
         userPost: item.userPost == 'Project-Mng' ? '' : item.userPost,
         supplementTime: item.supplementTime,
-        belongingType: item.belongingType || item.ldapType == 'Full-Time' ? 1 : 2,
+        belongingType: item.ldapType == 'Full-Time' ? 1 : 2,
       }));
       this.server.queryCalculatingMoney({ userList: selection }).then((res) => {
         if (res.code == 200) {
@@ -536,8 +536,7 @@ export default {
     },
     addUser() {
       this.tableData.push({ key: (new Date()).getTime(), supplementTime: 0.5 });
-      this.$refs.table.doLayout();
-      this.total += 1;
+      // this.total += 1;
     },
     deleteMember(index) {
       this.tableData.splice(index, 1);
