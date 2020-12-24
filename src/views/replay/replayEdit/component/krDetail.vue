@@ -34,7 +34,7 @@
           </dl>
         </template>
         <dl class="is-kr" v-for="(list, i) in item.krs" :key="i">
-          <el-form :model="list" :ref="i + 'dataForm'">
+          <el-form :model="list" ref="dataForm">
             <dt class="tag-kind">
               <span class="kind-child">KR</span>
               <em>{{ list.okrDetailObjectKr }}</em>
@@ -438,11 +438,8 @@ export default {
         },
         list: this.list,
       };
-      // for (let i = 0; i < oLength; i += 1) {
-      //   formValidate[i] = this.$refs[`${i}dataForm`];
-      //   console.log('校验', i, this.$refs[`${i}dataForm`]);
-      // }
-      Promise.all(this.$refs[`${0}dataForm`].map(this.getFormPromise)).then((res) => {
+
+      Promise.all(this.$refs.dataForm.map(this.getFormPromise)).then((res) => {
         const validateResult = res.every((item) => !!item);
         if (validateResult) {
           console.log('表单都校验通过', validateResult);
