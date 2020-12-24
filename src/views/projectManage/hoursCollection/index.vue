@@ -497,16 +497,19 @@ export default {
       }));
       this.server.queryCalculatingMoney({ userList: selection }).then((res) => {
         if (res.code == 200) {
-          if (res.data.insideBudget > this.projectInfo.insideBudget) {
+          if (res.data.insideBudget > this.projectInfo.insideBudget
+           - this.projectCost.internalConsultant) {
             this.$message.error('人力成本超过项目已确立人力成本');
             return false;
           }
-          if (res.data.outerConsultBudget > this.projectInfo.outerConsultBudget) {
+          if (res.data.outerConsultBudget > this.projectInfo.outerConsultBudget
+           - this.projectCost.externalConsultants) {
             this.$message.error('人力成本超过项目已确立人力成本');
             return false;
           }
           if ((res.data.insideBudget + res.data.outerConsultBudget)
-          > (this.projectInfo.outerConsultBudget + this.projectInfo.insideBudget)) {
+          > (this.projectInfo.outerConsultBudget + this.projectInfo.insideBudget)
+          - (this.projectCost.internalConsultant + this.projectCost.externalConsultants)) {
             this.$message.error('人力成本超过项目已确立人力成本');
             return false;
           }
