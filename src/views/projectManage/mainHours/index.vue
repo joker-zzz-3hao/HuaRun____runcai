@@ -144,22 +144,22 @@
       >
         <div slot="tableContainer" class="table-container project-members">
           <el-table :data="tableData" class="tl-table" row-key="index">
-            <el-table-column prop="applyTime" label="团队成员" width="100">
+            <el-table-column prop="applyTime" label="团队成员" min-width="100">
               <template slot-scope="scope">
                 <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="userPost" label="职能" width="150">
+            <el-table-column prop="userPost" label="职能" min-width="150">
               <template slot-scope="scope">
                 <span>{{ getName(scope.row.userPost, funcList) }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="userLevel" label="职级" width="100">
+            <el-table-column prop="userLevel" label="职级" min-width="100">
               <template slot-scope="scope">
                 <span>{{ scope.row.userLevel }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="ldapType" label="成员类型" width="100">
+            <el-table-column prop="ldapType" label="成员类型" min-width="100">
               <template slot-scope="scope">
                 <span v-if="scope.row.ldapType == 'Contractor'">外部账户</span>
                 <span v-if="scope.row.ldapType == 'OTHER'">特殊账户</span>
@@ -170,7 +170,7 @@
             <el-table-column
               label="已审批工时"
               prop="approvedTimeSum"
-              width="120"
+              min-width="120"
             >
               <template slot-scope="scope">
                 <span>{{ scope.row.approvedTimeSum }} 天</span>
@@ -179,13 +179,17 @@
             <el-table-column
               label="待审批工时"
               prop="pendingApprovalTimeSum"
-              width="120"
+              min-width="120"
             >
               <template slot-scope="scope">
                 <span>{{ scope.row.pendingApprovalTimeSum }} 天</span>
               </template>
             </el-table-column>
-            <el-table-column prop="submitTime" label="最新提交时间" width="180">
+            <el-table-column
+              prop="submitTime"
+              label="最新提交时间"
+              min-width="180"
+            >
               <template slot-scope="scope">
                 <span v-if="scope.row.submitTime">{{
                   scope.row.submitTime
@@ -193,7 +197,6 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-
             <el-table-column
               fixed="right"
               label="操作"
