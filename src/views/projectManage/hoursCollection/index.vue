@@ -499,7 +499,7 @@ export default {
       this.server.queryCalculatingMoney({ userList: selection }).then((res) => {
         if (res.code == 200) {
           const costPrice = res.data.insideBudget + res.data.outerConsultBudget;
-          if (costPrice <= (this.projectInfo.outerConsultBudget + this.projectInfo.insideBudget)) {
+          if (costPrice <= (this.projectCost.externalConsultants + this.projectCost.internalConsultant)) {
             this.$refs.hoursRecord.show(res.data);
           } else {
             this.$message.error('人力成本超过项目已确立人力成本');

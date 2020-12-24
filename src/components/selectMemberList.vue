@@ -171,7 +171,7 @@ export default {
         orgId: item.id,
       }).then((res) => {
         if (res.code == 200) {
-          this.data = res.data.reverse();
+          this.data = res.data;
           console.log(this.data);
           this.showLoad = true;
         }
