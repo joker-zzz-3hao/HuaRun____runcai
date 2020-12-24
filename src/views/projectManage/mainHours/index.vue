@@ -127,7 +127,7 @@
               }}</em
               ><span
                 >{{ projectConfirmCurrency || "人民币" }}) + 内部同事成本(</span
-              ><em v-money="{ value: projectConfirmCurrency, precision: 2 }">{{
+              ><em v-money="{ value: internalConsultant, precision: 2 }">{{
                 internalConsultant
               }}</em
               ><span>{{ projectConfirmCurrency || "人民币" }})</span></em
