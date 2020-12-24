@@ -9,14 +9,11 @@
       </div>
     </div>
     <div class="cont-area">
-      <!-- <tl-crcloud-table
+      <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
         @searchList="searchList"
-      > -->
-        <tl-crcloud-table
-        :isPage="false"
       >
         <div slot="tableContainer" class="table-container project-members">
           <el-table :data="tableData" class="tl-table">
@@ -65,7 +62,7 @@
             <el-table-column label="补录时间" prop="supplementSubmitTimeDate">
               <template slot-scope="scope">
                 {{
-                  dateFormat("YYYY-mm-dd HH:MM:SS", scope.row.supplementSubmitTimeDate)
+                  dateFormat("YYYY-mm-dd", scope.row.supplementSubmitTimeDate)
                 }}
               </template>
             </el-table-column>

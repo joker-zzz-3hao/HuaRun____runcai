@@ -6,7 +6,6 @@
     :before-close="close"
     :title="info.projectNameCn"
     :close-on-click-modal="false"
-    class="tl-dialog"
     width="900px"
   >
    <!-- <tl-crcloud-table
@@ -43,7 +42,7 @@
       </el-table-column>
       <el-table-column  label="调入时间" prop="createTime">
          <template slot-scope="scope">
-           {{dateFormat('YYYY-mm-dd HH:MM:SS',scope.row.createTime)}}
+           {{dateFormat('YYYY-mm-dd',scope.row.createTime)}}
          </template>
       </el-table-column>
       <el-table-column  label="提交人" prop="userName"></el-table-column>
