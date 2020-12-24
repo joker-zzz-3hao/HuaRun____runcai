@@ -52,6 +52,7 @@
           <el-button
             type="primary"
             class="tl-btn amt-bg-slip"
+            :disabled="closeProject == '1'"
             @click="goToHours()"
             v-if="!projectList.length == 0"
             >工时调入</el-button
@@ -141,7 +142,7 @@
               })
             "
           >
-            包含人力工时补录成本<em
+            包含已确认补录人力成本<em
               v-money="{ value: queryPrice, precision: 2 }"
             ></em
             >元<a>查看></a>
@@ -295,6 +296,7 @@ export default {
       projectConfirmCurrency: '',
       actualSubmissionHours: 0,
       workList: [],
+      closeProject: 0,
       listDis: [],
       week: '',
       projectUserSum: 0,
@@ -406,6 +408,7 @@ export default {
       const projectName = this.projectList.filter((item) => item.projectId == projectId)[0].projectNameCn;
       sessionStorage.setItem('projectName', projectName);
       sessionStorage.setItem('projectId', this.formData.projectId);
+      this.closeProject = this.projectList.filter((item) => item.projectId == projectId)[0].projectStatus;
       this.userId = '';
       this.timeSheetList();
       this.summaryList();
@@ -456,6 +459,7 @@ export default {
           if (this.projectList.length > 0) {
             //  this.formData.projectId = this.projectList[0].projectId;
             const list = this.projectList.filter((item) => Number(item.projectCount) > 0);
+            this.closeProject = this.projectList[0].projectStatus;
             console.log(list);
             if (list.length > 0) {
               this.formData.projectId = list[0].projectId;

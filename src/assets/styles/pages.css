@@ -6156,6 +6156,7 @@
 }
 
 .project-description > dl dt a {
+  margin: 0 20px 0 0;
   font-weight: 500;
   color: #685df1;
 }
@@ -6236,13 +6237,43 @@
 
 .project-description .dl-item dt span {
   color: #acb6bf;
-  min-width: 86px;
+  min-width: 100px;
+}
+
+.allocate .title-info {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  color: #acb6bf;
+}
+
+.allocate .title-info em {
+  margin: 0 6px;
+  color: #685df1;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.allocate .title-info span {
+  margin: 0 10px;
+}
+
+.allocate .title-info div:first-child span {
+  margin: 0 0 0 10px;
+}
+
+.allocate .title-info div:last-child {
+  margin: 0 0 0 60px;
 }
 
 .project-description .dl-item dd {
   display: flex;
   align-items: center;
   color: #4d5155;
+}
+
+.working-hours .dl-item dd .dl-item {
+  margin: 0 0 0 20px;
 }
 
 .project-description .dl-item dd .user-info {
@@ -6350,8 +6381,17 @@
   flex: 1;
 }
 
-.working-hours .cont-area > .dl-list:nth-of-type(3) .dl-item dd:first-of-type {
-  flex: 1;
+.working-hours .cont-area > .dl-list:nth-of-type(3) .dl-item dd:last-of-type {
+  color: #879099;
+}
+
+.working-hours .cont-area > .dl-list:nth-of-type(3) .dl-item dd:last-of-type em {
+  margin: 0 6px;
+}
+
+.working-hours .cont-area > .dl-list:nth-of-type(3) .dl-item dd:last-of-type a {
+  margin: 0 0 0 10px;
+  color: #685df1;
 }
 
 .working-hours .dl-list .dl-item dt {
@@ -6731,6 +6771,10 @@
 
 .working-hours.hours-join .cont-area .operating-box:nth-child(3) .dl-list {
   margin: 0;
+}
+
+.working-hours.hours-join .operating-box {
+  justify-content: space-between;
 }
 
 /* msg-notice */

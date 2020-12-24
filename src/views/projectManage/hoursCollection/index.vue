@@ -1,13 +1,5 @@
 <template>
   <div class="working-hours-collection">
-    <div class="operating-area">
-      <div class="operating-box">
-        <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
-          返回
-          <span class="lines"></span>
-        </el-button>
-      </div>
-    </div>
     <div class="cont-area">
       <div class="project-description">
         <dl>
@@ -29,6 +21,14 @@
               "
               >工时补录记录>></a
             >
+            <el-button
+              plain
+              @click="$router.back()"
+              class="tl-btn amt-border-slip"
+            >
+              返回
+              <span class="lines"></span>
+            </el-button>
           </dt>
         </dl>
         <div class="dl-list">
@@ -61,7 +61,8 @@
               <em
                 v-money="{
                   value:
-                    (projectCost.externalConsultants + projectCost.internalConsultant)||0,
+                    projectCost.externalConsultants +
+                      projectCost.internalConsultant || 0,
                   precision: 2,
                 }"
               ></em
@@ -148,7 +149,6 @@
               <el-table-column label="用户类型" min-width="100">
                 <template slot-scope="scope">
                   <el-select
-
                     v-if="!scope.row.userId"
                     v-model="scope.row.belongingType"
                     placeholder="类型"
@@ -164,15 +164,16 @@
                     >
                     </el-option>
                   </el-select>
-                  <span v-else>{{
-                    CONST.BELONGINGTYPE_TYPE[scope.row.projectUserType]
-                  }}</span>
+                  <span v-else>
+                   <span v-if="scope.row.ldapType=='Full-Time'">内部</span>
+                    <span v-if="scope.row.ldapType=='Contractor'">外部</span>
+                     <span v-if="scope.row.ldapType=='OTHER'">其他</span>
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column prop="userPost" label="职能" min-width="120">
                 <template slot-scope="scope">
                   <el-select
-
                     v-if="!scope.row.userId"
                     v-model="scope.row.userPost"
                     placeholder="职能"
@@ -202,7 +203,6 @@
                   <el-select
                     v-if="!scope.row.userId"
                     v-model="scope.row.userCompany"
-
                     placeholder="公司"
                     popper-class="select-dialog"
                     class="tl-select"
@@ -226,7 +226,7 @@
                     v-model="scope.row.time"
                     type="daterange"
                     range-separator="至"
-
+                 :picker-options="pickerOptions"
                     value-format="yyyy-MM-dd"
                     @change="changeMinMax(scope.row, scope.$index)"
                     start-placeholder="开始日期"
@@ -349,6 +349,13 @@ export default {
       checkbool: false,
       projectInfo: {},
       projectCost: {},
+      pickerOptions: {
+        disabledDate(time) {
+        // return time.getTime() < Date.now() - 8.64e7  //当前时间以后可以选择当前时间
+          return time.getTime() > (new Date()).getTime();
+        // 小于当前时间可以选择当天
+        },
+      },
     };
   },
   components: {
@@ -369,6 +376,7 @@ export default {
       userInfo: (state) => state.userInfo,
       listenerWidth: (state) => state.listenerWidth,
     }),
+
   },
   mounted() {
     this.projectInfo = JSON.parse(sessionStorage.getItem('projectInfo'));
@@ -399,6 +407,12 @@ export default {
     });
   },
   methods: {
+
+    disabledDate(date) {
+      console.log(date);
+      const now = (new Date()).getTime();
+      return date < now;
+    },
     queryProjectCostUsed() {
       this.server.queryProjectCostUsed({
         projectId: this.$route.query.projectId,
@@ -487,7 +501,7 @@ export default {
       const check = this.selection.some((item) => !item.userName
        || !item.userPost || !item.userLevel || !item.time || !item.supplementTime || !item.supplementContent);
       if (check) {
-        this.$message.success('请填写完整勾选项');
+        this.$message.success('有必填项未填写');
         return false;
       }
 
@@ -496,7 +510,7 @@ export default {
         userCompany: item.userCompany,
         userPost: item.userPost == 'Project-Mng' ? '' : item.userPost,
         supplementTime: item.supplementTime,
-        belongingType: item.belongingType || item.projectUserType,
+        belongingType: item.belongingType || item.ldapType == 'Full-Time' ? 1 : 2,
       }));
       this.server.queryCalculatingMoney({ userList: selection }).then((res) => {
         if (res.code == 200) {

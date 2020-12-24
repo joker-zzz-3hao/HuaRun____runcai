@@ -7,6 +7,7 @@
     :title="info.projectNameCn"
     :close-on-click-modal="false"
     class="tl-dialog"
+
     width="900px"
   >
    <tl-crcloud-table
@@ -19,7 +20,7 @@
         :isPage="false"
       > -->
         <div slot="tableContainer" class="table-container project-members">
-    <el-table :data="tableData"  class="tl-table">
+    <el-table :data="tableData"  class="tl-table"  style="height:500px;overflow-y: scroll;">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-table :data="changeDate(props.row.contentJson)" row-key="supplementId">
