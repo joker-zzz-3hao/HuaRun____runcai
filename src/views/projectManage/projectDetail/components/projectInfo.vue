@@ -131,7 +131,7 @@
     <div class="dl-card-panel project-members">
       <dt class="card-title">
         <em>项目成员</em
-        ><el-button plain class="tl-btn" @click="addMembers"
+        ><el-button plain class="tl-btn" @click="addMembers" v-if="baseInfo.projectStatus == '0'"
           ><i class="el-icon-plus"></i><em>添加成员</em></el-button
         >
       </dt>
@@ -169,7 +169,7 @@
                   <span>项目经理</span>
                 </div>
                 <div
-                  v-else-if="scope.row.projectUserType == '0'"
+                  v-else-if="scope.row.projectUserType == '0'&&baseInfo.projectStatus == '0'"
                   @click="setManager(scope.row)"
                 >
                   <el-tooltip
@@ -242,7 +242,7 @@
             >
               <template slot-scope="scope">
                 <el-button
-                  v-if="scope.row.projectUserType != '1'"
+                  v-if="scope.row.projectUserType != '1'&&baseInfo.projectStatus == '0'"
                   @click="deleteMember(scope.row)"
                   type="text"
                   class="tl-btn"

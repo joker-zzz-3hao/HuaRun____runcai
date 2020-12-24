@@ -373,12 +373,16 @@ export default {
         if (this.projectList.length > 0) {
         //  this.formData.projectId = this.projectList[0].projectId;
           const list = this.projectList.filter((item) => Number(item.projectCount) > 0);
-          console.log(list);
+          // console.log(list);
           if (list.length > 0) {
             this.formData.projectId = list[0].projectId;
           } else {
             this.formData.projectId = this.projectList[0].projectId;
           }
+        }
+        if (!this.formData.projectId) {
+          this.$message.error('您暂无可调配工时项目');
+          return false;
         }
         this.getCode();
         this.searchList();
