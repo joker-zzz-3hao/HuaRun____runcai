@@ -484,7 +484,7 @@ export default {
       const check = this.selection.some((item) => !item.userName
        || !item.userPost || !item.userLevel || !item.time || !item.supplementTime || !item.supplementContent);
       if (check) {
-        this.$message.success('请填写完整勾选项');
+        this.$message.success('有必填项未填写');
         return false;
       }
 

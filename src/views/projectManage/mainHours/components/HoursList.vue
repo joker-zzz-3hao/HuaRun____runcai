@@ -5,7 +5,7 @@
     :modal-append-to-body="true"
     :before-close="close"
     @closed="closed"
-    :title="info.projectNameCn"
+    :title="'确认后，工时将汇总到'+projectName+'项目中'"
     :close-on-click-modal="false"
     class="tl-dialog"
     custom-class="allocate"
