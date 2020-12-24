@@ -9,15 +9,15 @@
     class="tl-dialog"
     width="900px"
   >
-   <!-- <tl-crcloud-table
+   <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
         :pageSize.sync="pageSize"
         @searchList="searchList"
-      > -->
-       <tl-crcloud-table
-        :isPage="false"
       >
+       <!-- <tl-crcloud-table
+        :isPage="false"
+      > -->
         <div slot="tableContainer" class="table-container project-members">
     <el-table :data="tableData"  class="tl-table">
       <el-table-column type="expand">
@@ -85,6 +85,8 @@ export default {
       levelList: [],
       currentPage: 1,
       pageSize: 10,
+      projectId: '',
+      total: 0,
     };
   },
 
@@ -110,13 +112,16 @@ export default {
       return JSON.parse(date);
     },
     show(projectId) {
-      this.searchList(projectId);
+      this.projectId = projectId;
+      this.searchList();
       this.visible = true;
     },
-    searchList(projectId) {
-      this.server.userWorkHistory({ projectId }).then((res) => {
-        this.tableData = res.data;
-      });
+    searchList() {
+      this.server.userWorkHistory({ projectId: this.projectId, currentPage: this.currentPage, pageSize: this.pageSize })
+        .then((res) => {
+          this.tableData = res.data.content;
+          this.total = res.data.total;
+        });
     },
 
     close() {
