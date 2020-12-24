@@ -49,15 +49,6 @@
       </div>
       <dl class="dl-item">
         <dd>
-            <el-button plain @click="$router.push({
-                  name: 'queryHistory',
-                  query: { projectId: formData.projectId,page:1 },
-                })" class="tl-btn amt-border-slip">
-        包含人力工时补录成本<span v-money="{   value: queryPrice,
-                  precision: 2,}"></span>元>>
-        <span class="lines"></span>
-      </el-button>
-
           <el-button
             type="primary"
             class="tl-btn amt-bg-slip"
@@ -68,7 +59,6 @@
           <a v-if="!projectList.length == 0" @click="showHistory"
             >历史调入记录>></a
           >
-
         </dd>
       </dl>
     </div>
@@ -120,7 +110,7 @@
       </div>
       <div class="dl-list">
         <dl class="dl-item">
-          <dt><span>项目已确认人力成本</span></dt>
+          <dt><span>已确认人力成本</span></dt>
           <dd>
             <em
               v-money="{
@@ -131,17 +121,30 @@
             ><span>元</span
             ><span>{{ projectConfirmCurrency || "人民币" }}</span>
             <em
-              ><span>=</span><span>外部顾问成本(</span
-              ><em v-money="{ value: externalConsultants||0, precision: 2 }">{{
-                externalConsultants || 0
-              }}</em
-              ><span
-                >{{ projectConfirmCurrency || "人民币" }}) + 内部顾问成本(</span
+              ><span>=</span><span>外部顾问已确认人力成本</span
+              ><em
+                v-money="{ value: externalConsultants || 0, precision: 2 }"
+                >{{ externalConsultants || 0 }}</em
+              ><span>{{ projectConfirmCurrency || "人民币" }}</span
+              ><span>+</span><span>内部顾问已确认人力成本</span
               ><em v-money="{ value: internalConsultant || 0, precision: 2 }">{{
                 internalConsultant || 0
               }}</em
-              ><span>{{ projectConfirmCurrency || "人民币" }})</span></em
+              ><span>{{ projectConfirmCurrency || "人民币" }}</span></em
             >
+          </dd>
+          <dd
+            @click="
+              $router.push({
+                name: 'queryHistory',
+                query: { projectId: formData.projectId, page: 1 },
+              })
+            "
+          >
+            包含人力工时补录成本<em
+              v-money="{ value: queryPrice, precision: 2 }"
+            ></em
+            >元<a>查看></a>
           </dd>
         </dl>
       </div>
@@ -421,6 +424,7 @@ export default {
 
         projectId: this.formData.projectId,
       }).then((res) => {
+        sessionStorage.setItem('costPrice', JSON.stringify(res.data));
         this.projectBudgetAmount = res.data.projectBudgetAmount || 0;
         this.projectBudgetCurrency = res.data.projectBudgetCurrency;
         this.projectConfirmAmount = res.data.projectConfirmAmount || 0;

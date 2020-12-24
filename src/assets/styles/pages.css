@@ -6340,6 +6340,20 @@
   margin: 0 52px 0 0;
 }
 
+.working-hours .cont-area > .dl-list:nth-of-type(3) .dl-item {
+  margin: 0;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.working-hours .cont-area > .dl-list:nth-of-type(3) .dl-item dd:first-of-type {
+  flex: 1;
+}
+
+.working-hours .cont-area > .dl-list:nth-of-type(3) .dl-item dd:first-of-type {
+  flex: 1;
+}
+
 .working-hours .dl-list .dl-item dt {
   margin: 0 10px 0 0;
   color: #acb6bf;
@@ -6376,6 +6390,11 @@
 
 .working-hours .dl-item dd > em em + span {
   margin: 0;
+}
+
+.working-hours .dl-item dd > em span {
+  margin: 0 0 0 10px;
+  color: #acb6bf;
 }
 
 .working-hours .project-select {
