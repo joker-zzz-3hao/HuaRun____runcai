@@ -246,6 +246,7 @@
                     v-model="scope.row.supplementTime"
                     :min="0.5"
                     :step="0.5"
+                    :step-strictly="true"
                     :max="scope.row.max"
                     @change="selectUserAdd"
                     :disabled="!scope.row.time"
