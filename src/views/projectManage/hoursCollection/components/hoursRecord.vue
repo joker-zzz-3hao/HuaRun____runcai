@@ -3,15 +3,21 @@
     :append-to-body="true"
     :visible="visible"
     @close="close"
+    title="确认无误后该项目已确认人力成本将发生变化"
     :before-close="close"
     :close-on-click-modal="false"
     class="tl-dialog"
   >
-  <div>
-    <div> 人力成本{{setData.insideBudget+setData.outerConsultBudget}}元人民币 </div>
-    <div>内部顾问成本{{setData.insideBudget}}元人民币，外部顾问成本{{setData.outerConsultBudget}}元人民币</div>
+  <div class="title-info">
+      <div>
+        人力成本<em>{{ setData.insideBudget+setData.outerConsultBudget }}</em
+        >位<span>元人民币</span>
+      </div>
+    <!-- <div> 人力成本{{setData.insideBudget+setData.outerConsultBudget}}元人民币 </div> -->
+    <div>内部顾问成本<em>{{setData.insideBudget}}</em>元人民币，外部顾问成本<em>{{setData.outerConsultBudget}}</em>元人民币</div>
 <div>确认补录工时吗?</div>
 <div>确认无误后该项目已确认人力成本将发生变化</div>
+</div>
   <div class="operating-box">
   <el-button
 
@@ -27,7 +33,7 @@
         >取消</el-button
       >
   </div>
-  </div>
+
   </el-dialog>
 </template>
 
@@ -97,3 +103,23 @@ export default {
   watch: {},
 };
 </script>
+<style lang="css">
+.title-info em {
+    margin: 0 6px;
+    color: #685df1;
+    font-size: 18px;
+    font-weight: 500;
+}
+.title-info em {
+    margin: 0 6px;
+    color: #685df1;
+    font-size: 18px;
+    font-weight: 500;
+}
+.title-info {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    color: #acb6bf;
+}
+</style>

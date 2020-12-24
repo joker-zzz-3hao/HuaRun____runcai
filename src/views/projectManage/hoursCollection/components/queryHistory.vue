@@ -114,6 +114,7 @@ export default {
     this.searchList();
   },
   methods: {
+
     back() {
       if (this.$route.query.page) {
         this.$router.push({ name: 'mainHours', query: { projectId: this.$route.query.projectId } });

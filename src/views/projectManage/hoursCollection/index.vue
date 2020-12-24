@@ -164,9 +164,11 @@
                     >
                     </el-option>
                   </el-select>
-                  <span v-else>{{
-                    CONST.BELONGINGTYPE_TYPE[scope.row.projectUserType]
-                  }}</span>
+                  <span v-else>
+                   <span v-if="scope.row.ldapType=='Full-Time'">内部</span>
+                    <span v-if="scope.row.ldapType=='Contractor'">外部</span>
+                     <span v-if="scope.row.ldapType=='OTHER'">其他</span>
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column prop="userPost" label="职能" min-width="120">
@@ -224,6 +226,7 @@
                     v-model="scope.row.time"
                     type="daterange"
                     range-separator="至"
+                 :picker-options="pickerOptions"
                     value-format="yyyy-MM-dd"
                     @change="changeMinMax(scope.row, scope.$index)"
                     start-placeholder="开始日期"
@@ -346,6 +349,13 @@ export default {
       checkbool: false,
       projectInfo: {},
       projectCost: {},
+      pickerOptions: {
+        disabledDate(time) {
+        // return time.getTime() < Date.now() - 8.64e7  //当前时间以后可以选择当前时间
+          return time.getTime() > (new Date()).getTime();
+        // 小于当前时间可以选择当天
+        },
+      },
     };
   },
   components: {
@@ -366,6 +376,7 @@ export default {
       userInfo: (state) => state.userInfo,
       listenerWidth: (state) => state.listenerWidth,
     }),
+
   },
   mounted() {
     this.projectInfo = JSON.parse(sessionStorage.getItem('projectInfo'));
@@ -396,6 +407,12 @@ export default {
     });
   },
   methods: {
+
+    disabledDate(date) {
+      console.log(date);
+      const now = (new Date()).getTime();
+      return date < now;
+    },
     queryProjectCostUsed() {
       this.server.queryProjectCostUsed({
         projectId: this.$route.query.projectId,
@@ -493,7 +510,7 @@ export default {
         userCompany: item.userCompany,
         userPost: item.userPost == 'Project-Mng' ? '' : item.userPost,
         supplementTime: item.supplementTime,
-        belongingType: item.belongingType || item.projectUserType,
+        belongingType: item.belongingType || item.ldapType == 'Full-Time' ? 1 : 2,
       }));
       this.server.queryCalculatingMoney({ userList: selection }).then((res) => {
         if (res.code == 200) {
