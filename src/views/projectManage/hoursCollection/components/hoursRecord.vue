@@ -3,7 +3,7 @@
     :append-to-body="true"
     :visible="visible"
     @close="close"
-    title="确认无误后该项目已确认人力成本将发生变化"
+    title="确认无误后该项目已确认人力成本将发生变化,请确认"
     :before-close="close"
     :close-on-click-modal="false"
     class="tl-dialog"
@@ -15,8 +15,8 @@
       </div>
     <!-- <div> 人力成本{{setData.insideBudget+setData.outerConsultBudget}}元人民币 </div> -->
     <div>内部顾问成本<em>{{setData.insideBudget}}</em>元人民币，外部顾问成本<em>{{setData.outerConsultBudget}}</em>元人民币</div>
-<div>确认补录工时吗?</div>
-<div>确认无误后该项目已确认人力成本将发生变化</div>
+<!-- <div>确认补录工时吗?</div>
+<div>确认无误后该项目已确认人力成本将发生变化</div> -->
 </div>
   <div class="operating-box">
   <el-button
