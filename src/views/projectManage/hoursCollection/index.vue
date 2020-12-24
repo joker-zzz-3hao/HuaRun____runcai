@@ -498,12 +498,20 @@ export default {
       }));
       this.server.queryCalculatingMoney({ userList: selection }).then((res) => {
         if (res.code == 200) {
-          const costPrice = res.data.insideBudget + res.data.outerConsultBudget;
-          if (costPrice <= (this.projectCost.externalConsultants + this.projectCost.internalConsultant)) {
-            this.$refs.hoursRecord.show(res.data);
-          } else {
+          if (res.data.insideBudget > this.projectInfo.insideBudget) {
             this.$message.error('人力成本超过项目已确立人力成本');
+            return false;
           }
+          if (res.data.outerConsultBudget > this.projectInfo.outerConsultBudget) {
+            this.$message.error('人力成本超过项目已确立人力成本');
+            return false;
+          }
+          if ((res.data.insideBudget + res.data.outerConsultBudget)
+          > (this.projectInfo.outerConsultBudget + this.projectInfo.insideBudget)) {
+            this.$message.error('人力成本超过项目已确立人力成本');
+            return false;
+          }
+          this.$refs.hoursRecord.show(res.data);
         }
       });
     },
