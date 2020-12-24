@@ -61,7 +61,7 @@
               <em
                 v-money="{
                   value:
-                    projectCost.externalConsultants + projectCost.internalConsultant,
+                    (projectCost.externalConsultants + projectCost.internalConsultant)||0,
                   precision: 2,
                 }"
               ></em
@@ -463,7 +463,7 @@ export default {
         // eslint-disable-next-line no-useless-escape
         const endTime = new Date(weekEnd.split(/[- : \/]/)).getTime();
         const cheTime = (endTime - startTime) / oneDate;
-        this.tableData[index].max = cheTime;
+        this.tableData[index].max = (cheTime + 1);
         this.tableData[index].supplementTime = 0.5;
       } else {
         this.tableData[index].supplementTime = 0.5;

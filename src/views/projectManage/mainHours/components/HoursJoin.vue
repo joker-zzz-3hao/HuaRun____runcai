@@ -54,7 +54,7 @@
               </dd>
             </dl>
             <dl class="dl-item">
-              <dt><span>内部同事预算</span></dt>
+              <dt><span>内部顾问预算</span></dt>
               <dd>
                 <em
                   v-money="{
@@ -67,7 +67,7 @@
               </dd>
             </dl>
             <dl class="dl-item">
-              <dt><span>外部同事预算</span></dt>
+              <dt><span>外部顾问预算</span></dt>
 
               <dd>
                 <em
@@ -100,16 +100,16 @@
                 ><span>元</span
                 ><span>({{ projectInfo.currency || "人民币" }})</span>
                 <em
-                  ><span>=</span><span>外部同事成本(</span
+                  ><span>=</span><span>外部顾问成本(</span
                   ><em
                     v-money="{
-                      value: projectCost.externalConsultants,
+                      value: projectCost.externalConsultants || 0,
                       precision: 2,
                     }"
                     >{{ projectCost.externalConsultants || 0 }}</em
                   ><span
                     >{{ projectInfo.currency || "人民币" }}) +
-                    内部同事成本(</span
+                    内部顾问成本(</span
                   ><em
                     v-money="{
                       value: projectCost.internalConsultant || 0,
