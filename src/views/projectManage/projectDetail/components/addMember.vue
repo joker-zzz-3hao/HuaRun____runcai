@@ -6,6 +6,7 @@
     :before-close="close"
     title="添加成员"
     :close-on-click-modal="false"
+    :modal="true"
     custom-class="add-members"
     class="tl-dialog"
   >
@@ -188,7 +189,7 @@
       :objectType="true"
       :projectManagerList="projectManagerList"
       :userType="true"
-      title="添加虚线汇报人"
+      title="添加成员"
       :rouleType="true"
       :DisuserId="DisuserId"
       @submitFunctin="listRoleUser"
@@ -197,7 +198,7 @@
 </template>
 
 <script>
-import addMember from '@/components/addMember';
+import addMember from '@/components/addMemberObject';
 import crcloudTable from '@/components/crcloudTable';
 import CONST from '../../const';
 

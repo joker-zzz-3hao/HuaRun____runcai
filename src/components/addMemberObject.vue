@@ -1,51 +1,49 @@
 <template>
-  <el-dialog
-    @click.native="closeshowMember"
-    :modal-append-to-body="true"
-    :before-close="close"
-    @closed="closed"
-    :close-on-click-modal="false"
-    :append-to-body="true"
-    :title="title"
-    :modal="true"
-    :visible.sync="dialogTableVisible"
-    class="tl-dialog"
-  >
-
-    <el-form ref="form" :model="form" label-width="80px" class="tl-form">
-      <el-form-item label="选择成员" class="tl-label-self">
-        <tl-select-member
-          @click.native.stop
-          @getMember="selectMb"
-          :orgUserId="orgUserId"
-          :rouleType="rouleType"
-          :selectListed="selectListed"
-          :disabledId="disabledId"
-          @selectUserCheck="selectUserCheck"
-          :objectType="objectType"
-          :userType="userType"
-          :DisuserId="DisuserId"
-          @filterMembers="filterMembers"
-        ></tl-select-member>
-      </el-form-item>
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button
-        :loading="loading"
-        type="primary"
-        @click="submit"
-        class="tl-btn amt-bg-slip"
-        >确定</el-button
-      >
-      <el-button
-        :disabled="loading"
-        plain
-        @click="close"
-        class="tl-btn amt-border-fadeout"
-        >取消</el-button
-      >
-    </div>
-  </el-dialog>
+  <div class="add-member-wrap">
+    <el-dialog
+      @click.native="closeshowMember"
+      :modal-append-to-body="true"
+      :before-close="close"
+      @closed="closed"
+      :close-on-click-modal="false"
+      :append-to-body="true"
+      :title="title"
+      :modal="true"
+      :visible.sync="dialogTableVisible"
+      class="tl-dialog"
+      custom-class="add-member"
+    >
+      <tl-select-member
+        @click.native.stop
+        @getMember="selectMb"
+        :orgUserId="orgUserId"
+        :rouleType="rouleType"
+        :selectListed="selectListed"
+        :disabledId="disabledId"
+        @selectUserCheck="selectUserCheck"
+        :objectType="objectType"
+        :userType="userType"
+        :DisuserId="DisuserId"
+        @filterMembers="filterMembers"
+      ></tl-select-member>
+      <div slot="footer" class="dialog-footer">
+        <el-button
+          :loading="loading"
+          type="primary"
+          @click="submit"
+          class="tl-btn amt-bg-slip"
+          >确定</el-button
+        >
+        <el-button
+          :disabled="loading"
+          plain
+          @click="close"
+          class="tl-btn amt-border-fadeout"
+          >取消</el-button
+        >
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>

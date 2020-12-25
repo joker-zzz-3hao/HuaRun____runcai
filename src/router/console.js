@@ -346,6 +346,32 @@ export default [{
     component: () => import('@/views/projectManage/index'),
   },
   {
+    path: '/hoursCollection',
+    name: 'hoursCollection',
+    meta: {
+      hasMainMenu: true,
+      noSubMenu: true,
+      parentRoute: 'projectManage',
+      belongsTo: 'projectManage',
+      title: 'hoursCollection',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/hoursCollection/index'),
+  },
+  {
+    path: '/queryHistory',
+    name: 'queryHistory',
+    meta: {
+      hasMainMenu: true,
+      noSubMenu: true,
+      parentRoute: 'projectManage',
+      belongsTo: 'projectManage',
+      title: 'queryHistory',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/hoursCollection/components/queryHistory'),
+  },
+  {
     path: '/projectDetail',
     name: 'projectDetail',
     meta: {
@@ -363,7 +389,7 @@ export default [{
     name: 'approvalList',
     meta: {
       hasMainMenu: true,
-      isSubMenu: false,
+      noSubMenu: true,
       parentRoute: 'projectManage',
       title: 'approvalList',
       power: '',
@@ -375,7 +401,7 @@ export default [{
     name: 'HoursJoin',
     meta: {
       hasMainMenu: true,
-      isSubMenu: true,
+      noSubMenu: true,
       parentRoute: 'HoursJoin',
       title: 'HoursJoin',
       power: '',

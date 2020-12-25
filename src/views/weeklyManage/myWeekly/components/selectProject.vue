@@ -15,7 +15,7 @@
     <el-scrollbar>
       <div class="cont-box">
         <dl class="dl-list">
-          <dd>
+          <dd class="project-manage-list">
             <el-radio-group v-model="selectData">
               <el-radio
                 class="tl-radio"
@@ -26,8 +26,8 @@
                 @click.native="projectChange($event, index, project)"
               >
                 <em>{{ project.projectNameCn }}</em>
-                <em v-if="project.projectManager"
-                  >项目经理：{{ project.projectManager }}</em
+                <em v-if="project.projectManager">
+                  ( 项目经理：{{ project.projectManager }} )</em
                 >
               </el-radio>
             </el-radio-group>

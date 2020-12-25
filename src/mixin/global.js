@@ -155,9 +155,23 @@ export default {
       $bus.$emit(eventName, params);
     },
     /* 用法
-        let date = new Date() date不是时间格式时
          dateFormat("YYYY-mm-dd HH:MM:SS", date) */
-    dateFormat(fmt, date) {
+    dateFormat(fmt, dateRep) {
+      let date = '';
+      if (dateRep instanceof Date) {
+        date = dateRep;
+      } else {
+        let dateCheck;
+        if (dateRep.indexOf('T') != -1) {
+          dateCheck = dateRep.replace('T', ' ');
+        } else {
+          dateCheck = dateRep;
+        }
+
+        // eslint-disable-next-line no-useless-escape
+        date = new Date(dateCheck.replace(/\-/g, '/'));
+      }
+
       let ret;
       const opt = {
         'Y+': date.getFullYear().toString(), // 年
@@ -177,6 +191,14 @@ export default {
         }
       }
       return fmt;
+    },
+    isDate(str) {
+      if (!/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/.test(str)) { return false; }
+      const year = RegExp.$1 - 0;
+      const month = RegExp.$2 - 1;
+      const date = RegExp.$3 - 0;
+      const obj = new Date(year, month, date);
+      return !!(obj.getFullYear() == year && obj.getMonth() == month && obj.getDate() == date);
     },
     /**
      * @author: 王益
@@ -391,6 +413,42 @@ export default {
       return newObj; // 返回深度克隆后的对象
     },
 
+    getPageTable(list, page, pageSzie) {
+      const pageOne = page - 1;
+      // const pageNum = list.length / page;
+      const listPage = list.slice(pageOne * pageSzie, pageOne * pageSzie + pageSzie);
+      return {
+        total: list.length,
+        list: listPage,
+      };
+    },
+    // 根据日期判断是月的第几周
+    getWeekInMonth(t) {
+      if (t == undefined || t == '' || t == null) {
+        t = new Date();
+      } else {
+        const _t = new Date();
+        _t.setYear(t.getFullYear());
+        _t.setMonth(t.getMonth());
+        _t.setDate(t.getDate());
+
+        const date = _t.getDate(); // 给定的日期是几号
+
+        _t.setDate(1);
+        const d = _t.getDay(); // 1. 得到当前的1号是星期几。
+        let fisrtWeekend = d;
+        if (d == 0) {
+          fisrtWeekend = 1;
+          // 1号就是星期天
+        } else {
+          fisrtWeekend = 7 - d + 1; // 第一周的周未是几号
+        }
+        if (date <= fisrtWeekend) {
+          return 1;
+        }
+        return 1 + Math.ceil((date - fisrtWeekend) / 7);
+      }
+    },
   },
 
 };

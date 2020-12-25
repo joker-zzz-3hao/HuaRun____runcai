@@ -163,9 +163,12 @@ export default {
     draftingTime(date) {
       const tingTime = new Date(date).getTime();
       const startTime = new Date(this.form.startTime).getTime();
-      if (tingTime > startTime - 24 * 60 * 60 * 1000) {
-        this.$message.error('起草时间不能大于周期开始时间');
-        this.form.draftingStartTime = '';
+      if (this.form.startTime) {
+        if (tingTime > startTime - 24 * 60 * 60 * 1000) {
+          this.$message.error('起草时间不能大于周期开始时间');
+          this.form.draftingStartTime = '';
+          return false;
+        }
       }
     },
     approvalTime(date) {
@@ -190,6 +193,7 @@ export default {
       const selfAssessReminderTime = new Date(this.form.selfAssessReminderTime).getTime();
       const startTime = new Date(date[0]).getTime();
       const endTime = new Date(date[1]).getTime();
+
       if (draftingStartTime + 24 * 60 * 60 * 1000 > startTime) {
         this.$message.error('起草时间不能大于周期开始时间');
         this.dateTime = '';

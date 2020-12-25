@@ -46,12 +46,7 @@
               min-width="165px"
               ><template slot-scope="scope">
                 <div>
-                  {{
-                    dateFormat(
-                      "YYYY-mm-dd HH:MM:SS",
-                      new Date(scope.row.createTime)
-                    )
-                  }}
+                  {{ dateFormat("YYYY-mm-dd HH:MM:SS", scope.row.createTime) }}
                 </div>
               </template></el-table-column
             >
@@ -62,12 +57,7 @@
               min-width="165px"
               ><template slot-scope="scope">
                 <div>
-                  {{
-                    dateFormat(
-                      "YYYY-mm-dd HH:MM:SS",
-                      new Date(scope.row.updateTime)
-                    )
-                  }}
+                  {{ dateFormat("YYYY-mm-dd HH:MM:SS", scope.row.updateTime) }}
                 </div>
               </template></el-table-column
             >

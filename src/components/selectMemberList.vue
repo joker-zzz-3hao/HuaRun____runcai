@@ -171,8 +171,7 @@ export default {
         orgId: item.id,
       }).then((res) => {
         if (res.code == 200) {
-          this.data = res.data.reverse();
-          console.log(this.data);
+          this.data = res.data;
           this.showLoad = true;
         }
       });

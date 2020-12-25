@@ -5,6 +5,10 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/project-service/project/query/projectPageList', param);
   }
 
+  getProject(param) {
+    return this._ajaxPost('gateway/project-service/project/query/getProject', param);
+  }
+
   createProject(param) {
     return this._ajaxPost('gateway/project-service/project/create/project', param);
   }
@@ -87,5 +91,62 @@ export default class Server extends ServerBase {
 
   projectUserTimeList(param) {
     return this._ajaxPost('gateway/project-service/project/query/projectUserTimeList', param);
+  }
+
+  // 查询日历
+  getCalendar(param) {
+    return this._ajaxPost('gateway/weekly-service/calendar/qurey', param);
+  }
+
+  //  查询列表
+  queryProjectUserList(param) {
+    return this._ajaxPost('gateway/project-service/project/query/queryProjectUserList', param);
+  }
+
+  //  计算总金额
+  queryCalculatingMoney(param) {
+    return this._ajaxPost('gateway/project-service/project/query/queryCalculatingMoney', param);
+  }
+
+  //  计算总金额提交
+  addSupplementTime(param) {
+    return this._ajaxPost('gateway/project-service/project/add/addSupplementTime', param);
+  }
+
+  querySupplementHistory(param) {
+    return this._ajaxPost('gateway/project-service/project/query/querySupplementHistory', param);
+  }
+
+  projectUserDetailWork(param) {
+    return this._ajaxPost('gateway/project-service/project/allocate/projectUserDetailWork', param);
+  }
+
+  projectDetailJoin(param) {
+    return this._ajaxPost('gateway/project-service/project/allocate/projectDetail', param);
+  }
+
+  allocate(param) {
+    return this._ajaxPost('gateway/project-service/project/allocate/projectList', param);
+  }
+
+  userCostSummary(param) {
+    return this._ajaxPost('gateway/project-service/project/allocate/userCostSummary', param);
+  }
+
+  submitAllocateUserWork(param) {
+    return this._ajaxPost('gateway/project-service/project/allocate/submitAllocateUserWork', param);
+  }
+
+  userWorkHistory(param) {
+    return this._ajaxPost('gateway/project-service/project/allocate/userWorkHistory', param);
+  }
+
+  queryProjectCostUsed(param) {
+    return this._ajaxPost('gateway/project-service/project/query/queryProjectCostUsed', param);
+  }
+
+  // 查询组织
+  getOrg(param) {
+    return this._ajaxPost('gateway/system-service/sys/organization/getOrg', param);
   }
 }
