@@ -524,6 +524,7 @@ export default {
   background: #f4f6f8;
   border: unset;
   margin-left: -15px;
+  color: #685df1;
 }
 .project-manager-select .el-icon-arrow-up:before {
   content: unset;
