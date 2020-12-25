@@ -6047,9 +6047,13 @@
 }
 
 /* .project-manage */
-.project-manage .operating-box-group .operating-box:first-child,
+.project-manage .operating-box-group .operating-box:last-child,
 .working-hours .operating-box-group .operating-box:first-child {
   justify-content: space-between;
+}
+
+.project-manage .operating-box-group .operating-box:last-child .dl-group {
+  flex: 1;
 }
 
 .project-manage .operating-box-group .operating-box .dl-group {
@@ -6319,6 +6323,11 @@
 .working-hours .table-container > .tl-table td,
 .project-members .tl-table td {
   height: 54px;
+}
+
+.project-manage .operating-box-group .tl-input-search {
+  width: 200px;
+  min-width: unset;
 }
 
 .working-hours .table-container > .tl-table td {

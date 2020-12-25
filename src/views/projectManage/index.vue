@@ -3,6 +3,18 @@
     <div class="operating-area">
       <div class="operating-box-group">
         <div class="operating-box">
+          <el-button
+            v-show="hasPower('project-create')"
+            v-if="isTalent"
+            :disabled="!codes.length > 0"
+            type="primary"
+            icon="el-icon-plus"
+            @click="addProject"
+            class="tl-btn amt-bg-slip"
+            >创建虚拟项目</el-button
+          >
+        </div>
+        <div class="operating-box">
           <div class="dl-group">
             <dl class="dl-item">
               <dt>项目状态</dt>
@@ -81,23 +93,11 @@
               </dd>
             </dl>
           </div>
-          <el-button
-            v-show="hasPower('project-create')"
-            v-if="isTalent"
-            :disabled="!codes.length > 0"
-            type="primary"
-            icon="el-icon-plus"
-            @click="addProject"
-            class="tl-btn amt-bg-slip"
-            >创建虚拟项目</el-button
-          >
-        </div>
-        <div class="operating-box">
           <el-input
             maxlength="64"
             @keyup.enter.native="searchManage"
             v-model="keyWord"
-            placeholder="请输入项目名称或者项目经理"
+            placeholder="项目名称或项目经理"
             class="tl-input-search"
           >
             <i class="el-icon-search" slot="prefix" @click="searchManage"></i>
@@ -274,7 +274,7 @@
                   @click="setTime(scope.row)"
                   type="text"
                   class="tl-btn"
-                  :disabled="scope.row.projectStatus==1"
+                  :disabled="scope.row.projectStatus == 1"
                   v-show="isTalent"
                   >设置</el-button
                 >
