@@ -6,10 +6,10 @@
           <dt>
             <span
               :class="{
-                'is-ongoing': baseInfo.projectStatus == '0',
-                'is-over': baseInfo.projectStatus == '1',
+                'is-ongoing': projectInfo.projectStatus == '0',
+                'is-over': projectInfo.projectStatus == '1',
               }"
-              >{{ CONST.PROJECT_STATUS_MAP[baseInfo.projectStatus] }}</span
+              >{{ CONST.PROJECT_STATUS_MAP[projectInfo.projectStatus] }}</span
             >
             <em>{{ projectInfo.projectNameCn }}</em>
             <a
@@ -164,9 +164,9 @@
                     </el-option>
                   </el-select>
                   <span v-else>
-                   <span v-if="scope.row.ldapType=='Full-Time'">内部</span>
-                    <span v-if="scope.row.ldapType=='Contractor'">外部</span>
-                     <span v-if="scope.row.ldapType=='OTHER'">其他</span>
+                    <span v-if="scope.row.ldapType == 'Full-Time'">内部</span>
+                    <span v-if="scope.row.ldapType == 'Contractor'">外部</span>
+                    <span v-if="scope.row.ldapType == 'OTHER'">其他</span>
                   </span>
                 </template>
               </el-table-column>
@@ -225,7 +225,7 @@
                     v-model="scope.row.time"
                     type="daterange"
                     range-separator="至"
-                 :picker-options="pickerOptions"
+                    :picker-options="pickerOptions"
                     value-format="yyyy-MM-dd"
                     @change="changeMinMax(scope.row, scope.$index)"
                     start-placeholder="开始日期"

@@ -274,7 +274,7 @@
                   @click="setTime(scope.row)"
                   type="text"
                   class="tl-btn"
-                  :disabled="scope.row.projectStatus==1"
+                  :disabled="scope.row.projectStatus == 1"
                   v-show="isTalent"
                   >设置</el-button
                 >
@@ -333,7 +333,8 @@ export default {
       userInfo: (state) => state.userInfo,
     }),
     isTenantAdmin() {
-      if (this.userInfo.roleList && this.userInfo.roleList.length > 0 && this.userInfo.roleList[0].roleCode == 'TENANT_ADMIN') {
+      if (this.userInfo.roleList && this.userInfo.roleList.length > 0
+       && this.userInfo.roleList[0].roleCode == 'TENANT_ADMIN') {
         return true;
       }
       return false;
