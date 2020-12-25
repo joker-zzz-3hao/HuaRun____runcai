@@ -46,15 +46,20 @@
         <dl class="dl-item">
           <dt><span>项目经理</span></dt>
           <dd>
-            <div class="user-info" v-if="showUser">
-              <img v-if="hasValue(headUrl)" :src="headUrl" alt />
+            <div class="user-icon">
+              <!-- <img v-if="hasValue(headUrl)" :src="headUrl" alt />
               <div v-else-if="userName" class="user-name">
                 <em>{{ userName.substring(userName.length - 2) }}</em>
-              </div>
+              </div> -->
+              <i class="el-icon-medal"></i>
             </div>
-            <div class="user-name-txt">
+            <div class="user-name-txt project-manager-select">
               <!-- <em>{{ baseInfo.projectManager }}</em -->
-              <el-select v-model="manageId" @change="userChange">
+              <el-select
+                v-model="manageId"
+                @change="userChange"
+                popper-class="tl-select-dropdown"
+              >
                 <el-option
                   v-for="item in baseInfo.projectUserVoList"
                   :key="item.userId"
@@ -85,9 +90,7 @@
         <dl class="dl-item">
           <dt><span>投入类型</span></dt>
           <dd>
-            <em>{{
-              baseInfo.projectInputType || "--"
-            }}</em>
+            <em>{{ baseInfo.projectInputType || "--" }}</em>
           </dd>
         </dl>
         <dl class="dl-item project-type">
@@ -124,7 +127,8 @@
           <el-table :data="baseInfo.projectUserVoList" class="tl-table">
             <el-table-column prop="userName" label="姓名" min-width="140">
               <template slot-scope="scope">
-                <div class="user-info" @click="setManager(scope.row)">
+                <!-- <div class="user-info" @click="setManager(scope.row)"> -->
+                <div class="user-info">
                   <img
                     v-if="hasValue(scope.row.headUrl)"
                     :src="scope.row.headUrl"
@@ -143,7 +147,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="项目经理" min-width="120">
+            <!-- <el-table-column label="项目经理" min-width="120">
               <template slot-scope="scope">
                 <div
                   v-if="scope.row.projectUserType == '1'"
@@ -170,7 +174,7 @@
                 </div>
                 <div v-else>--</div>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column prop="userLevelName" label="级别" min-width="120">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.userLevelName)">{{
@@ -285,7 +289,6 @@ export default {
       manageId: '',
       headUrl: '',
       userName: '',
-      showUser: false,
     };
   },
   components: {
@@ -314,19 +317,14 @@ export default {
     }),
   },
   mounted() {
-    console.log(this.baseInfo);
+    console.log('projectUserVoList', this.baseInfo.projectUserVoList);
     this.manageId = this.userInfo.userId;
     if (this.baseInfo.projectUserVoList) {
-      debugger;
       this.baseInfo.projectUserVoList.forEach((item) => {
         if (item.projectUserType == '1') {
           if (item.userId == this.userInfo.userId) {
             this.headUrl = item.headUrl;
-            console.log('9999999999999', this.headUrl);
             this.userName = item.userName;
-            this.$nextTick(() => {
-              this.showUser = true;
-            });
             this.isManage = true;
           }
         }
@@ -391,6 +389,9 @@ export default {
         self.$xconfirm({
           title: '设置项目经理',
           content,
+          cancelCallback: () => {
+            this.manageId = this.userInfo.userId;
+          },
         }).then(() => {
           self.server.setProjectManager({
             userId: data.userId,
@@ -415,6 +416,9 @@ export default {
                   name: 'projectManage',
                 });
               }
+              this.headUrl = data.headUrl;
+              this.userName = data.userName;
+              this.$forceUpdate();
             }
           });
         });
@@ -459,9 +463,7 @@ export default {
     userChange(userId) {
       this.baseInfo.projectUserVoList.forEach((element) => {
         if (element.userId == userId) {
-          this.headUrl = element.headUrl;
-          this.userName = element.userName;
-          this.$forceUpdate();
+          this.setManager(element);
         }
       });
     },
@@ -517,3 +519,16 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.project-manager-select .el-input--suffix .el-input__inner {
+  background: #f4f6f8;
+  border: unset;
+  margin-left: -15px;
+}
+.project-manager-select .el-icon-arrow-up:before {
+  content: unset;
+}
+.user-icon {
+  z-index: 9999;
+}
+</style>

@@ -3,6 +3,7 @@
     <el-tabs v-model="projectTab" @tab-click="handleClick" class="tl-tabs">
       <el-tab-pane label="项目信息" name="1">
         <tl-project-info
+          v-if="this.baseInfo.projectUserVoList"
           :server="server"
           :baseInfo="baseInfo"
         ></tl-project-info>
