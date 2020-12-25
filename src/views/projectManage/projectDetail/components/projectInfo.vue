@@ -46,22 +46,22 @@
         <dl class="dl-item">
           <dt><span>项目经理</span></dt>
           <dd>
-            <div class="user-info">
-              <img
-                v-if="hasValue(baseInfo.headUrl)"
-                :src="baseInfo.headUrl"
-                alt
-              />
-              <div v-else-if="baseInfo.projectManager" class="user-name">
-                <em>{{
-                  baseInfo.projectManager.substring(
-                    baseInfo.projectManager.length - 2
-                  )
-                }}</em>
+            <div class="user-info" v-if="showUser">
+              <img v-if="hasValue(headUrl)" :src="headUrl" alt />
+              <div v-else-if="userName" class="user-name">
+                <em>{{ userName.substring(userName.length - 2) }}</em>
               </div>
             </div>
             <div class="user-name-txt">
-              <em>{{ baseInfo.projectManager }}</em>
+              <!-- <em>{{ baseInfo.projectManager }}</em -->
+              <el-select v-model="manageId" @change="userChange">
+                <el-option
+                  v-for="item in baseInfo.projectUserVoList"
+                  :key="item.userId"
+                  :label="item.userName"
+                  :value="item.userId"
+                ></el-option>
+              </el-select>
             </div>
           </dd>
         </dl>
@@ -282,6 +282,10 @@ export default {
       pWidth: '',
       emWidth: '',
       DisuserId: {},
+      manageId: '',
+      headUrl: '',
+      userName: '',
+      showUser: false,
     };
   },
   components: {
@@ -310,10 +314,19 @@ export default {
     }),
   },
   mounted() {
+    console.log(this.baseInfo);
+    this.manageId = this.userInfo.userId;
     if (this.baseInfo.projectUserVoList) {
+      debugger;
       this.baseInfo.projectUserVoList.forEach((item) => {
         if (item.projectUserType == '1') {
           if (item.userId == this.userInfo.userId) {
+            this.headUrl = item.headUrl;
+            console.log('9999999999999', this.headUrl);
+            this.userName = item.userName;
+            this.$nextTick(() => {
+              this.showUser = true;
+            });
             this.isManage = true;
           }
         }
@@ -440,6 +453,15 @@ export default {
               }
             });
           }
+        }
+      });
+    },
+    userChange(userId) {
+      this.baseInfo.projectUserVoList.forEach((element) => {
+        if (element.userId == userId) {
+          this.headUrl = element.headUrl;
+          this.userName = element.userName;
+          this.$forceUpdate();
         }
       });
     },
