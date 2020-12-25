@@ -143,7 +143,7 @@ const PROJECT_ORG_TYPE = {
 };
 
 const ALLOCATESTATUS_TYPE = {
-  1: '填写',
+  1: '周报',
   2: '调入',
   3: '调出',
 };
@@ -175,8 +175,8 @@ const PROJECT_SOURCE_MAP = [
 ];
 
 const BELONGINGTYPE = [
-  { value: 1, label: '内部' },
-  { value: 2, label: '外部' },
+  { value: 'Full-Time', label: '内部' },
+  { value: 'Contractor', label: '外部' },
 ];
 
 const BELONGINGTYPE_TYPE = {

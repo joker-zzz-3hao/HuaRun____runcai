@@ -4963,6 +4963,18 @@
   height: 24px;
 }
 
+.teams-weekly .table-container.no-data-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.teams-weekly .table-container.no-data-container > ul li {
+  margin: 0;
+  width: unset;
+}
+
 /* 任务 */
 .my-task .tl-custom-tabs {
   height: 60px;
@@ -6047,9 +6059,13 @@
 }
 
 /* .project-manage */
-.project-manage .operating-box-group .operating-box:first-child,
+.project-manage .operating-box-group .operating-box:last-child,
 .working-hours .operating-box-group .operating-box:first-child {
   justify-content: space-between;
+}
+
+.project-manage .operating-box-group .operating-box:last-child .dl-group {
+  flex: 1;
 }
 
 .project-manage .operating-box-group .operating-box .dl-group {
@@ -6321,6 +6337,11 @@
   height: 54px;
 }
 
+.project-manage .operating-box-group .tl-input-search {
+  width: 200px;
+  min-width: unset;
+}
+
 .working-hours .table-container > .tl-table td {
   height: 55px;
   max-height: 55px;
@@ -6381,15 +6402,17 @@
   flex: 1;
 }
 
-.working-hours .cont-area > .dl-list:nth-of-type(3) .dl-item dd:last-of-type {
+.working-hours .cont-area > .dl-list:nth-of-type(1) .dl-item dd {
+  font-size: 12px;
   color: #879099;
 }
 
-.working-hours .cont-area > .dl-list:nth-of-type(3) .dl-item dd:last-of-type em {
+.working-hours .cont-area > .dl-list:nth-of-type(1) .dl-item dd em {
   margin: 0 6px;
 }
 
-.working-hours .cont-area > .dl-list:nth-of-type(3) .dl-item dd:last-of-type a {
+.working-hours .cont-area > .dl-list:nth-of-type(1) .dl-item dd a {
+  font-size: 12px;
   margin: 0 0 0 10px;
   color: #685df1;
 }

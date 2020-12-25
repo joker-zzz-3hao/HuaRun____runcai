@@ -15,9 +15,7 @@
         :pageSize.sync="pageSize"
         @searchList="searchList"
       > -->
-        <tl-crcloud-table
-        :isPage="false"
-      >
+      <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container project-members">
           <el-table :data="tableData" class="tl-table">
             <el-table-column type="expand">
@@ -45,7 +43,11 @@
                       {{ getName(scope.row.userCompany, companyList) }}
                     </template>
                   </el-table-column>
-                  <el-table-column prop="finalScore" label="工时时间范围">
+                  <el-table-column
+                    prop="finalScore"
+                    label="工时时间范围"
+                    width="220"
+                  >
                     <template slot-scope="scope">
                       {{
                         dateFormat("YYYY-mm-dd", scope.row.supplementTimeBegin)
@@ -65,7 +67,10 @@
             <el-table-column label="补录时间" prop="supplementSubmitTimeDate">
               <template slot-scope="scope">
                 {{
-                  dateFormat("YYYY-mm-dd HH:MM:SS", scope.row.supplementSubmitTimeDate)
+                  dateFormat(
+                    "YYYY-mm-dd HH:MM:SS",
+                    scope.row.supplementSubmitTimeDate
+                  )
                 }}
               </template>
             </el-table-column>

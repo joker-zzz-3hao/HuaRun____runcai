@@ -3,18 +3,19 @@
     :append-to-body="true"
     :visible="visible"
     @close="close"
-    title="确认无误后该项目已确认人力成本将发生变化,请确认"
+    title="该项目已确认人力成本将发生变化,请确认"
     :before-close="close"
     :close-on-click-modal="false"
     class="tl-dialog"
   >
   <div class="title-info">
       <div>
-        人力成本<em>{{ setData.insideBudget+setData.outerConsultBudget }}</em
+        人力成本<em v-money="{ value: setData.insideBudget+setData.outerConsultBudget, precision: 2 }"></em
         >位<span>元人民币</span>
       </div>
     <!-- <div> 人力成本{{setData.insideBudget+setData.outerConsultBudget}}元人民币 </div> -->
-    <div>内部顾问成本<em>{{setData.insideBudget}}</em>元人民币，外部顾问成本<em>{{setData.outerConsultBudget}}</em>元人民币</div>
+    <div>内部顾问成本<em  v-money="{ value: setData.insideBudget, precision: 2 }"></em>
+    元人民币，外部顾问成本<em v-money="{ value: setData.outerConsultBudget, precision: 2 }"></em>元人民币</div>
 <!-- <div>确认补录工时吗?</div>
 <div>确认无误后该项目已确认人力成本将发生变化</div> -->
 </div>
@@ -74,11 +75,11 @@ export default {
 
     approval() {
       const selection = this.selection.map((item) => ({
-        projectId: item.projectId || this.$route.query.projectId,
+        projectId: this.$route.query.projectId,
         supplementUser: item.userId || item.userName,
         userLevel: item.userLevel,
         userPost: item.userPost,
-        userType: item.belongingType || item.projectUserType,
+        userType: item.ldapType == 'Full-Time' ? 1 : 2,
         userCompany: item.userCompany,
         supplementTime: item.supplementTime,
         supplementTimeBegin: item.time[0],
