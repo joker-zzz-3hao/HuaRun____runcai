@@ -4963,6 +4963,18 @@
   height: 24px;
 }
 
+.teams-weekly .table-container.no-data-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.teams-weekly .table-container.no-data-container > ul li {
+  margin: 0;
+  width: unset;
+}
+
 /* 任务 */
 .my-task .tl-custom-tabs {
   height: 60px;
