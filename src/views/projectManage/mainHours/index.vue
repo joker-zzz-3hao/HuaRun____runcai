@@ -90,6 +90,21 @@
             <span></span>
           </dd>
         </dl>
+        <dl class="dl-item">
+          <dd
+            @click="
+              $router.push({
+                name: 'queryHistory',
+                query: { projectId: formData.projectId, page: 1 },
+              })
+            "
+          >
+            包含已确认补录人力成本<em
+              v-money="{ value: queryPrice, precision: 2 }"
+            ></em
+            >元<a>查看></a>
+          </dd>
+        </dl>
       </div>
       <div class="dl-list">
         <dl class="dl-item">
@@ -134,19 +149,6 @@
               ><span>{{ projectConfirmCurrency || "人民币" }}</span></em
             >
           </dd>
-          <dd
-            @click="
-              $router.push({
-                name: 'queryHistory',
-                query: { projectId: formData.projectId, page: 1 },
-              })
-            "
-          >
-            包含已确认补录人力成本<em
-              v-money="{ value: queryPrice, precision: 2 }"
-            ></em
-            >元<a>查看></a>
-          </dd>
         </dl>
       </div>
 
@@ -170,7 +172,7 @@
             </el-table-column>
             <el-table-column prop="userLevel" label="职级" min-width="100">
               <template slot-scope="scope">
-                <span>{{ getName(scope.row.userLevel,levelList) }}</span>
+                <span>{{ getName(scope.row.userLevel, levelList) }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="ldapType" label="成员类型" min-width="100">

@@ -30,9 +30,14 @@
       <div class="project-info">
         <div class="project-description">
           <dl>
-            <dt></dt>
             <dd>
-              <span>项目名称:</span>
+              <span
+                :class="{
+                  'is-ongoing': projectInfo.projectStatus == '0',
+                  'is-over': projectInfo.projectStatus == '1',
+                }"
+                >{{ CONST.PROJECT_STATUS_MAP[projectInfo.projectStatus] }}</span
+              >
               <p>
                 {{ projectInfo.projectNameCn }}
               </p>
