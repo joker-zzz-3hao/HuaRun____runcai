@@ -2,26 +2,25 @@
   <div class="teams-weekly">
     <div class="operating-area">
       <div class="operating-box">
-          <dl class="dl-item">
-            <dt>查看其他团队周报</dt>
-              <dd>
-
-        <el-cascader
-          v-model="orgIdList"
-          ref="cascader"
-          :options="treeData"
-          :show-all-levels="false"
-          :props="{
-            checkStrictly: true,
-            value: 'orgId',
-            label: 'orgName',
-            children: 'sonTree',
-          }"
-          @change="selectIdChange"
-          popper-class="tl-cascader-popper"
-          class="tl-cascader"
-        ></el-cascader>
-        </dd>
+        <dl class="dl-item">
+          <dt>查看其他团队周报</dt>
+          <dd>
+            <el-cascader
+              v-model="orgIdList"
+              ref="cascader"
+              :options="treeData"
+              :show-all-levels="false"
+              :props="{
+                checkStrictly: true,
+                value: 'orgId',
+                label: 'orgName',
+                children: 'sonTree',
+              }"
+              @change="selectIdChange"
+              popper-class="tl-cascader-popper"
+              class="tl-cascader"
+            ></el-cascader>
+          </dd>
         </dl>
         <!-- 按钮显示逻辑添加
         1、本周、上周的日历显示提醒写周报按钮，其余时间不显示
@@ -101,7 +100,11 @@
         @searchList="refreshPageList"
         v-if="tableLoading"
       >
-        <div slot="tableContainer" class="table-container">
+        <div
+          slot="tableContainer"
+          class="table-container"
+          :class="{ 'no-data-container': tableData.length < 1 }"
+        >
           <ul v-if="!isQuickLook">
             <li
               v-for="weekly in tableData"
@@ -182,11 +185,12 @@
                 </dd>
               </dl>
             </li>
-            <li v-if="tableData.length < 1">
-              <div class="no-data">
-                <div class="no-data-bg"></div>
-                <div class="no-data-txt">暂无数据</div>
-              </div>
+            <li
+              v-if="tableData.length < 1"
+              :class="{ 'no-data': tableData.length < 1 }"
+            >
+              <div class="no-data-bg"></div>
+              <div class="no-data-txt">暂无数据</div>
             </li>
           </ul>
           <ul v-else class="quick-look">
