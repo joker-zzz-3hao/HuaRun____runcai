@@ -65,31 +65,33 @@
     </div>
     <div class="cont-area">
       <div class="dl-list">
-        <dl class="dl-item">
-          <dt>
-            <span> 上一周 {{ week }} </span>
-          </dt>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>项目成员</span></dt>
-          <dd>
-            <em>{{ projectUserSum || 0 }} </em><span>人</span>
-            <span></span>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>预计提交工时</span></dt>
-          <dd>
-            <em>{{ submissionHours || 0 }} </em><span>天</span> <span></span>
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>实际提交工时</span></dt>
-          <dd>
-            <em>{{ actualSubmissionHours || 0 }} </em><span>天</span>
-            <span></span>
-          </dd>
-        </dl>
+        <div class="dl-item-group">
+          <dl class="dl-item">
+            <dt>
+              <span> 上一周 {{ week }} </span>
+            </dt>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>项目成员</span></dt>
+            <dd>
+              <em>{{ projectUserSum || 0 }} </em><span>人</span>
+              <span></span>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>预计提交工时</span></dt>
+            <dd>
+              <em>{{ submissionHours || 0 }} </em><span>天</span> <span></span>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt><span>实际提交工时</span></dt>
+            <dd>
+              <em>{{ actualSubmissionHours || 0 }} </em><span>天</span>
+              <span></span>
+            </dd>
+          </dl>
+        </div>
         <dl class="dl-item">
           <dd
             @click="

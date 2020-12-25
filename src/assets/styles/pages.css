@@ -6402,6 +6402,19 @@
   flex: 1;
 }
 
+.working-hours .cont-area > .dl-list:nth-of-type(1)  {
+  justify-content: space-between;
+}
+
+.working-hours .cont-area > .dl-list:nth-of-type(1) .dl-item-group {
+  display: flex;
+  align-items: center;
+}
+
+.working-hours .cont-area > .dl-list:nth-of-type(1) .dl-item:last-child {
+  margin: 0;
+}
+
 .working-hours .cont-area > .dl-list:nth-of-type(1) .dl-item dd {
   font-size: 12px;
   color: #879099;
