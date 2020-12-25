@@ -180,11 +180,23 @@
                       name: 'replayDetail',
                       query: {
                         okrId: scope.row.okrId,
-                        ownerFlag: scope.row.ownerFlag,
                       },
                     })
                   "
                   >查看</el-button
+                >
+                <el-button
+                  type="text"
+                  class="tl-btn"
+                  @click="
+                    $router.push({
+                      name: 'replayEdit',
+                      query: {
+                        okrId: scope.row.okrId,
+                      },
+                    })
+                  "
+                  >复盘审批</el-button
                 >
               </template>
             </el-table-column>

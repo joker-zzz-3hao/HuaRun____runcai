@@ -93,6 +93,19 @@
                 </dd>
               </dl>
               <dl>
+                <dt>价值与收获</dt>
+                <dd>{{ list.advantage || "未填写" }}</dd>
+              </dl>
+              <dl>
+                <dt>问题与不足</dt>
+                <dd>{{ list.disadvantage || "未填写" }}</dd>
+              </dl>
+              <dl>
+                <dt>改进措施</dt>
+                <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
+                <dd v-if="list.measure.length == 0">未填写</dd>
+              </dl>
+              <dl>
                 <dt>复核得分</dt>
                 <dd v-if="isdetail == 'isdetail'">
                   <em>{{ list.finalScore }}</em>
