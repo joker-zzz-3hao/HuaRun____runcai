@@ -113,8 +113,12 @@
       </elcollapseitem>
     </elcollapse>
     <div>
-      <span>最终得分</span>
-      <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
+      <span>OKR自评得分</span>
+      <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
+    </div>
+    <div>
+      <span>OKR复核得分</span>
+      <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
     </div>
     <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </div>

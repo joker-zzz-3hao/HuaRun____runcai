@@ -97,6 +97,16 @@
                 ></tl-process> </template
             ></el-table-column>
             <el-table-column
+              prop="periodName"
+              label="OKR自评得分"
+              min-width="170"
+            ></el-table-column>
+            <el-table-column
+              prop="periodName"
+              label="OKR复核得分"
+              min-width="170"
+            ></el-table-column>
+            <el-table-column
               prop="reviewStatusCn"
               label="复盘状态"
               min-width="100"

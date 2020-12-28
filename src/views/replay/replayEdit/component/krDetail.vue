@@ -210,7 +210,7 @@
       </elcollapseitem>
     </elcollapse>
     <div class="final-score">
-      <span>最终得分</span>
+      <span>OKR自评得分</span>
       <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
       <span>分</span>
     </div>
