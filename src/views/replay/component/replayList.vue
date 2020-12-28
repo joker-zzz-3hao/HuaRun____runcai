@@ -77,6 +77,11 @@
               min-width="165"
             ></el-table-column>
             <el-table-column
+              prop="orgName"
+              label="部门名称"
+              min-width="165"
+            ></el-table-column>
+            <el-table-column
               prop="okrBelongType"
               label="OKR所属类型"
               min-width="165"
@@ -205,7 +210,7 @@
                   >查看</el-button
                 >
                 <!-- 条件要加 -->
-                <el-button
+                <!-- <el-button
                   type="text"
                   class="tl-btn"
                   @click="
@@ -217,7 +222,7 @@
                     })
                   "
                   >复盘审批</el-button
-                >
+                > -->
               </template>
             </el-table-column>
           </el-table>
