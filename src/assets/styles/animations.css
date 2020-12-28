@@ -17,6 +17,17 @@
   transform: translateY(21%) translateX(-25px) rotate(-45deg);
 }
 
+.amt-bg-slip.is-disabled,
+.amt-bg-slip.is-disabled:hover {
+  background: #f4f6f8;
+  border-color: #f4f6f8;
+  color: #bcc4cc;
+}
+
+.amt-bg-slip.is-disabled::after {
+  background: #f4f6f8;
+}
+
 /* 边框滑动 */
 .amt-border-slip.is-plain::before,
 .amt-border-slip.is-plain .lines::before,

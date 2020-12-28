@@ -180,8 +180,8 @@
             <el-table-column prop="ldapType" label="成员类型" min-width="100">
               <template slot-scope="scope">
                 <span v-if="scope.row.ldapType == 'Contractor'">外部</span>
-                <span v-if="scope.row.ldapType == 'OTHER'">特殊账户</span>
-                <span v-if="scope.row.ldapType == 'Full-Time'">外部</span>
+                <span v-if="scope.row.ldapType == 'OTHER'">其他</span>
+                <span v-if="scope.row.ldapType == 'Full-Time'">内部</span>
                 <span v-if="!scope.row.ldapType">--</span>
               </template>
             </el-table-column>
