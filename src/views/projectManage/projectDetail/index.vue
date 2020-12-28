@@ -3,13 +3,14 @@
     <el-tabs v-model="projectTab" @tab-click="handleClick" class="tl-tabs">
       <el-tab-pane label="项目信息" name="1">
         <tl-project-info
-          v-if="this.baseInfo.projectUserVoList"
+          v-if="this.baseInfo.projectUserVoList && First"
           :server="server"
           :baseInfo="baseInfo"
         ></tl-project-info>
       </el-tab-pane>
       <el-tab-pane label="项目统计数据" name="2">
         <tl-project-statistics
+          v-if="Second"
           :summaryList="summaryList"
           :server="server"
         ></tl-project-statistics>
@@ -42,6 +43,8 @@ export default {
       projectTab: '1',
       baseInfo: {},
       summaryList: [],
+      First: true,
+      Second: false,
     };
   },
   props: {},
@@ -50,24 +53,37 @@ export default {
     'tl-project-statistics': projectStatistics,
   },
   mounted() {
-    this.server.projectDetail({
-      projectId: this.$route.query.projectId || '',
-    }).then((res) => {
-      if (res.code == '200') {
-        this.baseInfo = res.data;
-      }
-    });
-    this.server.summaryList({
-      projectId: this.$route.query.projectId || '',
-    }).then((res) => {
-      if (res.code == '200') {
-        this.summaryList = res.data;
-      }
-    });
+    this.changeTab();
   },
   methods: {
+    changeTab() {
+      this.server.projectDetail({
+        projectId: this.$route.query.projectId || '',
+      }).then((res) => {
+        if (res.code == '200') {
+          this.baseInfo = res.data;
+        }
+      });
+      this.server.summaryList({
+        projectId: this.$route.query.projectId || '',
+      }).then((res) => {
+        if (res.code == '200') {
+          this.summaryList = res.data;
+        }
+      });
+    },
     handleClick(data) {
       console.log(data);
+      if (data.name === '1') {
+        this.First = true;
+
+        this.Second = false;
+      } else if (data.name === '2') {
+        this.First = false;
+
+        this.Second = true;
+      }
+      this.changeTab();
     },
     backProjectManage() {
       this.$router.push({

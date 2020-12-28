@@ -80,17 +80,35 @@
           </dd>
         </dl>
         <dl class="dl-item">
+          <dt><span>投入类型</span></dt>
+          <dd>
+            <em>{{ baseInfo.projectInputType || "--" }}</em>
+          </dd>
+        </dl>
+        <!-- <dl class="dl-item">
           <dt><span>项目总预算</span></dt>
           <dd>
             <em v-money="{ value: baseInfo.projectBudget, precision: 2 }"></em
             ><span>元</span
             ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
           </dd>
+        </dl> -->
+        <dl class="dl-item">
+          <dt><span>内部顾问预算</span></dt>
+          <dd>
+            <em v-money="{ value: baseInfo.insideBudget, precision: 2 }"></em
+            ><span>元</span
+            ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
+          </dd>
         </dl>
         <dl class="dl-item">
-          <dt><span>投入类型</span></dt>
+          <dt><span>外部顾问预算</span></dt>
           <dd>
-            <em>{{ baseInfo.projectInputType || "--" }}</em>
+            <em
+              v-money="{ value: baseInfo.outerConsultBudget, precision: 2 }"
+            ></em
+            ><span>元</span
+            ><span>({{ baseInfo.projectCurrency || "人民币" }})</span>
           </dd>
         </dl>
         <dl class="dl-item project-type">
@@ -118,14 +136,18 @@
     <div class="dl-card-panel project-members">
       <dt class="card-title">
         <em>项目成员</em
-        ><el-button plain class="tl-btn" @click="addMembers"
+        ><el-button
+          plain
+          class="tl-btn"
+          @click="addMembers"
+          v-if="baseInfo.projectStatus == '0'"
           ><i class="el-icon-plus"></i><em>添加成员</em></el-button
         >
       </dt>
       <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
           <el-table :data="baseInfo.projectUserVoList" class="tl-table">
-            <el-table-column prop="userName" label="姓名" min-width="140">
+            <el-table-column prop="userName" label="姓名" min-width="130">
               <template slot-scope="scope">
                 <!-- <div class="user-info" @click="setManager(scope.row)"> -->
                 <div class="user-info">
@@ -147,7 +169,7 @@
                 </div>
               </template>
             </el-table-column>
-            <!-- <el-table-column label="项目经理" min-width="120">
+            <el-table-column label="项目经理" min-width="110">
               <template slot-scope="scope">
                 <div
                   v-if="scope.row.projectUserType == '1'"
@@ -157,7 +179,10 @@
                   <span>项目经理</span>
                 </div>
                 <div
-                  v-else-if="scope.row.projectUserType == '0'"
+                  v-else-if="
+                    scope.row.projectUserType == '0' &&
+                    baseInfo.projectStatus == '0'
+                  "
                   @click="setManager(scope.row)"
                 >
                   <el-tooltip
@@ -174,8 +199,8 @@
                 </div>
                 <div v-else>--</div>
               </template>
-            </el-table-column> -->
-            <el-table-column prop="userLevelName" label="级别" min-width="120">
+            </el-table-column>
+            <el-table-column prop="userLevelName" label="级别" min-width="80">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.userLevelName)">{{
                   scope.row.userLevelName
@@ -210,7 +235,7 @@
             <el-table-column
               prop="userCompanyName"
               label="所属公司"
-              min-width="180"
+              min-width="170"
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.userCompanyName)">{{
@@ -222,7 +247,7 @@
             <el-table-column
               fixed="right"
               label="操作"
-              width="100"
+              width="60"
               v-if="
                 baseInfo.projectUserVoList &&
                 baseInfo.projectUserVoList.length > 0
@@ -230,7 +255,10 @@
             >
               <template slot-scope="scope">
                 <el-button
-                  v-if="scope.row.projectUserType != '1'"
+                  v-if="
+                    scope.row.projectUserType != '1' &&
+                    baseInfo.projectStatus == '0'
+                  "
                   @click="deleteMember(scope.row)"
                   type="text"
                   class="tl-btn"

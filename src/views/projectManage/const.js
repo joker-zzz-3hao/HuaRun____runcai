@@ -137,6 +137,23 @@ const APPROVAL_STATUS_MAP = {
   2: '已审批',
 };
 
+const PROJECT_ORG_TYPE = {
+  0: '否',
+  1: '是',
+};
+
+const ALLOCATESTATUS_TYPE = {
+  1: '周报',
+  2: '调入',
+  3: '调出',
+};
+
+const PROJECT_ORG_TYPE_ARR = [
+  { value: '', label: '全部' },
+  { value: 0, label: '否' },
+  { value: 1, label: '是' },
+];
+
 const APPROVAL_LEVEL = {
   Contractor: '外部账户',
   OTHER: '特殊账户',
@@ -156,6 +173,16 @@ const APPROVAL_STATUS_LIST = [
 const PROJECT_SOURCE_MAP = [
   { value: 'TENANT', label: '虚拟项目' },
 ];
+
+const BELONGINGTYPE = [
+  { value: 'Full-Time', label: '内部' },
+  { value: 'Contractor', label: '外部' },
+];
+
+const BELONGINGTYPE_TYPE = {
+  1: '内部',
+  2: '外部',
+};
 
 export default {
   THROW_TYPE_MAP,
@@ -179,4 +206,9 @@ export default {
   DATE_MODE_NUMOBJ,
   APPROVAL_SELECT,
   APPROVAL_LEVEL,
+  PROJECT_ORG_TYPE,
+  PROJECT_ORG_TYPE_ARR,
+  BELONGINGTYPE,
+  BELONGINGTYPE_TYPE,
+  ALLOCATESTATUS_TYPE,
 };

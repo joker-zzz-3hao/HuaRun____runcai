@@ -5,16 +5,23 @@
     :visible.sync="myokrDrawer"
     @closed="closed"
     :before-close="close"
-    custom-class="custom-drawer update-progress"
+    custom-class="custom-drawer update-progress history-padding"
     class="tl-dialog"
     width="1000px"
     title="更新进展"
+    :class="{ 'only-history': ![1, '1', 3, '3'].includes(okrItemStatus) }"
   >
     <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList"> </tl-tabs>
     <div class="flex-up">
       <div class="update-kr">
         <el-scrollbar ref="detailscrollbar">
-          <div class="tl-custom-timeline" v-if="currentIndex === 0">
+          <!-- 复盘中，已结束不展示更新操作 -->
+          <div
+            class="tl-custom-timeline"
+            v-if="
+              currentIndex === 0 && [1, '1', 3, '3'].includes(okrItemStatus)
+            "
+          >
             <div class="last-update" v-if="hasValue(historyFirst)">
               <dl>
                 <dt>上次更新时间</dt>
@@ -366,9 +373,27 @@ export default {
       type: String,
       default: '',
     },
+    okrItemStatus: {
+      type: Number,
+    },
 
   },
   created() {
+    if ([1, '1', 3, '3'].includes(this.okrItemStatus)) {
+      this.tabMenuList = [
+        {
+          menuName: '更新进展',
+        },
+        {
+          menuName: '更多更新记录',
+        }];
+    } else {
+      this.tabMenuList = [
+
+        {
+          menuName: '更多更新记录',
+        }];
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -555,3 +580,17 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.only-history .tl-custom-tabs .tab-list .is-focus {
+  color: #4d5155 !important;
+}
+.only-history .tl-custom-tabs .border-slip {
+  background: unset;
+}
+.only-history .tl-custom-tabs .tab-list .is-focus {
+  color: #4d5155 !important;
+}
+.history-padding .okr-detail .timeline-list .list-cont {
+  padding: 10px 0 10px 20px;
+}
+</style>
