@@ -1,100 +1,146 @@
 <template>
-  <div class="working-hours">
-    <div class="operating-area">
-      <div class="operating-box-group">
-        <div class="operating-box">
-          <dl class="dl-item">
-            <dt>选择工时</dt>
+  <div class="working-hours hours-join">
+    <div class="cont-area">
+      <div class="operating-box">
+        <dl class="dl-item">
+          <dt>选择调配工时项目</dt>
+          <dd>
+            <el-select
+              v-model="formData.projectId"
+              :popper-append-to-body="false"
+              placeholder="请选择项目"
+              @change="changeProject"
+              popper-class="tl-select-dropdown"
+              class="tl-select"
+            >
+              <el-option
+                v-for="(item, index) in projectList"
+                :key="index + item.projectId"
+                :label="item.projectNameCn"
+                :value="item.projectId"
+              ></el-option>
+            </el-select>
+          </dd>
+        </dl>
+        <el-button plain @click="back()" class="tl-btn amt-border-slip">
+          返回
+          <span class="lines"></span>
+        </el-button>
+      </div>
+      <div class="project-info">
+        <div class="project-description">
+          <dl>
             <dd>
-              <el-select
-                v-model="formData.projectId"
-                :popper-append-to-body="false"
-                placeholder="请选择项目"
-                @change="changeProject"
-                popper-class="tl-select-dropdown"
-                class="tl-select"
+              <span
+                :class="{
+                  'is-ongoing': projectInfo.projectStatus == '0',
+                  'is-over': projectInfo.projectStatus == '1',
+                }"
+                >{{ CONST.PROJECT_STATUS_MAP[projectInfo.projectStatus] }}</span
               >
-                <el-option
-                  v-for="(item, index) in projectList"
-                  :key="index + item.projectId"
-                  :label="item.projectNameCn"
-                  :value="item.projectId"
-                ></el-option>
-              </el-select>
+              <p>
+                {{ projectInfo.projectNameCn }}
+              </p>
             </dd>
           </dl>
+          <div class="dl-list">
+            <dl class="dl-item">
+              <dt><span>项目经理</span></dt>
+              <dd>
+                {{ projectInfo.projectManager }}
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt><span>项目所属部门</span></dt>
+              <dd>
+                {{ projectInfo.orgName }}
+              </dd>
+            </dl>
+            <dl class="dl-item project-type">
+              <dt><span>项目类型</span></dt>
+              <dd>
+                {{ CONST.PROJECT_TYPE_MAP[projectInfo.projectTypeCode] }}
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt><span>内部顾问预算</span></dt>
+              <dd>
+                <em
+                  v-money="{
+                    value: projectInfo.insideBudget || 0,
+                    precision: 2,
+                  }"
+                ></em
+                ><span>元</span
+                ><span>({{ projectInfo.currency || "人民币" }})</span>
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt><span>外部顾问预算</span></dt>
+
+              <dd>
+                <em
+                  v-money="{
+                    value: projectInfo.outerConsultBudget || 0,
+                    precision: 2,
+                  }"
+                ></em
+                ><span>元</span
+                ><span>({{ projectInfo.currency || "人民币" }})</span>
+              </dd>
+            </dl>
+            <dl class="dl-item project-type">
+              <dt><span>已确认人力成本</span></dt>
+              <dd>
+                <em
+                  v-money="{
+                    value:
+                      projectCost.externalConsultants +
+                        projectCost.internalConsultant || 0,
+                    precision: 2,
+                  }"
+                ></em
+                ><span>元</span
+                ><span>({{ projectInfo.currency || "人民币" }})</span>
+                <em
+                  ><span>=</span><span>外部顾问已确认人力成本</span
+                  ><em
+                    v-money="{
+                      value: projectCost.externalConsultants || 0,
+                      precision: 2,
+                    }"
+                    >{{ projectCost.externalConsultants || 0 }}</em
+                  ><span>{{ projectInfo.currency || "人民币" }}</span
+                  ><span>+</span><span>内部顾问已确认人力成本</span
+                  ><em
+                    v-money="{
+                      value: projectCost.internalConsultant || 0,
+                      precision: 2,
+                    }"
+                    >{{ projectCost.internalConsultant || 0 }}</em
+                  ><span>{{ projectInfo.currency || "人民币" }}</span></em
+                >
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt><span>项目时间</span></dt>
+              <dd>
+                {{ projectInfo.projectBeginDate }} 至
+                {{ projectInfo.projectApplyDate }}
+              </dd>
+            </dl>
+          </div>
         </div>
-
       </div>
-    </div>
-    <div class="project-info">
-    <div class="project-description">
-      <dl>
-        <dt>
-
-        </dt>
-        <dd>
-          <span>项目名称:</span>
-          <p
-            ref="projectDesc"
-            id="projectDesc"
-            :class="openFlag ? 'unfold' : 'fold'"
-          >
-
-          </p>
-
-        </dd>
-      </dl>
-      <div class="dl-list">
-        <dl class="dl-item">
-          <dt><span>项目经理</span></dt>
-          <dd>
-
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>项目所属部门</span></dt>
-          <dd>
-
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>项目总预算</span></dt>
-          <dd>
-
-          </dd>
-        </dl>
-
-        <dl class="dl-item project-type">
-          <dt><span>项目类型</span></dt>
-          <dd>
-
-          </dd>
-        </dl>
-           <dl class="dl-item project-type">
-          <dt><span>已用人力成本</span></dt>
-          <dd>
-
-          </dd>
-        </dl>
-        <dl class="dl-item">
-          <dt><span>项目时间</span></dt>
-          <dd>
-
-          </dd>
-        </dl>
-      </div>
-    </div>
-     </div>
-         <div class="operating-box-group">
-    <div class="operating-box">
-         <dl class="dl-item">
+      <div class="operating-box">
+        <div class="dl-list">
+          <dl class="dl-item">
             <dt>按时间</dt>
             <dd>
               <el-date-picker
                 v-model="weekLine"
                 type="daterange"
-                @change="changePick"
+                @change="searchList"
                 @clear="searchList"
                 clearable
                 value-format="yyyy-MM-dd"
@@ -107,25 +153,46 @@
               </el-date-picker>
             </dd>
           </dl>
-           <dl class="dl-item">
+          <dl class="dl-item">
+            <dt>组织</dt>
             <dd>
-              <el-input
-                maxlength="64"
-                v-model="keyWord"
-                placeholder="成员姓名，工作项"
-                class="tl-input-search"
-              >
-                <i class="el-icon-search" slot="prefix" @click="searchList"></i>
-              </el-input>
-              <el-button plain class="tl-btn light" @click="searchList">
-                搜索
-              </el-button>
+              <el-cascader
+                clearable
+                v-model="orgId"
+                ref="cascader"
+                :options="treeData"
+                :show-all-levels="false"
+                :props="{
+                  checkStrictly: true,
+                  value: 'orgId',
+                  label: 'orgName',
+                  children: 'sonTree',
+                  emitPath: false,
+                }"
+                @change="changeOrg"
+                popper-class="tl-cascader-popper"
+                class="tl-cascader"
+              ></el-cascader>
             </dd>
           </dl>
-    </div>
+        </div>
+        <dl class="dl-item">
+          <dd>
+            <el-input
+              maxlength="64"
+              clearable
+              v-model="keyWord"
+              placeholder="成员姓名，工作项"
+              class="tl-input-search"
+            >
+              <i class="el-icon-search" slot="prefix" @click="searchList"></i>
+            </el-input>
+            <el-button plain class="tl-btn light" @click="searchList">
+              搜索
+            </el-button>
+          </dd>
+        </dl>
       </div>
-    <div class="cont-area">
-
       <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
@@ -137,94 +204,93 @@
             :data="tableData"
             class="tl-table"
             @select="selectUser"
-             @select-all="selectUser"
-            row-key="id"
+            ref="table"
+            @select-all="selectUser"
+            @selection-change="selectUser"
+            row-key="workId"
           >
-          <el-table-column
+            <el-table-column
               :reserve-selection="true"
               type="selection"
+              column-key="workId"
               width="55"
             >
             </el-table-column>
-            <el-table-column prop="user" label="提交人" min-width="170">
+            <el-table-column prop="userName" label="提交人" min-width="170">
               <template slot-scope="scope">
-                <span>{{ scope.row.user }}</span>
+                <span>{{ scope.row.userName }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="部门" prop="dep" min-width="200px">
+            <el-table-column label="部门" prop="orgName" min-width="200px">
             </el-table-column>
-               <el-table-column label="工作项" prop="work" min-width="200px">
-            </el-table-column>
-            <el-table-column label="工时投入(天)" prop="date" min-width="200px">
-
-            </el-table-column>
-
-           <el-table-column
-              prop="level"
-              label="级别"
-              min-width="180"
+            <el-table-column
+              label="工作项"
+              prop="workContent"
+              min-width="200px"
             >
-
             </el-table-column>
-
-           <el-table-column
-              prop="workType"
-              label="职能"
-              min-width="180"
+            <el-table-column
+              label="工时日期"
+              prop="weekDateStr"
+              min-width="200px"
             >
-
+              <template slot-scope="scope">
+                <span>{{ checkDate(scope.row.weekDateStr) }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="工时投入(天)"
+              prop="weekTime"
+              min-width="200px"
+            >
             </el-table-column>
 
-           <el-table-column
-              prop="company"
+            <el-table-column prop="userLevel" label="级别" min-width="180">
+              <template slot-scope="scope">
+                {{ getName(scope.row.userLevel, levelList) }}
+              </template>
+            </el-table-column>
+
+            <el-table-column prop="userPost" label="职能" min-width="180">
+              <template slot-scope="scope">
+                {{ getName(scope.row.userPost, funcList) }}
+              </template>
+            </el-table-column>
+
+            <el-table-column
+              prop="userCompany"
               label="所属公司"
               min-width="180"
             >
-                </el-table-column>
-
-             <el-table-column
-              prop="dep"
-              label="部门"
-              min-width="180"
-            >
-                </el-table-column>
-
-             <el-table-column
-              prop="sumbitTime"
-              label="提交时间"
-              min-width="180"
-            >
-
+              <template slot-scope="scope">
+                {{ getName(scope.row.userCompany, companyList) }}
+              </template>
             </el-table-column>
 
+            <el-table-column prop="submitTime" label="提交时间" min-width="180">
+            </el-table-column>
           </el-table>
         </div>
       </tl-crcloud-table>
     </div>
     <div class="footer-panel">
       <span
-        >已选择<em>{{totalMoney.len}}</em
-        >位成员,人力成本<em>{{totalMoney.money}}</em>元人民币</span
+        >已选择<em>{{ totalMoney.len }}</em
+        >条</span
+      >
+      <span
+        >工时<em>{{ totalMoney.hours }}</em
+        >天</span
       >
       <el-button
         type="primary"
         @click="alertSelectAll"
         class="tl-btn amt-bg-slip"
-        >批量审批</el-button
+        >批量调配</el-button
       >
     </div>
-    <tl-approval
-      ref="approval"
-      v-if="showApproval"
-      :server="server"
-      @success="approvalSuccess"
-    ></tl-approval>
-    <tl-approval-detail
-      ref="approvalDetail"
-      v-if="showApprovalDetail"
-      :server="server"
-    ></tl-approval-detail>
-    <tl-hours-list ref="HoursList"></tl-hours-list>
+
+    <tl-hours-list ref="HoursList" @submit="submit"></tl-hours-list>
   </div>
 </template>
 
@@ -233,8 +299,6 @@ import { mapState } from 'vuex';
 
 import crcloudTable from '@/components/crcloudTable';
 import HoursList from './HoursList';
-import approval from './approval';
-import approvalDetail from './approvalDetail';
 import Server from '../../server';
 import CONST from '../../const';
 
@@ -244,12 +308,14 @@ export default {
   data() {
     return {
       userId: '',
+      costPrice: {},
       baseInfo: {},
       options: [],
       weekBegin: '',
       startTime: '',
       checkItem: {},
       CONST,
+      projectCost: {},
       server,
       keyWord: '',
       total: 0,
@@ -257,18 +323,7 @@ export default {
       pageSize: 10,
       showApproval: false,
       showApprovalDetail: false,
-      tableData: [{
-        id: 1,
-        user: '假人员',
-        dep: '部门',
-        work: '版主工作',
-        date: '3',
-        level: 'L3',
-        money: 1000,
-        company: '华润',
-        workType: '部门长',
-        sumbitTime: '2020-10-10',
-      }],
+      tableData: [],
       checkList: [],
       showPop: false,
       projectList: [],
@@ -282,17 +337,27 @@ export default {
       projectConfirmCurrency: '',
       workList: [],
       listDis: [],
+      projectInfoList: [],
+      projectInfo: {},
       totalMoney: {
         len: 0,
-        money: 0,
+        hours: 0,
       },
+      levelList: [],
+      companyList: [],
+      funcList: [],
+      selection: [],
+      weekLine: '',
+      beginWeekDate: '',
+      endWeekDate: '',
+      submitInfo: {},
+      treeData: [],
+      orgId: '',
     };
   },
 
   components: {
     'tl-crcloud-table': crcloudTable,
-    'tl-approval': approval,
-    'tl-approval-detail': approvalDetail,
     'tl-hours-list': HoursList,
   },
   props: {},
@@ -302,44 +367,208 @@ export default {
     }),
   },
   mounted() {
-    this.server.projectPageList({
-      currentPage: 1,
-      pageSize: 9999,
-      projectName: '',
-      userAccount: this.userInfo.userAccount,
+    this.getOrgTree();
+    this.server.allocate({
+      projectId: this.$route.query.projectId,
     }).then((res) => {
       if (res.code == '200') {
-        this.projectList = res.data.content;
+        this.projectList = res.data;
         if (this.projectList.length > 0) {
         //  this.formData.projectId = this.projectList[0].projectId;
           const list = this.projectList.filter((item) => Number(item.projectCount) > 0);
-          console.log(list);
+          // console.log(list);
           if (list.length > 0) {
             this.formData.projectId = list[0].projectId;
           } else {
             this.formData.projectId = this.projectList[0].projectId;
           }
         }
+        if (!this.formData.projectId) {
+          this.$message.error('您暂无可调配工时项目');
+          return false;
+        }
+        this.getCode();
+        this.searchList();
+        this.projectDetailJoin();
+        this.queryProjectCostUsed();
+        this.queryProjectCostUsedTiw();
       }
     });
   },
   methods: {
+    back() {
+      this.$router.push({ name: 'mainHours', query: { projectId: this.$route.query.projectId } });
+    },
+    changeOrg() {
+    //  console.log(this.$refs.cascader);
+      this.$refs.cascader.dropDownVisible = false;
+      this.searchList();
+    },
+    getOrgTree() {
+      this.server.getOrg({}).then((res) => {
+        if (res.code == 200) {
+          this.treeData = res.data;
+        }
+      });
+    },
+    queryProjectCostUsedTiw() {
+      this.server.queryProjectCostUsed({
+        projectId: this.$route.query.projectId,
+      }).then((res) => {
+        this.costPrice = res.data;
+      });
+    },
+    queryProjectCostUsed() {
+      this.server.queryProjectCostUsed({
+        projectId: this.formData.projectId,
+      }).then((res) => {
+        this.projectCost = res.data;
+      });
+    },
+    changeProject() {
+      this.searchList();
+      this.projectDetailJoin();
+      this.queryProjectCostUsed();
+      this.queryProjectCostUsedTiw();
+    },
+    unique(arr) {
+      // Set数据结构，它类似于数组，其成员的值都是唯一的
+      return Array.from(new Set(arr)); // 利用Array.from将Set结构转换成数组
+    },
+    checkDate(time) {
+      const arrTime = time.split(',');
+      const list = arrTime.map((item) => this.dateFormat('mm月dd日', item));
+      return this.unique(list).join(',');
+    },
+    getCode() {
+      this.server.queryByCodes({
+        codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
+      }).then((res) => {
+        if (res.code == '200') {
+          this.codes = res.data;
+          this.codes.forEach((item) => {
+            switch (item.code) {
+              case 'PROJECT_EMPLOYEE_LEVEL':
+                this.levelList = item.subList;
+                break;
+              case 'PROJECT_TECH_TYPE':
+                this.funcList = item.subList;
+                break;
+              case 'PROJECT_EMPLOYEE_COMPANY':
+                this.companyList = item.subList;
+                break;
+              default:
+                break;
+            }
+          });
+        }
+      });
+    },
+    getName(code, arr) {
+      let name = arr.filter((item) => item.value == code);
+      if (name.length == 0) {
+        name = [{ meaning: '' }];
+      }
+      return name[0].meaning;
+    },
     selectUser(selection) {
-      console.log(selection);
-      // eslint-disable-next-line no-unused-vars
-      let total = '';
-      selection.forEach((element) => {
-        total += element.money * element.date;
+      this.selection = selection;
+      let hours = 0;
+      selection.forEach((item) => {
+        hours += item.weekTime;
       });
       this.totalMoney = {
         len: selection.length,
-        money: total,
+        hours,
       };
     },
     alertSelectAll() {
-      this.$refs.HoursList.show();
+      if (this.selection.length == 0) {
+        this.$message.success('请勾选调入工时');
+        return false;
+      }
+      this.userCostSummary();
     },
-    searchList() {},
+    submit() {
+      const params = {
+        currentProjectId: this.$route.query.projectId,
+        projectId: this.formData.projectId,
+        allocateWorkDetailVoList: this.selection,
+        extendCostAmt: this.submitInfo.extendCost,
+        innerCostAmt: this.submitInfo.innerCost,
+        costAmt: this.submitInfo.extendCost + this.submitInfo.innerCost,
+        weekTimeCount: this.submitInfo.weekTimeCount,
+        userCount: this.submitInfo.userCount,
+      };
+      this.server.submitAllocateUserWork(params).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('调配完成');
+          this.$refs.table.clearSelection();
+          this.selection = [];
+          this.searchList();
+          this.projectDetailJoin();
+          this.queryProjectCostUsed();
+          this.queryProjectCostUsedTiw();
+        }
+      });
+    },
+    searchList() {
+      if (this.weekLine) {
+      // eslint-disable-next-line prefer-destructuring
+        this.beginWeekDate = this.weekLine[0];
+        // eslint-disable-next-line prefer-destructuring
+        this.endWeekDate = this.weekLine[1];
+      } else {
+        this.endWeekDate = '';
+        this.beginWeekDate = '';
+      }
+      const params = {
+        currentProjectId: this.$route.query.projectId,
+        projectId: this.formData.projectId,
+        keyWord: this.keyWord,
+        orgId: this.orgId,
+        pageSize: this.pageSize,
+        currentPage: this.currentPage,
+        beginWeekDate: this.beginWeekDate,
+        endWeekDate: this.endWeekDate,
+      };
+      this.server.projectUserDetailWork(params).then((res) => {
+        this.tableData = res.data.content;
+        this.total = res.data.total;
+      });
+    },
+    projectDetailJoin() {
+      this.server.projectDetailJoin({ projectId: this.formData.projectId }).then((res) => {
+        this.projectInfo = res.data;
+      });
+    },
+    userCostSummary() {
+      this.server.userCostSummary({
+        projectId: this.formData.projectId,
+        currentProjectId: this.$route.query.projectId,
+        allocateWorkDetailVoList: this.selection,
+      }).then((res) => {
+        console.log(res);
+        const { costPrice } = this;
+        res.data.projectNameCn = this.projectInfo.projectNameCn;
+        this.submitInfo = res.data;
+        if (res.data.extendCost > (costPrice.outerConsultBudget - costPrice.externalConsultants)) {
+          this.$message.error('外部调入成本超过预算成本');
+          return false;
+        }
+        if (res.data.innerCost > (costPrice.insideBudget - costPrice.internalConsultant)) {
+          this.$message.error('内部调入成本超过预算成本');
+          return false;
+        }
+        if ((res.data.innerCost + res.data.extendCost)
+         > (costPrice.insideBudget + costPrice.outerConsultBudget)
+         - (costPrice.internalConsultant + costPrice.externalConsultants)) {
+          this.$message.error('调入成本超过预算成本');
+          return false;
+        }
+        this.$refs.HoursList.show(this.selection, res.data);
+      });
+    },
   },
 
 };

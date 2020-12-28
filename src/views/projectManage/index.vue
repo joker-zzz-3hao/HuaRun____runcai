@@ -3,6 +3,18 @@
     <div class="operating-area">
       <div class="operating-box-group">
         <div class="operating-box">
+          <el-button
+            v-show="hasPower('project-create')"
+            v-if="isTalent"
+            :disabled="!codes.length > 0"
+            type="primary"
+            icon="el-icon-plus"
+            @click="addProject"
+            class="tl-btn amt-bg-slip"
+            >创建虚拟项目</el-button
+          >
+        </div>
+        <div class="operating-box">
           <div class="dl-group">
             <dl class="dl-item">
               <dt>项目状态</dt>
@@ -11,7 +23,7 @@
                   v-model="formData.projectStatus"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select has-bg"
+                  class="tl-select has-bg w100"
                   @change="searchManage"
                 >
                   <el-option
@@ -30,7 +42,7 @@
                   v-model="formData.projectType"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select has-bg"
+                  class="tl-select has-bg w120"
                   @change="searchManage"
                 >
                   <el-option
@@ -49,7 +61,7 @@
                   v-model="formData.projectInputTypeCode"
                   :popper-append-to-body="false"
                   popper-class="tl-select-dropdown"
-                  class="tl-select has-bg"
+                  class="tl-select has-bg w120"
                   @change="searchManage"
                 >
                   <el-option
@@ -61,24 +73,31 @@
                 </el-select>
               </dd>
             </dl>
+            <dl class="dl-item">
+              <dt>是否部门级项目</dt>
+              <dd>
+                <el-select
+                  v-model="formData.projectOrgType"
+                  :popper-append-to-body="false"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select has-bg w100"
+                  @change="searchManage"
+                >
+                  <el-option
+                    v-for="item in CONST.PROJECT_ORG_TYPE_ARR"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
+              </dd>
+            </dl>
           </div>
-          <el-button
-            v-show="hasPower('project-create')"
-            v-if="isTalent"
-            :disabled="!codes.length > 0"
-            type="primary"
-            icon="el-icon-plus"
-            @click="addProject"
-            class="tl-btn amt-bg-slip"
-            >创建虚拟项目</el-button
-          >
-        </div>
-        <div class="operating-box">
           <el-input
             maxlength="64"
             @keyup.enter.native="searchManage"
             v-model="keyWord"
-            placeholder="请输入项目名称或者项目经理"
+            placeholder="项目名称或项目经理"
             class="tl-input-search"
           >
             <i class="el-icon-search" slot="prefix" @click="searchManage"></i>
@@ -134,6 +153,15 @@
               </template>
             </el-table-column>
             <el-table-column
+              prop="projectOrgType"
+              label="是否部门级项目"
+              min-width="180"
+            >
+              <template slot-scope="scope">
+                {{ CONST.PROJECT_ORG_TYPE[scope.row.projectOrgType] }}
+              </template>
+            </el-table-column>
+            <!-- <el-table-column
               prop="projectBudget"
               label="项目总预算(元)"
               min-width="120"
@@ -141,6 +169,23 @@
               <template slot-scope="scope">
                 <em
                   v-money="{ value: scope.row.projectBudget, precision: 2 }"
+                ></em>
+              </template>
+            </el-table-column> -->
+            <el-table-column label="内部顾问预算(元)" min-width="140">
+              <template slot-scope="scope">
+                <em
+                  v-money="{ value: scope.row.insideBudget, precision: 2 }"
+                ></em>
+              </template>
+            </el-table-column>
+            <el-table-column label="外部顾问预算(元)" min-width="140">
+              <template slot-scope="scope">
+                <em
+                  v-money="{
+                    value: scope.row.outerConsultBudget,
+                    precision: 2,
+                  }"
                 ></em>
               </template>
             </el-table-column>
@@ -225,9 +270,14 @@
                 <el-button @click="manage(scope.row)" type="text" class="tl-btn"
                   >管理</el-button
                 >
-                   <!-- <el-button  @click="setTime(scope.row)" type="text" class="tl-btn"
+                <el-button
+                  @click="setTime(scope.row)"
+                  type="text"
+                  class="tl-btn"
+                  :disabled="scope.row.projectStatus == 1"
+                  v-show="isTalent"
                   >设置</el-button
-                > -->
+                >
               </template>
             </el-table-column>
           </el-table>
@@ -245,7 +295,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import createManage from './components/createManage';
 import Server from './server';
@@ -283,7 +333,8 @@ export default {
       userInfo: (state) => state.userInfo,
     }),
     isTenantAdmin() {
-      if (this.userInfo.roleList && this.userInfo.roleList.length > 0 && this.userInfo.roleList[0].roleCode == 'TENANT_ADMIN') {
+      if (this.userInfo.roleList && this.userInfo.roleList.length > 0
+       && this.userInfo.roleList[0].roleCode == 'TENANT_ADMIN') {
         return true;
       }
       return false;
@@ -300,11 +351,10 @@ export default {
     this.searchManage();
   },
   methods: {
-    // eslint-disable-next-line no-undef
-    ...mapMutations('common',
-      [
-        'getprojectInfo',
-      ]),
+    getprojectInfo(row) {
+      sessionStorage.setItem('projectInfo', JSON.stringify(row));
+    },
+
     searchManage() {
       this.isTalent = false;
       this.userInfo.roleList.forEach((item) => {
@@ -320,6 +370,7 @@ export default {
         projectInputTypeCode: this.formData.projectInputTypeCode,
         projectTypeCode: this.formData.projectType,
         userAccount: this.isTalent ? '' : this.userInfo.userAccount,
+        projectOrgType: this.formData.projectOrgType,
       };
       this.server.projectPageList(param).then((res) => {
         if (res.code == '200') {

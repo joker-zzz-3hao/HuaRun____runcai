@@ -15,7 +15,7 @@
     <el-scrollbar>
       <div class="cont-box">
         <dl class="dl-list">
-          <dd>
+          <dd class="project-manage-list">
             <el-radio-group v-model="selectData">
               <el-radio
                 class="tl-radio"
@@ -25,8 +25,8 @@
                 @click.native="projectChange($event, index, project)"
               >
                 <em>{{ project.projectNameCn }}</em>
-                <em v-if="project.projectManager"
-                  > ( 项目经理：{{ project.projectManager }} )</em
+                <em v-if="project.projectManager">
+                  ( 项目经理：{{ project.projectManager }} )</em
                 >
               </el-radio>
             </el-radio-group>
@@ -89,7 +89,15 @@ export default {
     projectChange(e, index, project) {
       // 原生click会执行两次，第一次在label等，第二次在input
       if (e.target.tagName != 'INPUT') return;
-      if (this.selectProIndex === index) {
+      // 如果该项目是虚拟项目，且当前用户不在该项目中，弹出警告提示
+      if (project.projectOrgType == 1) {
+        this.$message.warning('您不在该项目中，请联系项目经理加入。');
+        this.$refs.radioList.forEach((item) => {
+          if (item.label == project.projectId) {
+            item.model = this.selectData;
+          }
+        });
+      } else if (this.selectProIndex === index) {
         this.selectProIndex = undefined;
         this.selectData = '';
         this.projectObj = {

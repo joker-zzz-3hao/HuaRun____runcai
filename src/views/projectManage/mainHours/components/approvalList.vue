@@ -31,6 +31,7 @@
               <el-select
                 v-model="selectType"
                 style="width: 130px"
+                @change="changeType"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
                 placeholder="请选择"
@@ -102,12 +103,15 @@
             :data="tableData"
             class="tl-table"
             @select="selectList"
+            ref="table"
+            @selection-change="selectList"
             @select-all="selectList"
             row-key="sourceId"
           >
             <el-table-column
               :reserve-selection="true"
               type="selection"
+              column-key="index"
               width="55"
               :selectable="
                 (row) => {
@@ -154,7 +158,16 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column label="投入工时" min-width="100px">
+            <el-table-column
+              label="工时类型"
+              prop="allocateStatus"
+              min-width="80px"
+            >
+              <template slot-scope="scope">
+                {{ CONST.ALLOCATESTATUS_TYPE[scope.row.allocateStatus] }}
+              </template>
+            </el-table-column>
+            <el-table-column label="投入工时" min-width="110px">
               <template slot-scope="scope">
                 <div v-show="scope.row.approvalStatus == '1'">
                   <div>
@@ -284,7 +297,7 @@
             </el-table-column>
             <!-- <el-table-column label="填入类型" prop="timeType" min-width="100px">
                </el-table-column> -->
-            <el-table-column label="工时日期" min-width="150px">
+            <el-table-column label="工时日期" min-width="130px">
               <template slot-scope="scope">
                 <!-- <el-tooltip
                   class="item"
@@ -318,7 +331,7 @@
             <el-table-column
               prop="approvalStatus"
               label="审批状态"
-              min-width="100"
+              min-width="80"
             >
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.approvalStatus)">
@@ -560,6 +573,13 @@ export default {
         }
       });
     },
+    changeType() {
+      this.weekLine = '';
+      this.weekBegin = '';
+      this.weekEnd = '';
+
+      this.searchList();
+    },
     changePick() {
       if (this.weekLine) {
         this.weekBegin = this.weekLine[0] || '';
@@ -782,6 +802,7 @@ export default {
       this.server.timeSheetListapproval({ workList: [params] }).then((res) => {
         if (res.code == '200') {
           this.$message.success('审批成功');
+          this.$refs.table.toggleRowSelection(row, false);
           this.searchList();
         }
       });
