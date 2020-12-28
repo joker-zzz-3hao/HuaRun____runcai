@@ -116,9 +116,9 @@
       <span>OKR自评得分</span>
       <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
     </div>
-    <div>
+    <div v-if="okrMain.okrMainVo.finalScore != null">
       <span>OKR复核得分</span>
-      <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
+      <em>{{ okrMain.okrMainVo.finalScore || 0 }}</em>
     </div>
     <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </div>

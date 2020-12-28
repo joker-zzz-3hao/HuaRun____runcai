@@ -94,18 +94,27 @@
               <template slot-scope="scope">
                 <tl-process
                   :data="parseInt(scope.row.okrProgress || 0, 10)"
-                ></tl-process> </template
-            ></el-table-column>
+                ></tl-process>
+              </template>
+            </el-table-column>
             <el-table-column
-              prop="periodName"
+              prop="selfAssessmentScore"
               label="OKR自评得分"
               min-width="170"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span> {{ scope.row.selfAssessmentScore || "--" }}</span>
+              </template>
+            </el-table-column>
             <el-table-column
-              prop="periodName"
+              prop="finalScore"
               label="OKR复核得分"
               min-width="170"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <span> {{ scope.row.finalScore || "--" }}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="reviewStatusCn"
               label="复盘状态"
@@ -195,6 +204,7 @@
                   "
                   >查看</el-button
                 >
+                <!-- 条件要加 -->
                 <el-button
                   type="text"
                   class="tl-btn"
