@@ -36,7 +36,8 @@
 .icon-add,
 .icon-reduce,
 .is-submitted i,
-.un-submitted i {
+.un-submitted i,
+.fold-extend i {
   width: 32px;
   height: 32px;
   background: url('~@/assets/images/icon_30_t.png') 0 0 no-repeat;
@@ -471,4 +472,17 @@
 .want-quietly i {
   background-position-x: -44px;
   background-position-y: -117px;
+}
+
+.fold-extend i {
+  width: 16px;
+  height: 16px;
+  background-position-x: -9px;
+  background-position-y: -2048px;
+  transform: rotate(180deg);
+  transition: transform .4s ease-out;
+}
+
+.fold-extend:hover i {
+  background-position-x: -39px;
 }
