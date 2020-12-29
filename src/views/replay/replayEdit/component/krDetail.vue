@@ -57,13 +57,13 @@
             <dd>
               <div>
                 <span>考核指标</span>
-                <em>{{ list.checkQuota || "--" }}</em>
+                <em>{{ list.checkQuota || "未填写" }}</em>
               </div>
             </dd>
             <dd>
               <div>
                 <span>衡量方法</span>
-                <em>{{ list.judgeMethod || "--" }}</em>
+                <em>{{ list.judgeMethod || "未填写" }}</em>
               </div>
             </dd>
             <dd>

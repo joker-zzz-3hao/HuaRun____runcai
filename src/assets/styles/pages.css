@@ -2883,6 +2883,14 @@
   color: #879099;
 }
 
+.replay-record .tl-custom-timeline .timeline-list dd .operate-type em:nth-of-type(2) {
+  margin-left: 10px;
+}
+
+.replay-record .tl-custom-timeline .timeline-list dd .operate-type span {
+  color: #222426;
+}
+
 .replay-link .tl-collapse .el-collapse-item,
 .replay-link .tl-collapse .el-collapse-item__header.is-active {
   box-shadow: unset;
@@ -3073,6 +3081,14 @@
 .replay-link .okr-change-list dd:nth-of-type(4) .has-fold {
   background-position-x: -7px;
   transform: rotate(0deg);
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) .fold-extend:hover .has-fold {
+  background-position-x: -37px;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) .fold-extend i {
+  cursor: pointer;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) .fold-extend span {
@@ -6069,6 +6085,22 @@
 
 .replay-link .el-form-item__content {
   line-height: unset;
+}
+
+.replay-link .dl-card-panel {
+  margin-left: 30px;
+}
+
+.replay-link .dl-card-panel dt em {
+  font-weight: 500;
+}
+
+.replay-link .tl-custom-timeline .list-title {
+  color: #acb6bf;
+}
+
+.replay-link .tl-custom-timeline .list-cont {
+  margin-top: 10px;
 }
 
 /* personal-center */
