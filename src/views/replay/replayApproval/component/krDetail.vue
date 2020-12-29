@@ -279,17 +279,19 @@ export default {
     submit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
+          // 驳回不需要二次确认？
+          // nextApproveUserName
           this.$xconfirm({
-            content: '将流转到xxx进行OKR复核得分',
-            title: '确认复盘审批通过吗？',
+            content: '',
+            title: this.ruleForm.passFlag == '1' ? '确认复盘审批通过吗？' : '确认驳回吗？',
           }).then(() => {
             this.submitLoad = true;
             const params = {
-              okrId: this.okrMain.okrMainVo.okrId,
-              passFlag: this.ruleForm.passFlag == '1',
-              remark: this.ruleForm.passFlag == '1' ? this.ruleForm.communication : this.ruleForm.refuseInfo,
+              okrMainId: this.okrMain.okrMainVo.okrId,
+              pass: this.ruleForm.passFlag == '1',
+              remark: this.ruleForm.passFlag == '1' ? '' : this.ruleForm.refuseInfo,
             };
-            this.server.okrReviewCommunicationSubmit(params).then((res) => {
+            this.server.okrReviewApprove(params).then((res) => {
               this.submitLoad = false;
               if (res.code == 200) {
                 this.$message.success('提交成功');

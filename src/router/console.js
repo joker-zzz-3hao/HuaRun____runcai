@@ -330,6 +330,20 @@ export default [{
         },
         component: () => import('@/views/replay/replayAssess/replayAssessList'),
       },
+      // 复盘审批
+      {
+        path: '/replayApproval',
+        name: 'replayApproval',
+        meta: {
+          hasMainMenu: true,
+          isSubMenu: true,
+          parentRoute: 'myOkr',
+          title: 'replayApproval',
+          belongsTo: 'replayList',
+          power: 'replay-menu',
+        },
+        component: () => import('@/views/replay/replayApproval/index'),
+      },
     ],
   },
   // 项目

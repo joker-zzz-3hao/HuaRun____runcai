@@ -84,7 +84,7 @@
             <el-table-column
               prop="okrBelongType"
               label="OKR所属类型"
-              min-width="165"
+              min-width="155"
             >
               <template slot-scope="scope">
                 {{ CONST.OKR_BELONGTYPE[scope.row.okrBelongType] }}
@@ -105,7 +105,7 @@
             <el-table-column
               prop="selfAssessmentScore"
               label="OKR自评得分"
-              min-width="170"
+              min-width="110"
             >
               <template slot-scope="scope">
                 <span> {{ scope.row.selfAssessmentScore || "--" }}</span>
@@ -114,7 +114,7 @@
             <el-table-column
               prop="finalScore"
               label="OKR复核得分"
-              min-width="170"
+              min-width="110"
             >
               <template slot-scope="scope">
                 <span> {{ scope.row.finalScore || "--" }}</span>
@@ -180,7 +180,7 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="scope.row.ownerFlag && scope.row.reviewStatus == 1"
+                  v-else-if="scope.row.ownerFlag && scope.row.reviewStatus == 1"
                   @click="
                     $router.push({
                       name: 'replayEdit',
@@ -191,14 +191,26 @@
                   "
                   >复盘</el-button
                 >
+               
+                <!-- 条件要加 -->
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="
-                    scope.row.reviewStatus == 3 ||
-                    (scope.row.reviewStatus == 2 && scope.row.ownerFlag) ||
-                    scope.row.reviewStatus === 0
+                  v-else-if="scope.row.reviewStatus == 4 && roleCode.includes('ORG_ADMIN')"
+                  @click="
+                    $router.push({
+                      name: 'replayApproval',
+                      query: {
+                        okrId: scope.row.okrId,
+                      },
+                    })
                   "
+                  >复盘审批</el-button
+                >
+                 <el-button
+                  type="text"
+                  class="tl-btn"
+                  v-else
                   @click="
                     $router.push({
                       name: 'replayDetail',
@@ -209,20 +221,6 @@
                   "
                   >查看</el-button
                 >
-                <!-- 条件要加 -->
-                <!-- <el-button
-                  type="text"
-                  class="tl-btn"
-                  @click="
-                    $router.push({
-                      name: 'replayEdit',
-                      query: {
-                        okrId: scope.row.okrId,
-                      },
-                    })
-                  "
-                  >复盘审批</el-button
-                > -->
               </template>
             </el-table-column>
           </el-table>
@@ -233,6 +231,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import process from '@/components/process';
 import processenv from './processenv';
@@ -263,6 +262,11 @@ export default {
     console.log(process);
     this.getOkrCycleList();
   },
+    computed: {
+    ...mapState('common', {
+      roleCode: (state) => state.roleCode,
+          }),
+    },
   methods: {
     okrReviewList() {
       sessionStorage.setItem('historyPer', this.periodId);
