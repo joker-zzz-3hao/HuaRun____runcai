@@ -191,14 +191,26 @@
                   "
                   >复盘</el-button
                 >
+               
+                <!-- 条件要加 -->
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="
-                    scope.row.reviewStatus == 3 ||
-                    (scope.row.reviewStatus == 2 && scope.row.ownerFlag) ||
-                    scope.row.reviewStatus === 0
+                  v-if="scope.row.reviewStatus == 4"
+                  @click="
+                    $router.push({
+                      name: 'replayApproval',
+                      query: {
+                        okrId: scope.row.okrId,
+                      },
+                    })
                   "
+                  >复盘审批</el-button
+                >
+                 <el-button
+                  type="text"
+                  class="tl-btn"
+                  v-else
                   @click="
                     $router.push({
                       name: 'replayDetail',
@@ -209,20 +221,6 @@
                   "
                   >查看</el-button
                 >
-                <!-- 条件要加 -->
-                <!-- <el-button
-                  type="text"
-                  class="tl-btn"
-                  @click="
-                    $router.push({
-                      name: 'replayEdit',
-                      query: {
-                        okrId: scope.row.okrId,
-                      },
-                    })
-                  "
-                  >复盘审批</el-button
-                > -->
               </template>
             </el-table-column>
           </el-table>
