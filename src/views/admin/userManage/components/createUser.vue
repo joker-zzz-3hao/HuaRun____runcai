@@ -107,7 +107,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="用户类型">
-          <el-input v-model.trim="formData.userTypeLdap"></el-input>
+          <el-input v-model.trim="formData.ldapType"></el-input>
         </el-form-item>
       </el-form>
       <div class="operating-box">
@@ -186,7 +186,7 @@ export default {
         userType: 2,
         newPwd: '',
         orgIdList: [],
-        userTypeLdap: '',
+        ldapType: '',
       },
 
     };

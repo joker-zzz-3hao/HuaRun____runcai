@@ -39,7 +39,7 @@
           <span>{{ orgName }}</span>
         </el-form-item>
         <el-form-item label="用户类型">
-          <span>{{ formData.userTypeLdap }}</span>
+          <span>{{ formData.ldapType }}</span>
         </el-form-item>
       </el-form>
     </div>
@@ -124,7 +124,7 @@ export default {
         newPwd: '',
         confirmPwd: '',
         orgIdList: [],
-        userTypeLdap: '',
+        ldapType: '',
       },
     };
   },

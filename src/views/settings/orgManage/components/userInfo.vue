@@ -39,7 +39,7 @@
           </span>
         </el-form-item>
         <el-form-item label="用户类型">
-          <span>{{ formData.userTypeLdap }}</span>
+          <span>{{ formData.ldapType }}</span>
         </el-form-item>
       </el-form>
     </div>
@@ -115,7 +115,7 @@ export default {
         tenantName: this.tenantName,
         userType: 2,
         newPwd: '',
-        userTypeLdap: '',
+        ldapType: '',
       },
 
     };

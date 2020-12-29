@@ -110,7 +110,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="用户类型">
-          <el-input v-model.trim="formData.userTypeLdap"></el-input>
+          <el-input v-model.trim="formData.ldapType"></el-input>
         </el-form-item>
         <!-- <el-form-item>
           <el-button :loading="loading" @click="saveUser">确定</el-button>
@@ -209,7 +209,7 @@ export default {
         userType: 2,
         newPwd: '',
         orgIdList: [],
-        userTypeLdap: '',
+        ldapType: '',
       },
 
     };

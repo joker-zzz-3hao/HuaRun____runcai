@@ -109,7 +109,8 @@
           ></el-cascader>
         </el-form-item>
         <el-form-item label="用户类型">
-          <el-input v-model.trim="formData.userTypeLdap"></el-input>
+          <el-radio v-model="formData.ldapType" label="Full-Time">内部员工</el-radio>
+          <el-radio v-model="formData.ldapType" label="Contractor">外部员工</el-radio>
         </el-form-item>
       </el-form>
       <div class="operating-box">
@@ -186,7 +187,7 @@ export default {
         userType: 2,
         newPwd: '',
         orgIdList: [],
-        userTypeLdap: '',
+        ldapType: 'Full-Time',
       },
 
     };
@@ -256,6 +257,7 @@ export default {
         userName: this.formData.userName,
         userStatus: this.formData.userStatus,
         userType: this.formData.userType,
+        ldapType: this.formData.ldapType,
       };
       this.$refs.userForm.validate((valid) => {
         if (valid) {
