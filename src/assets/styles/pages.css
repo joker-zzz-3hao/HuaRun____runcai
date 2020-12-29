@@ -3038,12 +3038,37 @@
   line-height: unset !important;
   word-break: break-all;
   flex: 1;
+  display: unset;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd > div {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd > div:not(:first-child) {
+  margin-top: 10px;
 }
 
 .replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd > em {
   flex: 1;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd .upload-cont {
+  font-size: 14px;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd .upload-btn em + em {
+  margin-left: 10px;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd .upload-btn em {
+  cursor: pointer;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd .upload-btn em:hover {
+  color: #685df1;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dt {
@@ -6102,6 +6127,10 @@
 .replay-okr.replay-edit .replay-link,
 .replay-okr.replay-communication .replay-link {
   margin: 0 auto 86px auto;
+}
+
+.replay-okr.replay-detail .replay-link {
+  margin: 0 auto;
 }
 
 .replay-okr.replay-edit .el-upload-list li:last-child {
