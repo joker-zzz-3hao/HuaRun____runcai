@@ -39,6 +39,7 @@
               <div>
                 <el-input
                   class="input-value"
+                  :class="{ 'input-color': ruleItem.showContentError }"
                   v-model.trim="ruleItem.value"
                   maxlength="20"
                   @blur="valueInputBlur(ruleItem)"
@@ -59,6 +60,8 @@
                 <el-input
                   v-model="ruleItem.description"
                   class="textarea-content"
+                  :class="{ 'input-color': ruleItem.showRemarkError }"
+                  type="textarea"
                   style="width: 100%"
                   :autosize="{ minRows: 1, maxRows: 8 }"
                   placeholder="请填写说明"
@@ -210,7 +213,7 @@ export default {
             }
             if (!this.hasValue(element.description.trim())) {
               element.showRemarkError = true;
-              element.remarkErrorText = '请填写描述';
+              element.remarkErrorText = '请填写说明';
               validateStatus = false;
             }
           });
@@ -304,6 +307,7 @@ export default {
           }
         }
       });
+      this.$forceUpdate();
     },
     inputBlur(inputData) {
       this.performanceData.ruleDetailList.forEach((element) => {
@@ -317,6 +321,7 @@ export default {
           }
         }
       });
+      this.$forceUpdate();
     },
 
   },
@@ -347,7 +352,7 @@ export default {
   margin-left: 15px;
 }
 .inline-flex .error-text {
-  color: red;
+  color: #f56c6c;
 }
 .add-delete-btn {
   width: 84px;
@@ -355,5 +360,7 @@ export default {
 .add-delete-btn .el-button--text {
   margin-left: 10px;
 }
-/* margin-left: 10px; */
+.input-color .el-input__inner {
+  border-color: #f56c6c;
+}
 </style>
