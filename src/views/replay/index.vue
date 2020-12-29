@@ -4,6 +4,7 @@
     :class="{
       'replay-edit': $route.name == 'replayEdit',
       'replay-communication': $route.name == 'replayLink',
+      'replay-detail': $route.name == 'replayDetail',
     }"
   >
     <div

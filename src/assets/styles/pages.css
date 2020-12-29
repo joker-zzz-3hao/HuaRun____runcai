@@ -3009,7 +3009,7 @@
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) {
-  padding: 20px;
+  padding: 20px 20px 6px 20px;
   flex-direction: column;
   background: #f7f8fa;
 }
@@ -3019,7 +3019,31 @@
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dl:not(:last-child) {
-  margin: 0 0 20px 0;
+  margin: 0 0 14px 0;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl {
+  display: flex;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dt {
+  flex: 0 0 80px;
+  font-weight: normal;
+  font-size: 14px;
+  color: #879099;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd {
+  margin: 0;
+  line-height: unset !important;
+  word-break: break-all;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd > em {
+  flex: 1;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dt {
@@ -3122,7 +3146,7 @@
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dd {
-  margin-top: 10px;
+  margin-top: 6px;
   align-items: center;
 }
 
@@ -6070,7 +6094,8 @@
 }
 
 .replay-okr.replay-edit,
-.replay-okr.replay-communication {
+.replay-okr.replay-communication,
+.replay-okr.replay-detail {
   padding: 0;
 }
 
@@ -6088,7 +6113,7 @@
 }
 
 .replay-link .dl-card-panel {
-  margin-left: 30px;
+  margin: 0 0 0 30px;
 }
 
 .replay-link .dl-card-panel dt em {
