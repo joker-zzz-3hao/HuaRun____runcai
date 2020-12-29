@@ -76,16 +76,23 @@
             </dl>
             <dl v-if="list.attachmentDtoList">
               <dt>佐证材料</dt>
-              <dd v-for="file in list.attachmentDtoList" :key="file.resourceId">
-                <em>{{ file.resourceName }}</em>
-                <span>
-                  <span
-                    v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
-                    @click="openFile(file)"
-                    >预览</span
-                  >
-                  <span @click="downFile(file)">下载</span>
-                </span>
+              <dd>
+                <div
+                  v-for="file in list.attachmentDtoList"
+                  :key="file.resourceId"
+                >
+                  <div class="upload-cont">
+                    {{ file.resourceName }}
+                  </div>
+                  <div class="upload-btn">
+                    <em
+                      v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+                      @click="openFile(file)"
+                      >预览</em
+                    >
+                    <em @click="downFile(file)">下载</em>
+                  </div>
+                </div>
               </dd>
             </dl>
             <template v-if="list.openAdvantage">
@@ -103,8 +110,10 @@
                 <dd v-if="list.measure.length == 0">未填写</dd>
               </dl>
             </template>
-            <div @click="openMore(list)">
-              <i :class="list.openAdvantage === true ? 'close' : 'open'"></i>
+            <div @click="openMore(list)" class="fold-extend">
+              <i
+                :class="list.openAdvantage === true ? 'has-fold' : 'has-extend'"
+              ></i>
               <span v-if="list.openAdvantage">收起</span>
               <span v-else>展开</span>
             </div>
@@ -112,9 +121,10 @@
         </dl>
       </elcollapseitem>
     </elcollapse>
-    <div>
+    <div class="final-score">
       <span>OKR自评得分</span>
       <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
+      <span>分</span>
     </div>
     <div v-if="okrMain.okrMainVo.finalScore != null">
       <span>OKR复核得分</span>

@@ -73,7 +73,7 @@
       </el-table-column>
     </el-table>
     <dl>
-      <dt>是否已确认沟通</dt>
+      <dt>是否已线下沟通</dt>
       <dd>{{ CONST.COMMUN_MAP[row.enableCommunicate || 1] }}</dd>
     </dl>
     <div slot="footer" class="dialog-footer" v-if="row.approvalStatus == 2">
