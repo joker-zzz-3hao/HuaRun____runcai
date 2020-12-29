@@ -139,6 +139,7 @@ export default {
           }
           this.setOriginalMyOkrList(originalMyOkrList);
           this.setMyOkrPeriodList(myOkrPeriodList);
+          // this.$busEmit('refreshWeekly');
         }
       });
     },

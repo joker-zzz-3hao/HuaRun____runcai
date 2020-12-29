@@ -33,7 +33,7 @@ export default [{
     component: () => import('@/views/settings/roleManage/roleType/index'),
   },
   {
-    // 角色管理
+
     path: '/members',
     name: 'members',
     meta: {
@@ -96,6 +96,32 @@ export default [{
       power: 'worthStatistics',
     },
     component: () => import('@/views/worthManage/index'),
+  },
+  {
+    // 绩效评定设置
+    path: '/performanceEvaluate',
+    name: 'performanceEvaluate',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'orgManage',
+      title: '绩效评定设置',
+      power: 'performance-evaluate-menu',
+    },
+    component: () => import('@/views/settings/performanceEvaluateSet/index'),
+  },
+  {
+    // 绩效考核
+    path: '/performanceManage',
+    name: 'performanceManage',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'orgManage',
+      title: '绩效管理',
+      power: 'performance-manage',
+    },
+    component: () => import('@/views/settings/performanceManage/index'),
   },
   ],
 }];

@@ -35,7 +35,11 @@
               <el-checkbox
                 :key="item.id"
                 class="tl-checkbox"
-                :disabled="disabledId == item.orgId || item.id == orgUserId || DisuserId[item.id]"
+                :disabled="
+                  disabledId == item.orgId ||
+                  item.id == orgUserId ||
+                  DisuserId[item.id]
+                "
                 @change="
                   !rouleType
                     ? checkOneMember($event, item)
@@ -124,11 +128,10 @@ export default {
     };
   },
   mounted() {
-    console.log(`11${this.userInfo}`);
-    console.log(this.orgUserId);
     this.getSelected();
 
     this.dialogTableVisible = true;
+
     this.getqueryOrgAndUser({});
   },
   methods: {
@@ -158,6 +161,7 @@ export default {
       this.light = 0;
     },
     getqueryOrgAndUser(item) {
+      console.log(item);
       if (item.type == 'USER') return false;
       this.showLoad = false;
       this.selectList[item.level - 2] = item;
@@ -168,7 +172,6 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.data = res.data;
-          console.log(this.data);
           this.showLoad = true;
         }
       });
@@ -240,6 +243,7 @@ export default {
           label: item.userName,
           id: item.id,
           type: 'user',
+          orgNmae: item.orgName,
           userId: item.userId,
           orgId: item.orgId,
           orgName: item.orgName,

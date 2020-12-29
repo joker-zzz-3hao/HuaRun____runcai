@@ -1,27 +1,27 @@
 <template>
-  <div>
-    <upload-custom
-      ref="uploadFile"
-      v-bind="$attrs"
-      v-on="$listeners"
-      :multiple="true"
-      :limit="limit"
-      :accept="accept"
-      :file-list="fileList"
-      :headers="headers"
-      :action="action"
-      :data="dataParams"
-      :before-upload="beforeUpload"
-      :on-success="imgUploadSuccess"
-      :on-remove="removeImg"
-      :on-exceed="handleExceed"
-      :sourceKey="sourceKey"
-      :sourceType="sourceType"
+  <upload-custom
+    ref="uploadFile"
+    v-bind="$attrs"
+    v-on="$listeners"
+    :multiple="true"
+    :limit="limit"
+    :accept="accept"
+    :file-list="fileList"
+    :headers="headers"
+    :action="action"
+    :data="dataParams"
+    :before-upload="beforeUpload"
+    :on-success="imgUploadSuccess"
+    :on-remove="removeImg"
+    :on-exceed="handleExceed"
+    :sourceKey="sourceKey"
+    :sourceType="sourceType"
+  >
+    <el-button type="text" class="tl-btn up-btn"
+      ><i class="icon-upload"></i><em>添加附件</em></el-button
     >
-      <el-button type="text" class="tl-btn up-btn">+添加附件</el-button>
-      <span class="el-upload__tip">{{ tips }}</span>
-    </upload-custom>
-  </div>
+    <span class="el-upload__tip">{{ tips }}</span>
+  </upload-custom>
 </template>
 
 <script>
@@ -44,11 +44,14 @@ export default {
       type: Array,
       default: () => [],
     },
-
+    attachmentList: {
+      type: String,
+      default: '',
+    },
     // 单位M
     maxFileSzie: {
       type: Number,
-      default: 30,
+      default: 10,
     },
     accept: {
       type: String,
@@ -56,7 +59,7 @@ export default {
     },
     tips: {
       type: String,
-      default: '最多上传10个文件，单个文件不超过30M',
+      default: '最多上传10个文件，单个文件不超过10M',
     },
     limit: {
       type: Number,
@@ -65,6 +68,12 @@ export default {
     actionName: {
       type: String,
       default: '',
+    },
+    actionIndex: {
+      type: Object,
+      default() {
+        return {};
+      },
     },
     // fileFormatFn: {
     //   type: Function,
@@ -116,7 +125,7 @@ export default {
     };
   },
   created() {
-    if (this.sourceType == 'OKRMODIFY') {
+    if (this.sourceType == 'OKRMODIFY' || this.sourceType == 'OKR_REVIEW' || this.sourceType == 'SCORE_REVIEW') {
       this.dataParams = {
         sourceType: this.sourceType, ...this.params, sourceKey: this.sourceKey,
       };
@@ -126,6 +135,7 @@ export default {
         sourceType: this.sourceType, ...this.params,
       };
     }
+    if (this.fileList.length == 0 && this.attachmentList) { this.fileList = JSON.parse(this.attachmentList); }
   },
   computed: {
     action() {
@@ -225,7 +235,7 @@ export default {
       });
       this.fileNum = list.length;
       // this.$emit('update:fileList', list);
-      this.$emit('change', { list, action: this.actionName });
+      this.$emit('change', { list, action: this.actionIndex });
     },
     imgUploadSuccess(response, file, fileList) {
       console.log(file);

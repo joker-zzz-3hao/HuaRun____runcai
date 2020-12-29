@@ -1,6 +1,10 @@
 <template>
   <div class="kr-replay">
-    <elcollapse class="tl-collapse okr-change-list" v-model="activeNames">
+    <elcollapse
+      class="tl-collapse okr-change-list"
+      v-model="activeNames"
+      @change="expand"
+    >
       <elcollapseitem
         ref="o-kr-replay"
         v-for="(item, index) in okrMain.okrReviewPojoList"
@@ -26,28 +30,6 @@
                   :data="parseInt(item.o.okrDetailProgress, 10)"
                 ></tl-process>
               </div>
-              <!-- <div>
-                <i class="el-icon-attract"></i>
-                <span>关联父目标</span>
-                <em
-                  v-if="
-                    oData.undertakeOkrDto &&
-                    oData.undertakeOkrDto.undertakeOkrContent
-                  "
-                  ><em>{{ oData.undertakeOkrDto.undertakeOkrContent }}</em
-                  ><em>{{ oData.cultureName }}</em></em
-                >
-                <em
-                  v-else-if="
-                    oData.undertakeOkrVo &&
-                    oData.undertakeOkrVo.undertakeOkrContent
-                  "
-                  ><em>{{ oData.undertakeOkrVo.undertakeOkrContent }}</em
-                  ><em>{{ oData.cultureName }}</em></em
-                >
-                <em v-else-if="oData.cultureName">{{ oData.cultureName }}</em>
-                <em v-else>暂无</em>
-              </div> -->
             </dd>
           </dl>
         </template>
@@ -66,92 +48,79 @@
               <i class="el-icon-odometer"></i>
               <span>进度</span>
               <tl-process
+                :ref="'process' + index + i"
                 :data="parseInt(list.okrDetailProgress, 10)"
               ></tl-process>
             </div>
-            <!-- <div>
-              <i class="el-icon-bell"></i>
-              <span>信心指数</span>
-              <div class="state-grid">
-                <div
-                  :class="{
-                    'is-no-risk': krData.okrDetailConfidence == 1,
-                    'is-risks': krData.okrDetailConfidence == 2,
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-                <div
-                  :class="{
-                    'is-risks': krData.okrDetailConfidence == 2,
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-                <div
-                  :class="{
-                    'is-uncontrollable': krData.okrDetailConfidence == 3,
-                  }"
-                ></div>
-              </div>
-              <div class="state-txt">
-                {{ CONST.CONFIDENCE_MAP[krData.okrDetailConfidence] }}
-              </div>
-            </div> -->
           </dd>
           <dd>
             <div>
               <span>考核指标</span>
-              <em>{{ list.checkQuota }}</em>
+              <em>{{ list.checkQuota || "未填写" }}</em>
             </div>
           </dd>
           <dd>
             <div>
               <span>衡量方法</span>
-              <em>{{ list.judgeMethod }}</em>
+              <em>{{ list.judgeMethod || "未填写" }}</em>
             </div>
           </dd>
           <dd>
             <dl>
-              <dt>价值与收获</dt>
-              <dd>{{ list.advantage }}</dd>
+              <dt>评分</dt>
+              <dd>{{ list.score }}</dd>
             </dl>
-            <dl>
-              <dt>问题与不足</dt>
-              <dd>{{ list.disadvantage }}</dd>
+            <dl v-if="list.scoreRemark">
+              <dt>评分说明</dt>
+              <dd>{{ list.scoreRemark }}</dd>
             </dl>
-            <dl>
-              <dt>改进措施</dt>
-              <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
-            </dl>
-            <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
-              <dt>复盘沟通</dt>
-              <dd>
-                {{ list.communication }}
-              </dd>
-            </dl>
-            <dl v-if="okrMain.okrMainVo.reviewStatus == 3">
-              <dt>评论</dt>
-              <dd>
-                <dl class="tag-lists">
-                  <dd
-                    :class="[
-                      {
-                        'is-selected':
-                          list.communicationLabel ==
-                          selectColor(list.communicationLabel).txt,
-                      },
-                      selectColor(list.communicationLabel).clsName,
-                    ]"
+            <dl v-if="list.attachmentDtoList">
+              <dt>佐证材料</dt>
+              <dd v-for="file in list.attachmentDtoList" :key="file.resourceId">
+                <em>{{ file.resourceName }}</em>
+                <span>
+                  <span
+                    v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+                    @click="openFile(file)"
+                    >预览</span
                   >
-                    <em>{{ list.communicationLabel }}</em>
-                  </dd>
-                </dl>
+                  <span @click="downFile(file)">下载</span>
+                </span>
               </dd>
             </dl>
-            <dl v-else></dl>
+            <template v-if="list.openAdvantage">
+              <dl>
+                <dt>价值与收获</dt>
+                <dd>{{ list.advantage || "未填写" }}</dd>
+              </dl>
+              <dl>
+                <dt>问题与不足</dt>
+                <dd>{{ list.disadvantage || "未填写" }}</dd>
+              </dl>
+              <dl>
+                <dt>改进措施</dt>
+                <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
+                <dd v-if="list.measure.length == 0">未填写</dd>
+              </dl>
+            </template>
+            <div @click="openMore(list)">
+              <i :class="list.openAdvantage === true ? 'close' : 'open'"></i>
+              <span v-if="list.openAdvantage">收起</span>
+              <span v-else>展开</span>
+            </div>
           </dd>
         </dl>
       </elcollapseitem>
     </elcollapse>
+    <div>
+      <span>OKR自评得分</span>
+      <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
+    </div>
+    <div v-if="okrMain.okrMainVo.finalScore != null">
+      <span>OKR复核得分</span>
+      <em>{{ okrMain.okrMainVo.finalScore || 0 }}</em>
+    </div>
+    <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </div>
 </template>
 
@@ -159,6 +128,8 @@
 import elcollapse from '@/components/collapse/collapse';
 import elcollapseitem from '@/components/collapse/collapse-item';
 import process from '@/components/process';
+import CONST from '@/lib/const';
+import imgDialog from '@/components/imgDialog';
 import Server from '../../server';
 
 const server = new Server();
@@ -167,6 +138,7 @@ export default {
   props: ['okrMain'],
   data() {
     return {
+      CONST,
       reviewType: 1,
       form: {},
       activeNames: [0],
@@ -200,6 +172,7 @@ export default {
     elcollapse,
     elcollapseitem,
     'tl-process': process,
+    'img-dialog': imgDialog,
   },
   methods: {
     selectColor(txt) {
@@ -209,7 +182,41 @@ export default {
       }
       return '';
     },
-
+    // 折叠展开
+    openMore(list) {
+      list.openAdvantage = !list.openAdvantage;
+      this.$forceUpdate();
+    },
+    // 重新触发进度条计算
+    expand(activeList) {
+      activeList.forEach((item) => {
+        this.okrMain.okrReviewPojoList[item].krs.forEach((kritem, krIndex) => {
+          this.$nextTick(() => {
+            this.$refs[`process${item}${krIndex}`][0].changeWidth();
+          });
+        });
+      });
+    },
+    // -------------文件-------------
+    // 截取文件类型
+    cutType(name) {
+      console.log(name);
+      if (name && name.indexOf('.') > -1) {
+        return name.split('.')[1];
+      } return '';
+    },
+    // 预览
+    openFile(fileObj) {
+      this.$refs.imgDialog.show(fileObj.resourceUrl);
+    },
+    // 下载
+    downFile(fileObj) {
+      const origin = window.location.origin
+        ? window.location.origin
+        : window.location.href.split('/#')[0];
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKR_REVIEW&sourceKey=${this.$route.query.okrId}`;
+      window.open(url);
+    },
   },
 };
 </script>
