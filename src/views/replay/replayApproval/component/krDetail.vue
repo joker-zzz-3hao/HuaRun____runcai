@@ -281,16 +281,15 @@ export default {
         if (valid) {
           // 驳回不需要二次确认？
           // nextApproveUserName
-          const content =  ``;
           this.$xconfirm({
-            content: '将流转到xxx进行OKR复核得分',
-            title: '确认复盘审批通过吗？',
+            content: '',
+            title: this.ruleForm.passFlag == '1' ? '确认复盘审批通过吗？' : '确认驳回吗？',
           }).then(() => {
             this.submitLoad = true;
             const params = {
-              okrId: this.okrMain.okrMainVo.okrId,
-              passFlag: this.ruleForm.passFlag == '1',
-              remark: this.ruleForm.passFlag == '1' ? this.ruleForm.communication : this.ruleForm.refuseInfo,
+              okrMainId: this.okrMain.okrMainVo.okrId,
+              pass: this.ruleForm.passFlag == '1',
+              remark: this.ruleForm.passFlag == '1' ? '' : this.ruleForm.refuseInfo,
             };
             this.server.okrReviewApprove(params).then((res) => {
               this.submitLoad = false;
