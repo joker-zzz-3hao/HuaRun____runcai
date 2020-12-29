@@ -3071,6 +3071,10 @@
   color: #685df1;
 }
 
+.replay-edit .c-upload-item-name {
+  font-size: 14px;
+}
+
 .replay-link .okr-change-list dd:nth-of-type(4) dt {
   font-size: 12px;
   font-weight: 500;
