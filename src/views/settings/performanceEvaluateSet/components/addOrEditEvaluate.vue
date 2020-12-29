@@ -22,7 +22,7 @@
           ]"
         >
           <el-input
-            style="width:90%"
+            style="width: 90%"
             v-model.trim="performanceData.ruleName"
             maxlength="30"
             placeholder="请填写名称"
@@ -33,7 +33,7 @@
           <div
             v-for="(ruleItem, index) in performanceData.ruleDetailList"
             :key="ruleItem.detailRandomId"
-            style="display:flex"
+            style="display: flex"
           >
             <div class="inline-flex">
               <div>
@@ -45,9 +45,7 @@
                   placeholder="请输入值"
                 ></el-input>
                 <span class="error-text" v-if="ruleItem.showContentError">
-                  {{
-                  ruleItem.contentErrorText
-                  }}
+                  {{ ruleItem.contentErrorText }}
                 </span>
               </div>
               <el-input
@@ -57,21 +55,18 @@
                 placeholder="如有单位，请填写"
               ></el-input>
               <span class="instruction-span">说明</span>
-              <div style="width:100%">
+              <div style="width: 100%">
                 <el-input
                   v-model="ruleItem.description"
-                  class="tl-textarea textarea-content"
-                  type="textarea"
-                  style="width:100%;"
+                  class="textarea-content"
+                  style="width: 100%"
                   :autosize="{ minRows: 1, maxRows: 8 }"
                   placeholder="请填写说明"
                   maxlength="100"
                   @blur="inputBlur(ruleItem)"
                 ></el-input>
                 <span class="error-text" v-if="ruleItem.showRemarkError">
-                  {{
-                  ruleItem.remarkErrorText
-                  }}
+                  {{ ruleItem.remarkErrorText }}
                 </span>
               </div>
             </div>
@@ -81,23 +76,29 @@
                 type="text"
                 v-show="performanceData.ruleDetailList.length - 1 == index"
                 @click="addRuleItem(performanceData)"
-              >添加</el-button>
+                >添加</el-button
+              >
               <el-button
                 class="btn-color"
                 type="text"
                 @click="
-                performanceData.ruleDetailList.length > 1
-                  ? deleteRuleItem(ruleItem)
-                  : ''
-              "
-              >删除</el-button>
+                  performanceData.ruleDetailList.length > 1
+                    ? deleteRuleItem(ruleItem)
+                    : ''
+                "
+                >删除</el-button
+              >
             </div>
           </div>
         </el-form-item>
         <div class="margin-top">
           <el-form-item label="应用范围" prop="ruleType">
-            <el-radio v-model="performanceData.ruleType" label="1">部门</el-radio>
-            <el-radio v-model="performanceData.ruleType" label="2">个人</el-radio>
+            <el-radio v-model="performanceData.ruleType" label="1"
+              >部门</el-radio
+            >
+            <el-radio v-model="performanceData.ruleType" label="2"
+              >个人</el-radio
+            >
           </el-form-item>
         </div>
       </el-form>
@@ -105,7 +106,10 @@
     <div v-show="step == 2">
       <dl>
         <dt>{{ performanceData.ruleName }}</dt>
-        <dd v-for="ruleItem in performanceData.ruleDetailList" :key="ruleItem.detailRandomId">
+        <dd
+          v-for="ruleItem in performanceData.ruleDetailList"
+          :key="ruleItem.detailRandomId"
+        >
           <span>{{ ruleItem.value }}</span>
           <span>{{ ruleItem.unit }}</span>
           说明
@@ -118,10 +122,13 @@
       </dl>
     </div>
     <div class="operating-box">
-      <el-button :loading="loading" type="primary" class="tl-btn amt-bg-slip" @click="addEvaluate">
-        {{
-        step == 1 || performanceData.status > 0 ? "确认" : "提交"
-        }}
+      <el-button
+        :loading="loading"
+        type="primary"
+        class="tl-btn amt-bg-slip"
+        @click="addEvaluate"
+      >
+        {{ step == 1 || performanceData.status > 0 ? "确认" : "提交" }}
       </el-button>
       <el-button
         :disabled="loading"
@@ -129,7 +136,8 @@
         class="tl-btn amt-border-fadeout"
         @click="cancel"
         v-if="performanceData.status < 1 || !hasValue(performanceData.status)"
-      >取消</el-button>
+        >取消</el-button
+      >
     </div>
   </el-dialog>
 </template>
@@ -335,17 +343,17 @@ export default {
   width: 100%;
 }
 .inline-flex .instruction-span {
-  width: 55px;
-  margin-left: 10px;
+  width: 60px;
+  margin-left: 15px;
 }
 .inline-flex .error-text {
   color: red;
 }
-/* .inline-flex .add-delete-btn {
+.add-delete-btn {
+  width: 84px;
+}
+.add-delete-btn .el-button--text {
   margin-left: 10px;
-  width: 130px;
-} */
-/* .margin-top .el-form-item {
-  margin-top: -25px;
-} */
+}
+/* margin-left: 10px; */
 </style>
