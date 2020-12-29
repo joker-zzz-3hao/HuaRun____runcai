@@ -2883,9 +2883,21 @@
   color: #879099;
 }
 
+.replay-record .tl-custom-timeline .timeline-list dd .operate-type em:nth-of-type(2) {
+  margin-left: 10px;
+}
+
+.replay-record .tl-custom-timeline .timeline-list dd .operate-type span {
+  color: #222426;
+}
+
 .replay-link .tl-collapse .el-collapse-item,
 .replay-link .tl-collapse .el-collapse-item__header.is-active {
   box-shadow: unset;
+}
+
+.replay-link .tl-collapse .el-collapse-item {
+  margin-bottom: 20px;
 }
 
 .replay-link .tl-collapse .el-collapse-item__header {
@@ -2997,13 +3009,7 @@
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) {
-  padding: 20px;
-  flex-direction: column;
-  background: #f7f8fa;
-}
-
-.replay-link .okr-change-list dd:nth-of-type(4) {
-  padding: 20px;
+  padding: 20px 20px 6px 20px;
   flex-direction: column;
   background: #f7f8fa;
 }
@@ -3013,7 +3019,60 @@
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dl:not(:last-child) {
-  margin: 0 0 20px 0;
+  margin: 0 0 14px 0;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl {
+  display: flex;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dt {
+  flex: 0 0 80px;
+  font-weight: normal;
+  font-size: 14px;
+  color: #879099;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd {
+  margin: 0;
+  line-height: unset !important;
+  word-break: break-all;
+  flex: 1;
+  display: unset;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd > div:not(:first-child) {
+  margin-top: 10px;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd > em {
+  flex: 1;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd .upload-cont {
+  font-size: 14px;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd .upload-btn em + em {
+  margin-left: 10px;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd .upload-btn em {
+  cursor: pointer;
+}
+
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd .upload-btn em:hover {
+  color: #685df1;
+}
+
+.replay-edit .c-upload-item-name {
+  font-size: 14px;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dt {
@@ -3025,8 +3084,35 @@
   line-height: 26px;
 }
 
+.replay-link .okr-change-list dd:nth-of-type(4) dl:not(:first-child) dd .el-form-item,
+.replay-link .okr-change-list dd:nth-of-type(4) dl:not(:first-child) dd .el-form-item .el-form-item__content {
+  width: 100%;
+}
+
 .replay-link .okr-change-list dd:nth-of-type(4) dd > div:nth-child(1) {
   flex: unset;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dd .upload-wrap {
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dd .upload-wrap .el-upload {
+  text-align: left;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dd .upload-wrap > div {
+  width: 100%;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dd .upload-wrap .upload-option span {
+  color: #879099;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) dd .upload-wrap .upload-option span:hover {
+  color: #685df1;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dd > div:nth-child(1).el-form-item {
@@ -3037,6 +3123,35 @@
   margin: 0 0 0 8px;
   color: #879099;
   font-size: 12px;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) .fold-extend {
+  justify-content: flex-end;
+  display: flex;
+  align-items: center;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) .has-fold {
+  background-position-x: -7px;
+  transform: rotate(0deg);
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) .fold-extend:hover .has-fold {
+  background-position-x: -37px;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) .fold-extend i {
+  cursor: pointer;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) .fold-extend span {
+  margin-left: 2px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.replay-link .okr-change-list dd:nth-of-type(4) .fold-extend span:hover {
+  color: #685df1;
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) .el-textarea__inner {
@@ -3060,7 +3175,7 @@
 }
 
 .replay-link .okr-change-list dd:nth-of-type(4) dd {
-  margin-top: 10px;
+  margin-top: 6px;
   align-items: center;
 }
 
@@ -3129,7 +3244,7 @@
 }
 
 .replay-link .final-score {
-  margin: 0 0 20px 0;
+  margin: 0 0 20px 28px;
   font-size: 18px;
   font-weight: 500;
   color: #4d5155;
@@ -6007,16 +6122,43 @@
   margin-bottom: 16px;
 }
 
-.replay-okr.replay-edit {
+.replay-okr.replay-edit,
+.replay-okr.replay-communication,
+.replay-okr.replay-detail {
   padding: 0;
 }
 
-.replay-okr.replay-edit .replay-link {
+.replay-okr.replay-edit .replay-link,
+.replay-okr.replay-communication .replay-link {
   margin: 0 auto 86px auto;
+}
+
+.replay-okr.replay-detail .replay-link {
+  margin: 0 auto;
+}
+
+.replay-okr.replay-edit .el-upload-list li:last-child {
+  margin-bottom: 0;
 }
 
 .replay-link .el-form-item__content {
   line-height: unset;
+}
+
+.replay-link .dl-card-panel {
+  margin: 0 0 0 30px;
+}
+
+.replay-link .dl-card-panel dt em {
+  font-weight: 500;
+}
+
+.replay-link .tl-custom-timeline .list-title {
+  color: #acb6bf;
+}
+
+.replay-link .tl-custom-timeline .list-cont {
+  margin-top: 10px;
 }
 
 /* personal-center */

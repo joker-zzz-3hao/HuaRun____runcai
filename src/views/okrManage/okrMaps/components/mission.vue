@@ -5,7 +5,7 @@
     @closed="close"
     :close-on-click-modal="false"
     :visible.sync="dialogTableVisible"
-    class="tl-dialog"
+    class="tl-dialog check-judge"
     width="700px"
     :title="title"
     :center="true"

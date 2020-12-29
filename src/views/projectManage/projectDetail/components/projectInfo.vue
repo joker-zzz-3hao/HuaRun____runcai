@@ -65,6 +65,7 @@
             </div>
           </dd>
         </dl>
+
         <dl class="dl-item">
           <dt><span>项目所属部门</span></dt>
           <dd>
@@ -144,7 +145,8 @@
           <el-table :data="baseInfo.projectUserVoList" class="tl-table">
             <el-table-column prop="userName" label="姓名" min-width="130">
               <template slot-scope="scope">
-                <div class="user-info" @click="setManager(scope.row)">
+                <!-- <div class="user-info" @click="setManager(scope.row)"> -->
+                <div class="user-info">
                   <img
                     v-if="hasValue(scope.row.headUrl)"
                     :src="scope.row.headUrl"
@@ -163,7 +165,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="项目经理" min-width="110">
+            <!-- <el-table-column label="项目经理" min-width="110">
               <template slot-scope="scope">
                 <div
                   v-if="scope.row.projectUserType == '1'"
@@ -193,7 +195,7 @@
                 </div>
                 <div v-else>--</div>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column prop="userLevelName" label="级别" min-width="80">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.userLevelName)">{{
@@ -428,6 +430,7 @@ export default {
                   name: 'projectManage',
                 });
               }
+              this.$forceUpdate();
             }
           });
         });
@@ -466,6 +469,13 @@ export default {
               }
             });
           }
+        }
+      });
+    },
+    userChange(userId) {
+      this.baseInfo.projectUserVoList.forEach((element) => {
+        if (element.userId == userId) {
+          this.setManager(element);
         }
       });
     },
@@ -521,3 +531,17 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.project-manager-select .el-input--suffix .el-input__inner {
+  background: #f4f6f8;
+  border: unset;
+  margin-left: -15px;
+  color: #685df1;
+}
+.project-manager-select .el-icon-arrow-up:before {
+  content: unset;
+}
+.user-icon {
+  z-index: 9999;
+}
+</style>

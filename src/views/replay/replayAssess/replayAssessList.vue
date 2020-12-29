@@ -102,7 +102,7 @@
             </el-table-column>
             <el-table-column
               prop="enableCommunicate"
-              label="是否已经确认沟通"
+              label="是否已线下沟通"
               min-width="100"
             >
               <template slot-scope="props">

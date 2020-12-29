@@ -13,7 +13,7 @@
     :close-on-click-modal="false"
   >
     <div v-show="step == 1">
-      <el-form ref="dicForm" :model="performanceData" label-width="90px">
+      <el-form ref="dicForm" :model="performanceData" label-width="100px">
         <el-form-item
           label="自定义名称"
           prop="ruleName"
@@ -22,6 +22,7 @@
           ]"
         >
           <el-input
+            style="width:90%"
             v-model.trim="performanceData.ruleName"
             maxlength="30"
             placeholder="请填写名称"
@@ -32,93 +33,103 @@
           <div
             v-for="(ruleItem, index) in performanceData.ruleDetailList"
             :key="ruleItem.detailRandomId"
+            style="display:flex"
           >
-            <el-input
-              v-model.trim="ruleItem.value"
-              maxlength="20"
-              @blur="inputBlur(ruleItem)"
-              placeholder="请输入内容"
-            ></el-input>
-            <span v-if="ruleItem.showContentError">{{
-              ruleItem.contentErrorText
-            }}</span>
-            <el-input
-              v-model.trim="ruleItem.unit"
-              maxlength="20"
-              placeholder="如有单位，请填写"
-            ></el-input>
-            说明
-            <el-input
-              v-model="ruleItem.description"
-              type="textarea"
-              :autosize="{ minRows: 1, maxRows: 8 }"
-              class="tl-textarea"
-              placeholder="请填写说明"
-              maxlength="100"
-              @blur="inputBlur(ruleItem)"
-            ></el-input>
-            <span v-if="ruleItem.showRemarkError">{{
-              ruleItem.remarkErrorText
-            }}</span>
-            <el-button
-              type="text"
-              v-show="performanceData.ruleDetailList.length - 1 == index"
-              @click="addRuleItem(performanceData)"
-              >添加</el-button
-            >
-            <el-button
-              type="text"
-              @click="
+            <div class="inline-flex">
+              <div>
+                <el-input
+                  class="input-value"
+                  v-model.trim="ruleItem.value"
+                  maxlength="20"
+                  @blur="valueInputBlur(ruleItem)"
+                  placeholder="请输入值"
+                ></el-input>
+                <span class="error-text" v-if="ruleItem.showContentError">
+                  {{
+                  ruleItem.contentErrorText
+                  }}
+                </span>
+              </div>
+              <el-input
+                class="input-unit"
+                v-model.trim="ruleItem.unit"
+                maxlength="20"
+                placeholder="如有单位，请填写"
+              ></el-input>
+              <span class="instruction-span">说明</span>
+              <div style="width:100%">
+                <el-input
+                  v-model="ruleItem.description"
+                  class="tl-textarea textarea-content"
+                  type="textarea"
+                  style="width:100%;"
+                  :autosize="{ minRows: 1, maxRows: 8 }"
+                  placeholder="请填写说明"
+                  maxlength="100"
+                  @blur="inputBlur(ruleItem)"
+                ></el-input>
+                <span class="error-text" v-if="ruleItem.showRemarkError">
+                  {{
+                  ruleItem.remarkErrorText
+                  }}
+                </span>
+              </div>
+            </div>
+            <div class="add-delete-btn">
+              <el-button
+                class="btn-color"
+                type="text"
+                v-show="performanceData.ruleDetailList.length - 1 == index"
+                @click="addRuleItem(performanceData)"
+              >添加</el-button>
+              <el-button
+                class="btn-color"
+                type="text"
+                @click="
                 performanceData.ruleDetailList.length > 1
                   ? deleteRuleItem(ruleItem)
                   : ''
               "
-              >删除</el-button
-            >
+              >删除</el-button>
+            </div>
           </div>
         </el-form-item>
-        <el-form-item label="应用范围" prop="ruleType">
-          <el-radio v-model="performanceData.ruleType" label="1">部门</el-radio>
-          <el-radio v-model="performanceData.ruleType" label="2">个人</el-radio>
-        </el-form-item>
+        <div class="margin-top">
+          <el-form-item label="应用范围" prop="ruleType">
+            <el-radio v-model="performanceData.ruleType" label="1">部门</el-radio>
+            <el-radio v-model="performanceData.ruleType" label="2">个人</el-radio>
+          </el-form-item>
+        </div>
       </el-form>
     </div>
     <div v-show="step == 2">
       <dl>
         <dt>{{ performanceData.ruleName }}</dt>
-        <dd
-          v-for="ruleItem in performanceData.ruleDetailList"
-          :key="ruleItem.detailRandomId"
-        >
+        <dd v-for="ruleItem in performanceData.ruleDetailList" :key="ruleItem.detailRandomId">
           <span>{{ ruleItem.value }}</span>
           <span>{{ ruleItem.unit }}</span>
           说明
           <pre>{{ ruleItem.description || "--" }}</pre>
         </dd>
         <dd>
-          <span>适用范围 </span
-          ><span>{{ performanceData.ruleType == 1 ? "部门" : "个人" }}</span>
+          <span>适用范围</span>
+          <span>{{ performanceData.ruleType == 1 ? " 部门" : " 个人" }}</span>
         </dd>
       </dl>
     </div>
     <div class="operating-box">
-      <el-button
-        :loading="loading"
-        type="primary"
-        class="tl-btn amt-bg-slip"
-        @click="addEvaluate"
-        >{{
-          step == 1 || performanceData.status > 0 ? "确认" : "提交"
-        }}</el-button
-      >
+      <el-button :loading="loading" type="primary" class="tl-btn amt-bg-slip" @click="addEvaluate">
+        {{
+        step == 1 || performanceData.status > 0 ? "确认" : "提交"
+        }}
+      </el-button>
       <el-button
         :disabled="loading"
         plain
         class="tl-btn amt-border-fadeout"
         @click="cancel"
         v-if="performanceData.status < 1 || !hasValue(performanceData.status)"
-        >取消</el-button
-      >
+      >取消</el-button>
     </div>
   </el-dialog>
 </template>
@@ -149,7 +160,7 @@ export default {
     };
   },
   created() { },
-  mounted() {},
+  mounted() { },
   computed: {},
   methods: {
     addRuleItem() {
@@ -175,8 +186,8 @@ export default {
     },
     addEvaluate() {
       if (this.performanceData
-      && this.performanceData.ruleId
-       && this.performanceData.status > 0) {
+        && this.performanceData.ruleId
+        && this.performanceData.status > 0) {
         this.close();
         return;
       }
@@ -273,7 +284,7 @@ export default {
       this.visible = false;
       this.$emit('update:showDialog', false);
     },
-    inputBlur(inputData) {
+    valueInputBlur(inputData) {
       this.performanceData.ruleDetailList.forEach((element) => {
         if (element.detailRandomId == inputData.detailRandomId) {
           if (!this.hasValue(inputData.value.trim())) {
@@ -283,6 +294,12 @@ export default {
             element.showContentError = false;
             element.contentErrorText = '';
           }
+        }
+      });
+    },
+    inputBlur(inputData) {
+      this.performanceData.ruleDetailList.forEach((element) => {
+        if (element.detailRandomId == inputData.detailRandomId) {
           if (!this.hasValue(inputData.description.trim())) {
             element.showRemarkError = true;
             element.remarkErrorText = '请填写说明';
@@ -296,7 +313,39 @@ export default {
 
   },
   watch: {},
-  updated() {},
-  beforeDestroy() {},
+  updated() { },
+  beforeDestroy() { },
 };
 </script>
+<style lang="css" scoped>
+.btn-color {
+  color: #685df1;
+}
+.inline-flex {
+  display: flex;
+  width: 90%;
+}
+.inline-flex .input-value {
+  width: 100px;
+}
+.inline-flex .input-unit {
+  width: 250px;
+}
+.inline-flex .textarea-content {
+  width: 100%;
+}
+.inline-flex .instruction-span {
+  width: 55px;
+  margin-left: 10px;
+}
+.inline-flex .error-text {
+  color: red;
+}
+/* .inline-flex .add-delete-btn {
+  margin-left: 10px;
+  width: 130px;
+} */
+/* .margin-top .el-form-item {
+  margin-top: -25px;
+} */
+</style>

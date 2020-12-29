@@ -1,7 +1,11 @@
 <template>
   <div
     class="replay-okr"
-    :class="{ 'replay-edit': $route.name == 'replayEdit' }"
+    :class="{
+      'replay-edit': $route.name == 'replayEdit',
+      'replay-communication': $route.name == 'replayLink',
+      'replay-detail': $route.name == 'replayDetail',
+    }"
   >
     <div
       class="operating-area"

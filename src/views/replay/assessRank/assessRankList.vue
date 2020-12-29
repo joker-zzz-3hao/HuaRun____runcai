@@ -25,7 +25,7 @@
     </div>
     <div v-if="noData" class="tl-card-panel no-data">
       <div class="no-data-bg"></div>
-      <div class="no-data-txt">该OKR周期的绩效排名未开始</div>
+      <div class="no-data-txt">部门还未分配绩效系数，请等待...</div>
     </div>
     <div v-else>
       <div class="cont-area">
@@ -126,7 +126,7 @@
         </tl-crcloud-table>
       </div>
       <div>
-        <span>*是否已经确认沟通 </span>
+        <span>*是否已线下沟通</span>
         <el-radio-group
           v-model.trim="sortMsg.enableCommunicate"
           :disabled="sortMsg.approvalStatus == 2 || sortMsg.approvalStatus == 3"
@@ -271,7 +271,7 @@ export default {
         item.sourceId = item.orgId;
       });
       if (!this.sortMsg.enableCommunicate) {
-        this.$message.error('请勾选是否已确认沟通');
+        this.$message.error('请勾选是否已线下沟通');
         return;
       }
 

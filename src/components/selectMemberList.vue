@@ -13,25 +13,22 @@
       <div class="select-target">
         <div class="transfer-head">
           <div class="crumbs">
-            <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''">{{
+            <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''">
+              {{
               userInfo.tenantInfo.tenantName
-            }}</em>
+              }}
+            </em>
             <em
               :class="light == item.id ? 'is-subset' : ''"
               v-for="(item, index) in selectList"
               :key="index"
               @click="getqueryOrgAndUser(item)"
-              >{{ item.name }}</em
-            >
+            >{{ item.name }}</em>
           </div>
         </div>
         <el-scrollbar>
           <ul class="txt-list" v-show="showLoad">
-            <li
-              v-for="(item, index) in data"
-              :key="index"
-              @click="getqueryOrgAndUser(item)"
-            >
+            <li v-for="(item, index) in data" :key="index" @click="getqueryOrgAndUser(item)">
               <el-checkbox
                 :key="item.id"
                 class="tl-checkbox"
@@ -55,7 +52,7 @@
                 <!-- <el-tooltip
                   :content="'LDAP账号：' + item.userAccount"
                   placement="top"
-                > -->
+                >-->
                 <em>{{ item.name }}({{ item.userAccount }})</em>
                 <!-- </el-tooltip> -->
               </el-checkbox>
@@ -71,8 +68,7 @@
         <div class="transfer-head">
           <div class="selected-number">
             <span>已选</span>
-            <em>{{ roulelist.length }}</em
-            >人
+            <em>{{ roulelist.length }}</em>人
           </div>
           <div class="clear" @click="clearMember">清空</div>
         </div>
@@ -81,15 +77,10 @@
             <li v-for="(item, index) in roulelist" :key="index">
               <div class="img-user">
                 <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>
-                  {{ checkName(item.userName) }}
-                </div>
+                <div class="user-name" v-else>{{ checkName(item.userName) }}</div>
               </div>
               <em>{{ item.userName }}({{ item.userAccount }})</em>
-              <i
-                class="el-icon-close"
-                @click="deleteMember(index, item.userId)"
-              ></i>
+              <i class="el-icon-close" @click="deleteMember(index, item.userId)"></i>
             </li>
           </ul>
         </el-scrollbar>
@@ -172,7 +163,6 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.data = res.data;
-          console.log(this.data);
           this.showLoad = true;
         }
       });

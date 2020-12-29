@@ -34,9 +34,9 @@
               class="tl-input"
             ></el-input>
           </template>
-        </el-table-column> </el-table
-    ></el-scrollbar>
-
+        </el-table-column>
+      </el-table>
+    </el-scrollbar>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" class="tl-btn amt-bg-slip" @click="submit"
         >确认提交</el-button

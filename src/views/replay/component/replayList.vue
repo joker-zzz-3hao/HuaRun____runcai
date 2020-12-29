@@ -74,12 +74,17 @@
             <el-table-column
               prop="userName"
               label="姓名"
+              width="100"
+            ></el-table-column>
+            <el-table-column
+              prop="orgName"
+              label="部门名称"
               min-width="165"
             ></el-table-column>
             <el-table-column
               prop="okrBelongType"
               label="OKR所属类型"
-              min-width="165"
+              min-width="110"
             >
               <template slot-scope="scope">
                 {{ CONST.OKR_BELONGTYPE[scope.row.okrBelongType] }}
@@ -88,18 +93,37 @@
             <el-table-column
               prop="periodName"
               label="OKR周期"
-              min-width="170"
+              min-width="160"
             ></el-table-column>
-            <el-table-column prop="okrProgress" label="OKR进度" min-width="180">
+            <el-table-column prop="okrProgress" label="OKR进度" min-width="150">
               <template slot-scope="scope">
                 <tl-process
                   :data="parseInt(scope.row.okrProgress || 0, 10)"
-                ></tl-process> </template
-            ></el-table-column>
+                ></tl-process>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="selfAssessmentScore"
+              label="OKR自评得分"
+              min-width="110"
+            >
+              <template slot-scope="scope">
+                <span> {{ scope.row.selfAssessmentScore || "--" }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="finalScore"
+              label="OKR复核得分"
+              min-width="110"
+            >
+              <template slot-scope="scope">
+                <span> {{ scope.row.finalScore || "--" }}</span>
+              </template>
+            </el-table-column>
             <el-table-column
               prop="reviewStatusCn"
               label="复盘状态"
-              min-width="100"
+              min-width="80"
             >
               <template slot-scope="scope">
                 <i
@@ -115,7 +139,7 @@
             <el-table-column
               prop="reviewCommitTime"
               label="提交复盘时间"
-              min-width="160"
+              min-width="170"
             >
               <template slot-scope="scope">
                 <span v-if="scope.row.reviewCommitTime">{{
@@ -127,7 +151,7 @@
             <el-table-column
               prop="reviewCommunicateTime"
               label="复盘沟通时间"
-              min-width="160"
+              min-width="170"
             >
               <template slot-scope="scope">
                 <span v-if="scope.row.reviewCommunicateTime">{{
@@ -156,7 +180,7 @@
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="scope.row.ownerFlag && scope.row.reviewStatus == 1"
+                  v-else-if="scope.row.ownerFlag && scope.row.reviewStatus == 1"
                   @click="
                     $router.push({
                       name: 'replayEdit',
@@ -167,20 +191,34 @@
                   "
                   >复盘</el-button
                 >
+
+                <!-- 条件要加 -->
                 <el-button
                   type="text"
                   class="tl-btn"
-                  v-if="
-                    scope.row.reviewStatus == 3 ||
-                    (scope.row.reviewStatus == 2 && scope.row.ownerFlag) ||
-                    scope.row.reviewStatus === 0
+                  v-else-if="
+                    scope.row.reviewStatus == 4 &&
+                    roleCode.includes('ORG_ADMIN')
                   "
+                  @click="
+                    $router.push({
+                      name: 'replayApproval',
+                      query: {
+                        okrId: scope.row.okrId,
+                      },
+                    })
+                  "
+                  >复盘审批</el-button
+                >
+                <el-button
+                  type="text"
+                  class="tl-btn"
+                  v-else
                   @click="
                     $router.push({
                       name: 'replayDetail',
                       query: {
                         okrId: scope.row.okrId,
-                        ownerFlag: scope.row.ownerFlag,
                       },
                     })
                   "
@@ -196,6 +234,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
 import process from '@/components/process';
 import processenv from './processenv';
@@ -225,6 +264,11 @@ export default {
   created() {
     console.log(process);
     this.getOkrCycleList();
+  },
+  computed: {
+    ...mapState('common', {
+      roleCode: (state) => state.roleCode,
+    }),
   },
   methods: {
     okrReviewList() {
