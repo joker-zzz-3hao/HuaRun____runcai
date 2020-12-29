@@ -13,10 +13,11 @@
                   <span v-if="item.operateName"
                     >「{{ item.operateName }}」</span
                   >
-                  <span v-if="item.operateResult">{{
-                    item.operateResult
-                  }}</span>
-                  <span v-if="item.content">原因：「{{ item.content }}」</span>
+                  <span v-if="item.operateResult"
+                    >「{{ item.operateResult }}」</span
+                  >
+                  <em v-if="item.content">原因</em>
+                  <span v-if="item.content">「{{ item.content }}」</span>
                 </div>
               </div>
             </div>

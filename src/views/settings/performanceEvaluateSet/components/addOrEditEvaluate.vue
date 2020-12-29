@@ -13,7 +13,7 @@
     :close-on-click-modal="false"
   >
     <div v-show="step == 1">
-      <el-form ref="dicForm" :model="performanceData" label-width="90px">
+      <el-form ref="dicForm" :model="performanceData" label-width="100px">
         <el-form-item
           label="自定义名称"
           prop="ruleName"

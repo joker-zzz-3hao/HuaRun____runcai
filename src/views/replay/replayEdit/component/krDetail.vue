@@ -57,13 +57,13 @@
             <dd>
               <div>
                 <span>考核指标</span>
-                <em>{{ list.checkQuota || "--" }}</em>
+                <em>{{ list.checkQuota || "未填写" }}</em>
               </div>
             </dd>
             <dd>
               <div>
                 <span>衡量方法</span>
-                <em>{{ list.judgeMethod || "--" }}</em>
+                <em>{{ list.judgeMethod || "未填写" }}</em>
               </div>
             </dd>
             <dd>
@@ -141,6 +141,7 @@
               .pptx,
               .xlsx"
                     tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过10M"
+                    class="upload-wrap"
                   ></file-upload>
                 </dd>
               </dl>
@@ -199,8 +200,12 @@
                   </template>
                 </dl>
               </template>
-              <div @click="openMore(list)">
-                <i :class="list.openAdvantage === true ? 'close' : 'open'"></i>
+              <div @click="openMore(list)" class="fold-extend">
+                <i
+                  :class="
+                    list.openAdvantage === true ? 'has-fold' : 'has-extend'
+                  "
+                ></i>
                 <span v-if="list.openAdvantage">收起</span>
                 <span v-else>展开</span>
               </div>
