@@ -113,7 +113,7 @@
         </dd>
         <dd>
           <span>适用范围</span>
-          <span>{{ performanceData.ruleType == 1 ? "部门" : "个人" }}</span>
+          <span>{{ performanceData.ruleType == 1 ? " 部门" : " 个人" }}</span>
         </dd>
       </dl>
     </div>
