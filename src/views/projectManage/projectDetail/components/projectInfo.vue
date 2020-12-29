@@ -46,30 +46,26 @@
         <dl class="dl-item">
           <dt><span>项目经理</span></dt>
           <dd>
-            <div class="user-icon">
-              <!-- <img v-if="hasValue(headUrl)" :src="headUrl" alt />
-              <div v-else-if="userName" class="user-name">
-                <em>{{ userName.substring(userName.length - 2) }}</em>
-              </div> -->
-              <i class="el-icon-medal"></i>
+            <div class="user-info">
+              <img
+                v-if="hasValue(baseInfo.headUrl)"
+                :src="baseInfo.headUrl"
+                alt
+              />
+              <div v-else-if="baseInfo.projectManager" class="user-name">
+                <em>{{
+                  baseInfo.projectManager.substring(
+                    baseInfo.projectManager.length - 2
+                  )
+                }}</em>
+              </div>
             </div>
-            <div class="user-name-txt project-manager-select">
-              <!-- <em>{{ baseInfo.projectManager }}</em -->
-              <el-select
-                v-model="manageId"
-                @change="userChange"
-                popper-class="tl-select-dropdown"
-              >
-                <el-option
-                  v-for="item in baseInfo.projectUserVoList"
-                  :key="item.userId"
-                  :label="item.userName"
-                  :value="item.userId"
-                ></el-option>
-              </el-select>
+            <div class="user-name-txt">
+              <em>{{ baseInfo.projectManager }}</em>
             </div>
           </dd>
         </dl>
+
         <dl class="dl-item">
           <dt><span>项目所属部门</span></dt>
           <dd>
@@ -169,7 +165,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="项目经理" min-width="110">
+            <!-- <el-table-column label="项目经理" min-width="110">
               <template slot-scope="scope">
                 <div
                   v-if="scope.row.projectUserType == '1'"
@@ -199,7 +195,7 @@
                 </div>
                 <div v-else>--</div>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column prop="userLevelName" label="级别" min-width="80">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.userLevelName)">{{
@@ -314,9 +310,6 @@ export default {
       pWidth: '',
       emWidth: '',
       DisuserId: {},
-      manageId: '',
-      headUrl: '',
-      userName: '',
     };
   },
   components: {
@@ -345,14 +338,10 @@ export default {
     }),
   },
   mounted() {
-    console.log('projectUserVoList', this.baseInfo.projectUserVoList);
-    this.manageId = this.userInfo.userId;
     if (this.baseInfo.projectUserVoList) {
       this.baseInfo.projectUserVoList.forEach((item) => {
         if (item.projectUserType == '1') {
           if (item.userId == this.userInfo.userId) {
-            this.headUrl = item.headUrl;
-            this.userName = item.userName;
             this.isManage = true;
           }
         }
@@ -417,9 +406,6 @@ export default {
         self.$xconfirm({
           title: '设置项目经理',
           content,
-          cancelCallback: () => {
-            this.manageId = this.userInfo.userId;
-          },
         }).then(() => {
           self.server.setProjectManager({
             userId: data.userId,
@@ -444,8 +430,6 @@ export default {
                   name: 'projectManage',
                 });
               }
-              this.headUrl = data.headUrl;
-              this.userName = data.userName;
               this.$forceUpdate();
             }
           });
