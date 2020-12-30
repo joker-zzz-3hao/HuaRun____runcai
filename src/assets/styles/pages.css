@@ -3171,6 +3171,10 @@
   font-size: 14px;
 }
 
+.replay-edit.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl:last-child dt {
+  margin: 0;
+}
+
 .replay-link .okr-change-list dd:nth-of-type(4) dl:last-child dd {
   margin: 0;
 }
@@ -6305,6 +6309,7 @@
   margin-top: 10px;
 }
 
+.replay-okr.replay-detail .final-score,
 .replay-okr.replay-edit.replay-detail .final-score {
   margin-bottom: 0;
   padding: 12px 20px 18px 20px;
@@ -6314,10 +6319,12 @@
   background: #f8f9fb;
 }
 
+.replay-okr.replay-detail .final-score span,
 .replay-okr.replay-edit.replay-detail .final-score span {
   font-size: 16px;
 }
 
+.replay-okr.replay-detail .final-score dd + dd,
 .replay-okr.replay-edit.replay-detail .final-score dd + dd {
   margin-left: 160px;
 }
