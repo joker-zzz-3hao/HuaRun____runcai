@@ -121,15 +121,18 @@
         </dl>
       </elcollapseitem>
     </elcollapse>
-    <div class="final-score">
-      <span>OKR自评得分</span>
-      <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
-      <span>分</span>
-    </div>
-    <div v-if="okrMain.okrMainVo.finalScore != null">
-      <span>OKR复核得分</span>
-      <em>{{ okrMain.okrMainVo.finalScore || 0 }}</em>
-    </div>
+    <dl class="final-score">
+      <dd>
+        <span>OKR自评得分</span>
+        <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
+        <span>分</span>
+      </dd>
+      <dd v-if="okrMain.okrMainVo.finalScore != null">
+        <span>OKR复核得分</span>
+        <em>{{ okrMain.okrMainVo.finalScore || 0 }}</em>
+        <span>分</span>
+      </dd>
+    </dl>
     <img-dialog ref="imgDialog" width="75%" top="5vh"></img-dialog>
   </div>
 </template>

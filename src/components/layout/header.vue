@@ -132,6 +132,7 @@ export default {
     },
     loginOut() {
       this.changeTestModel(false);
+      sessionStorage.removeItem('historyPer');
       loginOut();
     },
     switchOrg() {

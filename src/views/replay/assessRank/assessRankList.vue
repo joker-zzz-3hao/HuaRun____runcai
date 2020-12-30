@@ -32,7 +32,7 @@
         <div>
           <span>部门总数</span>
           <em>{{ sortMsg.orgSum || 0 }}</em>
-          <span>待复核</span>
+          <span>未复核</span>
           <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
           <dl v-for="rule in ruleDetailContentList" :key="rule.applyId">
             <dt>{{ rule.ruleName }}</dt>
@@ -211,6 +211,7 @@ export default {
   methods: {
     // 查询排名列表接口
     assessment() {
+      sessionStorage.setItem('historyPer', this.periodId);
       this.server.assessment({
         periodId: this.periodId,
       }).then((res) => {
@@ -360,7 +361,11 @@ export default {
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
         this.periodIdList = res.data;
-        this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
+        if (sessionStorage.getItem('historyPer')) {
+          this.periodId = sessionStorage.getItem('historyPer');
+        } else {
+          this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
+        }
         this.assessment();
       });
     },

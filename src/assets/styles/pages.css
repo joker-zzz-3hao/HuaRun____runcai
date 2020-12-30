@@ -2820,10 +2820,6 @@
   min-height: calc(100vh - 172px);
 }
 
-.replay-link.is-padding {
-  padding: 0 0 56px 0;
-}
-
 .replay-info dt {
   display: flex;
   align-items: center;
@@ -2848,12 +2844,12 @@
   justify-content: space-between;
 }
 
-.replay-info > dd:not(:last-child) {
+.replay-info > dd:not(.explain) {
   background: #f4f6f8;
 }
 
 .replay-info .dl-list-group {
-  margin: 22px 0 14px 0;
+  margin: 10px 0 14px 0;
   padding: 12px 75px 8px 32px;
   background: #f4f6f8;
 }
@@ -3041,6 +3037,10 @@
   display: unset;
 }
 
+.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd .el-form-item {
+  margin: 0;
+}
+
 .replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd > div {
   display: flex;
   justify-content: space-between;
@@ -3065,6 +3065,7 @@
 
 .replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd .upload-btn em {
   cursor: pointer;
+  color: #879099;
 }
 
 .replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl > dd .upload-btn em:hover {
@@ -3170,6 +3171,10 @@
   font-size: 14px;
 }
 
+.replay-edit.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) dl:last-child dt {
+  margin: 0;
+}
+
 .replay-link .okr-change-list dd:nth-of-type(4) dl:last-child dd {
   margin: 0;
 }
@@ -3244,7 +3249,7 @@
 }
 
 .replay-link .final-score {
-  margin: 0 0 20px 28px;
+  margin: 0 0 14px 28px;
   font-size: 18px;
   font-weight: 500;
   color: #4d5155;
@@ -6129,8 +6134,85 @@
 }
 
 .replay-okr.replay-edit .replay-link,
-.replay-okr.replay-communication .replay-link {
+.replay-okr.replay-communication.replay-detail .replay-link,
+.replay-okr.replay-edit.replay-detail .replay-link {
   margin: 0 auto 86px auto;
+}
+
+.replay-okr.replay-communication .replay-communicate {
+  margin-bottom: 20px;
+}
+
+.replay-communication .replay-communicate .el-form {
+  width: 100%;
+}
+
+.replay-communication .replay-communicate .el-form-item {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.replay-communication .replay-communicate .el-form-item:first-child {
+  margin-bottom: 6px;
+}
+
+.replay-communication .replay-communicate .el-form-item__content {
+  margin: 0 !important;
+  width: 100%;
+}
+
+.replay-communication .replay-communicate .el-form-item__label {
+  margin: 6px 0;
+  line-height: unset;
+}
+
+.replay-communication .replay-communicate .el-form-item:first-child .el-form-item__label {
+  margin-bottom: 0;
+}
+
+.replay-communication .replay-communicate .el-form-item .el-form-item__label {
+  width: unset !important;
+  text-align: left;
+}
+
+.replay-communication .replay-communicate dl {
+  display: flex;
+  align-items: center;
+}
+
+.replay-communication .replay-communicate dd dt {
+  color: #879099;
+}
+
+.replay-communication .replay-communicate dd dd {
+  margin-left: 20px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.replay-communication .replay-communicate dd dd div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 86px;
+  height: 28px;
+  border-radius: 14px;
+  border: 1px dashed transparent;
+  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(-45deg, #d5dde3 0, #d5dde3 0.2em, #fff 0, #fff 0.4em);
+  color: #7a828a;
+  cursor: pointer;
+}
+
+.replay-communication .replay-communicate dd dd .high-light {
+  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(-45deg, #06aca9 0, #06aca9 0.2em, #fff 0, #fff 0.4em);
+  color: #06aca9;
+}
+
+.replay-communication .replay-communicate dd dd div:not(:last-child) {
+  margin-right: 10px;
 }
 
 .replay-okr.replay-detail .replay-link {
@@ -6159,6 +6241,92 @@
 
 .replay-link .tl-custom-timeline .list-cont {
   margin-top: 10px;
+}
+
+.replay-okr.replay-edit.replay-detail .replay-info .replay-title em + em {
+  font-size: 18px;
+  color: #26282b;
+  font-weight: 500;
+}
+
+.replay-okr.replay-edit.replay-detail .explain {
+  cursor: pointer;
+}
+
+.replay-okr.replay-edit.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) {
+  padding-bottom: 14px;
+}
+
+.replay-okr.replay-edit.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) .score dt,
+.replay-okr.replay-edit.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) .instructions dt {
+  color: #4d5155;
+}
+
+.replay-okr.replay-edit.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) .instructions ul {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.replay-okr.replay-edit.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) .instructions li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 86px;
+  height: 28px;
+  border-radius: 14px;
+  border: 1px dashed transparent;
+  background: linear-gradient(#f4f6f8, #f4f6f8) padding-box, repeating-linear-gradient(-45deg, #d5dde3 0, #d5dde3 0.2em, #f4f6f8 0, #f4f6f8 0.4em);
+  color: #7a828a;
+  cursor: pointer;
+}
+
+.replay-okr.replay-edit.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) .instructions li:not(:last-child) {
+  margin-right: 10px;
+}
+
+.replay-okr.replay-edit.replay-detail .replay-link .okr-change-list dd:nth-of-type(4) .instructions .high-light {
+  background: linear-gradient(#f4f6f8, #f4f6f8) padding-box, repeating-linear-gradient(-45deg, #06aca9 0, #06aca9 0.2em, #f4f6f8 0, #f4f6f8 0.4em);
+  color: #06aca9;
+}
+
+.replay-okr.replay-edit.replay-detail .communicate-results dd {
+  margin-left: 28px;
+  display: flex;
+  align-items: center;
+}
+
+.replay-okr.replay-edit.replay-detail .communicate-results dd span {
+  flex: 0 0 136px;
+  color: #879099;
+}
+
+.replay-okr.replay-edit.replay-detail .communicate-results dd em {
+  color: #4d5155;
+}
+
+.replay-okr.replay-edit.replay-detail .communicate-results dd + dd {
+  margin-top: 10px;
+}
+
+.replay-okr.replay-detail .final-score,
+.replay-okr.replay-edit.replay-detail .final-score {
+  margin-bottom: 0;
+  padding: 12px 20px 18px 20px;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  background: #f8f9fb;
+}
+
+.replay-okr.replay-detail .final-score span,
+.replay-okr.replay-edit.replay-detail .final-score span {
+  font-size: 16px;
+}
+
+.replay-okr.replay-detail .final-score dd + dd,
+.replay-okr.replay-edit.replay-detail .final-score dd + dd {
+  margin-left: 160px;
 }
 
 /* personal-center */

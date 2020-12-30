@@ -11,7 +11,7 @@
             :popper-append-to-body="false"
             @change="okrReviewList"
             popper-class="tl-select-dropdown"
-            class="tl-select"
+            class="tl-select has-bg"
           >
             <el-option
               :label="item.periodName"
@@ -38,7 +38,7 @@
             }"
             @change="selectIdChange"
             popper-class="tl-cascader-popper"
-            class="tl-cascader"
+            class="tl-cascader has-bg"
           ></el-cascader>
         </dd>
       </dl>
@@ -51,7 +51,7 @@
           @change="okrReviewList"
           clearable
           popper-class="tl-select-dropdown"
-          class="tl-select"
+          class="tl-select has-bg"
         >
           <el-option
             :label="item.name"
@@ -69,20 +69,20 @@
       <tl-crcloud-table :isPage="false">
         <div slot="tableContainer" class="table-container">
           <el-table :data="tableData" class="tl-table" row-key="id">
-            <el-table-column prop="orgName" label="部门" min-width="165">
+            <el-table-column prop="orgName" label="部门" min-width="215">
             </el-table-column>
 
             <el-table-column
               prop="userName"
               label="负责人"
-              min-width="165"
+              min-width="80"
             ></el-table-column>
-            <el-table-column prop="submitTime" label="提交时间" min-width="170">
+            <el-table-column prop="submitTime" label="提交时间" min-width="130">
               <template slot-scope="props">
                 <span>{{ props.row.submitTime || "--" }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="reviewTime" label="复核时间" min-width="100">
+            <el-table-column prop="reviewTime" label="复核时间" min-width="130">
               <template slot-scope="props">
                 <span>{{ props.row.reviewTime || "--" }}</span>
               </template>
@@ -123,6 +123,7 @@
                   v-if="scope.row.approvalStatus == 2"
                   type="text"
                   @click="showAssesspast(scope.row, 'edit')"
+                  class="tl-btn"
                   >绩效复核
                 </el-button>
                 <el-button
@@ -182,6 +183,7 @@ export default {
   methods: {
     okrReviewList() {
       if (this.periodId && this.orgId) {
+        sessionStorage.setItem('historyPer', this.periodId);
         this.server.summaryReview({
           periodId: this.periodId,
           orgId: this.orgId,
@@ -196,7 +198,11 @@ export default {
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
         this.periodIdList = res.data;
-        this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
+        if (sessionStorage.getItem('historyPer')) {
+          this.periodId = sessionStorage.getItem('historyPer');
+        } else {
+          this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
+        }
         this.okrReviewList();
       });
     },

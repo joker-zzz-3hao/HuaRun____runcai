@@ -274,7 +274,7 @@
                     @click.native="
                       ['1', 1, '2', 2, 3, '3', '4', 4].includes(
                         item.okrMain.status
-                      ) && openUpdate(props.okritem, item.okrMain.status)
+                      ) && openUpdate(props.okritem, item.okrMain)
                     "
                     :data="parseInt(props.okritem.okrDetailProgress, 10)"
                   ></tl-process>
@@ -331,6 +331,7 @@
       :periodId="okrCycle.periodId"
       :periodName="okrCycle.periodName"
       :okrItemStatus="okrItemStatus"
+      :reviewStatus="reviewStatus"
       @success="updateSearch()"
     ></tl-okr-update>
     <tl-okr-history
@@ -618,8 +619,9 @@ export default {
       });
     },
     // 打开更新进度
-    openUpdate(val, status) {
-      this.okrItemStatus = status;
+    openUpdate(val, obj) {
+      this.okrItemStatus = obj.status;
+      this.reviewStatus = obj.reviewStatus;
       this.okrItem = val;
       this.currentView = 'tl-okr-update';
       this.updateExist = true;

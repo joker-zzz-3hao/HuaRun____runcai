@@ -7,7 +7,7 @@
           <el-select
             :disabled="periodIdList.length == 0"
             v-model.trim="periodId"
-            placeholder="用户类型"
+            placeholder="请选择目标周期"
             :popper-append-to-body="false"
             @change="okrReviewList"
             popper-class="tl-select-dropdown"
@@ -27,7 +27,7 @@
         <dd>
           <el-select
             v-model.trim="reviewStatus"
-            placeholder="用户状态"
+            placeholder="请选择复盘状态"
             :popper-append-to-body="false"
             @change="okrReviewList"
             clearable
@@ -74,12 +74,12 @@
             <el-table-column
               prop="userName"
               label="姓名"
-              width="100"
+              width="90"
             ></el-table-column>
             <el-table-column
               prop="orgName"
               label="部门名称"
-              min-width="165"
+              min-width="135"
             ></el-table-column>
             <el-table-column
               prop="okrBelongType"
@@ -123,7 +123,7 @@
             <el-table-column
               prop="reviewStatusCn"
               label="复盘状态"
-              min-width="80"
+              min-width="160"
             >
               <template slot-scope="scope">
                 <i
@@ -274,9 +274,7 @@ export default {
     okrReviewList() {
       sessionStorage.setItem('historyPer', this.periodId);
       let reviewStatus = [];
-      if (this.reviewStatus === 3) {
-        reviewStatus = [0, 3];
-      } else if (this.reviewStatus == '') {
+      if (this.reviewStatus === '') {
         reviewStatus = null;
       } else {
         reviewStatus[0] = this.reviewStatus;
