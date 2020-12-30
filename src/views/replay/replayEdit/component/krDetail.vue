@@ -337,7 +337,7 @@ export default {
           communicationLabel: item.communicationLabel,
           attachmentDtoList: item.attachmentDtoList,
           score: item.score,
-          remark: item.scoreRemark,
+          remark: item.score * 100 == item.okrDetailProgress ? '' : item.scoreRemark,
         }));
       }
     },
@@ -385,7 +385,7 @@ export default {
         measure: item.measure || [],
         communicationLabel: item.communicationLabel,
         score: item.score,
-        remark: item.scoreRemark || null,
+        remark: item.remark || '',
       }));
       console.log(JSON.stringify(this.oldList), JSON.stringify(list));
       if (JSON.stringify(this.oldList) == JSON.stringify(list)) {
