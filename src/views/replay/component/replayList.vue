@@ -7,7 +7,7 @@
           <el-select
             :disabled="periodIdList.length == 0"
             v-model.trim="periodId"
-            placeholder="用户类型"
+            placeholder="请选择目标周期"
             :popper-append-to-body="false"
             @change="okrReviewList"
             popper-class="tl-select-dropdown"
@@ -27,7 +27,7 @@
         <dd>
           <el-select
             v-model.trim="reviewStatus"
-            placeholder="用户状态"
+            placeholder="请选择复盘状态"
             :popper-append-to-body="false"
             @change="okrReviewList"
             clearable

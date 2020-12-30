@@ -182,6 +182,7 @@ export default {
   methods: {
     okrReviewList() {
       if (this.periodId && this.orgId) {
+        sessionStorage.setItem('historyPer', this.periodId);
         this.server.summaryReview({
           periodId: this.periodId,
           orgId: this.orgId,
@@ -196,7 +197,11 @@ export default {
     getOkrCycleList() {
       this.server.getOkrCycleList().then((res) => {
         this.periodIdList = res.data;
-        this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
+        if (sessionStorage.getItem('historyPer')) {
+          this.periodId = sessionStorage.getItem('historyPer');
+        } else {
+          this.periodId = this.periodIdList.filter((item) => item.checkStatus == 1)[0].periodId || {};
+        }
         this.okrReviewList();
       });
     },
