@@ -1,8 +1,18 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-12-28 14:40:26
+ * @LastEditTime: 2020-12-30 14:52:58
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \cr-talent-web\src\views\replay\replayScore\component\repayUser.vue
+-->
 <template>
   <dl class="replay-info">
     <dt>
       <div class="replay-title">
-        <span>复盘对象:</span><em>{{ okrMain.okrMainVo.orgName }}</em>
+        <span>OKR复核对象:</span>
+        <em>{{ okrMain.okrMainVo.periodName }}</em>
+        <em>（{{ okrMain.okrMainVo.orgName }}）</em>
       </div>
       <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
         返回
