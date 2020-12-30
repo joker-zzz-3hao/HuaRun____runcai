@@ -32,7 +32,7 @@
         <div>
           <span>部门总数</span>
           <em>{{ sortMsg.orgSum || 0 }}</em>
-          <span>待复核</span>
+          <span>未复核</span>
           <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
           <dl v-for="rule in ruleDetailContentList" :key="rule.applyId">
             <dt>{{ rule.ruleName }}</dt>

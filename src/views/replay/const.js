@@ -6,8 +6,8 @@
 const REVIEW_STATUS = {
   0: '复盘结束',
   1: '待复盘',
-  2: '待沟通',
-  3: '待复核',
+  2: '待复盘沟通',
+  3: '待经管复核',
   4: '待复盘审批',
 };
 
@@ -19,14 +19,15 @@ const OKR_BELONGTYPE = {
 const REVIEW_STATUS_LIST = [
   { name: '全部', status: '' },
   { name: '待复盘', status: 1 },
-  { name: '待沟通', status: 2 },
-  { name: '待复核', status: 3 },
+  { name: '待复盘沟通', status: 2 },
+  { name: '待经管复核', status: 3 },
   { name: '待复盘审批', status: 4 },
+  { name: '复盘结束', status: 0 },
 ];
 const REPLAY_STATUS_LIST = [
   { name: '全部', status: '' },
-  { name: '待复核', status: 3 },
-  { name: '已复核', status: 0 },
+  { name: '待经管复核', status: 3 },
+  { name: '已复盘结束复核', status: 0 },
 ];
 const REPLAY_ASSESS_STATUS_LIST = [
   { name: '全部', status: '' },
@@ -38,8 +39,8 @@ const REPLAY_ASSESS_STATUS_LIST = [
 const REVIEW_STATUS_MAP = {
   0: { name: '复盘结束', classname: 'finish-review' },
   1: { name: '待复盘', classname: 'no-review' },
-  2: { name: '待沟通', classname: 'no-talk' },
-  3: { name: '待复核', classname: 'finish-review' },
+  2: { name: '待复盘沟通', classname: 'no-talk' },
+  3: { name: '待经管复核', classname: 'finish-review' },
   4: { name: '待复盘审批', classname: 'approve-review' },
 };
 const APPROVAL_SCORE_STATUS_MAP = {
