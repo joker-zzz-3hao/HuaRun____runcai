@@ -77,19 +77,21 @@
               </dl>
               <dl>
                 <dt>佐证材料</dt>
-                <dd
-                  v-for="file in list.attachmentDtoList"
-                  :key="file.resourceId"
-                >
-                  <em>{{ file.resourceName }}</em>
-                  <span>
-                    <span
-                      v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
-                      @click="openFile(file)"
-                      >预览</span
-                    >
-                    <span @click="downFile(file)">下载</span>
-                  </span>
+                <dd>
+                  <div
+                    v-for="file in list.attachmentDtoList"
+                    :key="file.resourceId"
+                  >
+                    <div class="upload-cont">{{ file.resourceName }}</div>
+                    <div class="upload-btn">
+                      <em
+                        v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+                        @click="openFile(file)"
+                        >预览</em
+                      >
+                      <em @click="downFile(file)">下载</em>
+                    </div>
+                  </div>
                 </dd>
               </dl>
               <dl>
@@ -105,7 +107,7 @@
                 <dd v-for="(li, d) in list.measure || []" :key="d">{{ li }}</dd>
                 <dd v-if="list.measure.length == 0">未填写</dd>
               </dl>
-              <dl>
+              <dl class="score">
                 <dt>复核得分</dt>
                 <dd v-if="isdetail == 'isdetail'">
                   <em>{{ list.finalScore }}</em>
@@ -136,7 +138,7 @@
                   </el-form>
                 </dd>
               </dl>
-              <dl>
+              <dl class="instructions">
                 <dt>复核说明</dt>
                 <dd v-if="isdetail == 'isdetail'">
                   <em>{{ list.finalRemark }}</em>
@@ -150,16 +152,18 @@
                     resize="none"
                     class="tl-textarea"
                   ></el-input>
-                  <em
-                    v-for="sortComment in sortCommentList"
-                    :key="sortComment"
-                    @click="addSortComment(list, sortComment)"
-                    :class="{
-                      'high-light': list.remark.indexOf(sortComment) >= 0,
-                    }"
-                  >
-                    {{ sortComment }}
-                  </em>
+                  <ul>
+                    <li
+                      v-for="sortComment in sortCommentList"
+                      :key="sortComment"
+                      @click="addSortComment(list, sortComment)"
+                      :class="{
+                        'high-light': list.remark.indexOf(sortComment) >= 0,
+                      }"
+                    >
+                      {{ sortComment }}
+                    </li>
+                  </ul>
                 </dd>
               </dl>
               <dl v-if="isdetail == 'isdetail'">
@@ -200,6 +204,7 @@
               .pptx,
               .xlsx"
                     tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过10M"
+                    class="upload-wrap"
                   ></file-upload>
                 </dd>
               </dl>
@@ -208,26 +213,31 @@
         </div>
       </elcollapseitem>
     </elcollapse>
-    <div v-if="okrMain.okrReviewCommunicationDetailEntity">
-      <div>
-        <span>上级的复盘沟通结果：</span>
+    <dl
+      v-if="okrMain.okrReviewCommunicationDetailEntity"
+      class="communicate-results"
+    >
+      <dd>
+        <span>上级的复盘沟通结果</span>
         <em>通过</em>
-      </div>
-      <div>
-        <span>复盘沟通说明：</span>
+      </dd>
+      <dd>
+        <span>复盘沟通说明</span>
         <em>{{ okrMain.okrReviewCommunicationDetailEntity.communication }}</em>
-      </div>
-    </div>
-    <div v-if="okrMain.okrMainVo">
-      <div>
+      </dd>
+    </dl>
+    <dl v-if="okrMain.okrMainVo" class="final-score">
+      <dd>
         <span>OKR自评得分</span>
         <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
-      </div>
-      <div>
+        <span>分</span>
+      </dd>
+      <dd>
         <span>OKR复核最终得分</span>
         <em>{{ okrMain.okrMainVo.finalScore }}</em>
-      </div>
-    </div>
+        <span>分</span>
+      </dd>
+    </dl>
     <div class="footer-panel">
       <el-button
         v-if="isdetail === 'edit'"

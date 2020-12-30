@@ -1,24 +1,23 @@
-<!--
- * @Author: your name
- * @Date: 2020-12-28 14:40:26
- * @LastEditTime: 2020-12-30 14:52:58
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \cr-talent-web\src\views\replay\replayScore\component\repayUser.vue
--->
 <template>
   <dl class="replay-info">
     <dt>
       <div class="replay-title">
         <span>OKR复核对象:</span>
         <em>{{ okrMain.okrMainVo.periodName }}</em>
-        <em>（{{ okrMain.okrMainVo.orgName }}）</em>
+        <em>({{ okrMain.okrMainVo.orgName }})</em>
       </div>
       <el-button plain @click="$router.back()" class="tl-btn amt-border-slip">
         返回
         <span class="lines"></span>
       </el-button>
     </dt>
+    <dd
+      class="flex-end explain"
+      v-if="$route.name == 'replayScoreDetail'"
+      @click="openRule"
+    >
+      <i class="icon-help"></i><em>评分说明</em>
+    </dd>
     <dd class="dl-list-group">
       <dl class="dl-item user-info">
         <dd v-if="okrMain.okrMainVo.headUrl">
@@ -49,7 +48,6 @@
           }}</em>
         </dd>
       </dl>
-
       <dl class="dl-item">
         <dt><span>OKR进度</span></dt>
         <dd>
@@ -63,13 +61,6 @@
           ></el-progress>
         </dd>
       </dl>
-    </dd>
-    <dd
-      class="flex-end"
-      v-if="$route.name == 'replayScoreDetail'"
-      @click="openRule"
-    >
-      评分说明
     </dd>
     <tl-scorerule ref="scorerule"></tl-scorerule>
   </dl>
