@@ -73,7 +73,7 @@
         @searchList="okrReviewList"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" class="tl-table">
+          <el-table :data="tableData" class="tl-table no-data">
             <el-table-column prop="orgFullName" label="部门" min-width="120">
             </el-table-column>
             <el-table-column prop="userName" label="姓名"></el-table-column>

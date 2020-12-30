@@ -123,7 +123,7 @@
             <el-table-column
               prop="reviewStatusCn"
               label="复盘状态"
-              min-width="80"
+              min-width="90"
             >
               <template slot-scope="scope">
                 <i

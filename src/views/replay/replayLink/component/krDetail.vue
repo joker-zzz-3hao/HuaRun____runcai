@@ -76,16 +76,21 @@
             </dl>
             <dl v-if="list.attachmentDtoList">
               <dt>佐证材料</dt>
-              <dd v-for="file in list.attachmentDtoList" :key="file.resourceId">
-                <em>{{ file.resourceName }}</em>
-                <span>
-                  <span
-                    v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
-                    @click="openFile(file)"
-                    >预览</span
-                  >
-                  <span @click="downFile(file)">下载</span>
-                </span>
+              <dd>
+                <div
+                  v-for="file in list.attachmentDtoList"
+                  :key="file.resourceId"
+                >
+                  <div class="upload-cont">{{ file.resourceName }}</div>
+                  <div class="upload-btn">
+                    <em
+                      v-if="CONST.IMAGES_MAP[cutType(file.resourceName)]"
+                      @click="openFile(file)"
+                      >预览</em
+                    >
+                    <em @click="downFile(file)">下载</em>
+                  </div>
+                </div>
               </dd>
             </dl>
             <!-- 复盘详情 -->
@@ -104,8 +109,10 @@
                 <dd v-if="list.measure.length == 0">未填写</dd>
               </dl>
             </template>
-            <div @click="openMore(list)">
-              <i :class="list.openAdvantage === true ? 'close' : 'open'"></i>
+            <div @click="openMore(list)" class="fold-extend">
+              <i
+                :class="list.openAdvantage === true ? 'has-fold' : 'has-extend'"
+              ></i>
               <span v-if="list.openAdvantage">收起</span>
               <span v-else>展开</span>
             </div>
@@ -118,7 +125,7 @@
       <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
       <span>分</span>
     </div>
-    <dl class="dl-card-panel replay-record">
+    <dl class="dl-card-panel replay-communicate">
       <dt><em>复盘沟通</em></dt>
       <dd>
         <el-form
@@ -181,19 +188,22 @@
               resize="none"
             ></el-input>
           </el-form-item>
-          <div v-if="ruleForm.passFlag == '1'">
-            <span>快捷评语：</span>
-            <em
-              v-for="sortComment in sortCommentList"
-              :key="sortComment"
-              @click="addSortComment(sortComment)"
-              :class="{
-                'high-light': ruleForm.communication.indexOf(sortComment) >= 0,
-              }"
-            >
-              {{ sortComment }}
-            </em>
-          </div>
+          <dl v-if="ruleForm.passFlag == '1'">
+            <dt>快捷评语</dt>
+            <dd>
+              <div
+                v-for="sortComment in sortCommentList"
+                :key="sortComment"
+                @click="addSortComment(sortComment)"
+                :class="{
+                  'high-light':
+                    ruleForm.communication.indexOf(sortComment) >= 0,
+                }"
+              >
+                <em>{{ sortComment }}</em>
+              </div>
+            </dd>
+          </dl>
         </el-form>
       </dd>
     </dl>
