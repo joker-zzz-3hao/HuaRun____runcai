@@ -274,9 +274,7 @@ export default {
     okrReviewList() {
       sessionStorage.setItem('historyPer', this.periodId);
       let reviewStatus = [];
-      if (this.reviewStatus === 3) {
-        reviewStatus = [0, 3];
-      } else if (this.reviewStatus == '') {
+      if (this.reviewStatus === '') {
         reviewStatus = null;
       } else {
         reviewStatus[0] = this.reviewStatus;
