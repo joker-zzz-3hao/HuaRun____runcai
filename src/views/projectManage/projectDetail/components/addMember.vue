@@ -285,8 +285,10 @@ export default {
       this.selectListed = data;
       // 给职级、公司数组赋值
       this.dataForm.tableData.forEach((item) => {
-        item.companyList = [];
-        item.levelList = [];
+        // item.companyList = [];
+        // item.levelList = [];
+        item.companyList = this.companyListInternal;
+        item.levelList = this.levelListInternal;
         // 内部员工
         if (item.ldapType && item.ldapType == 'Full-Time') {
           item.companyList = this.companyListInternal;
