@@ -2300,6 +2300,10 @@
   border-radius: 2px;
 }
 
+.tl-cascader.has-bg .el-input__inner {
+  border-color: transparent;
+}
+
 .tl-cascader.el-cascader:not(.is-disabled):hover .el-input__inner,
 .tl-cascader.el-cascader .el-input .el-input__inner:focus,
 .tl-cascader.el-cascader .el-input.is-focus .el-input__inner {
