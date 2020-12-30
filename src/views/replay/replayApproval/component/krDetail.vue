@@ -113,12 +113,13 @@
         </dl>
       </elcollapseitem>
     </elcollapse>
-    <div>
-      <span>OKR得分</span>
+    <div class="final-score">
+      <span>OKR自评得分</span>
       <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
+      <span>分</span>
     </div>
     <dl class="dl-card-panel replay-record">
-      <dt><em>复盘沟通</em></dt>
+      <dt><em>复盘审批</em></dt>
       <dd>
         <el-form
           :model="ruleForm"
