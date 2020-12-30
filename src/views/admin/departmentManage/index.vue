@@ -202,7 +202,7 @@
               <template slot-scope="scope">
                 <el-button
                   type="text"
-                  v-if="scope.row.userType == '2' && hasPower('TNT_ORG_EDIT')"
+                  v-if="scope.row.userType == '2'"
                   @click="createOrEditUser(scope.row)"
                   class="tl-btn"
                   >编辑</el-button
