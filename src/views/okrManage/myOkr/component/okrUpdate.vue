@@ -19,7 +19,7 @@
           <div
             class="tl-custom-timeline"
             v-if="
-              currentIndex === 0 && [1, '1', 3, '3'].includes(okrItemStatus)
+              currentIndex === 0 && [1, '1', 3, '3'].includes(okrItemStatus) || (okrItemStatus == 2&& reviewStatus==1 )
             "
           >
             <div class="last-update" v-if="hasValue(historyFirst)">
@@ -375,6 +375,10 @@ export default {
     },
     okrItemStatus: {
       type: Number,
+    },
+    reviewStatus: {
+      type: Number,
+      default: 1
     },
 
   },
