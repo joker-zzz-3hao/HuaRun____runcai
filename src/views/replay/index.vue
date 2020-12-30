@@ -5,6 +5,7 @@
       'replay-edit': $route.name == 'replayEdit',
       'replay-communication replay-detail': $route.name == 'replayLink',
       'replay-detail': $route.name == 'replayDetail',
+      'replay-edit replay-detail': $route.name == 'replayScoreDetail',
     }"
   >
     <div

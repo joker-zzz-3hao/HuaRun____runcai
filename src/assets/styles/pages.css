@@ -3240,7 +3240,7 @@
 }
 
 .replay-link .final-score {
-  margin: 0 0 20px 28px;
+  margin: 0 0 14px 28px;
   font-size: 18px;
   font-weight: 500;
   color: #4d5155;
@@ -6170,6 +6170,10 @@
 .replay-communication .replay-communicate dl {
   display: flex;
   align-items: center;
+}
+
+.replay-communication .replay-communicate dd dt {
+  color: #879099;
 }
 
 .replay-communication .replay-communicate dd dd {
