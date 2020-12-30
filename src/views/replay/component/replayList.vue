@@ -74,12 +74,12 @@
             <el-table-column
               prop="userName"
               label="姓名"
-              width="100"
+              width="90"
             ></el-table-column>
             <el-table-column
               prop="orgName"
               label="部门名称"
-              min-width="165"
+              min-width="135"
             ></el-table-column>
             <el-table-column
               prop="okrBelongType"
@@ -123,7 +123,7 @@
             <el-table-column
               prop="reviewStatusCn"
               label="复盘状态"
-              min-width="90"
+              min-width="160"
             >
               <template slot-scope="scope">
                 <i
