@@ -144,7 +144,7 @@
           <el-table :data="baseInfo.projectUserVoList" class="tl-table">
             <el-table-column prop="userName" label="姓名" min-width="130">
               <template slot-scope="scope">
-                <div class="user-info" @click="setManager(scope.row)">
+                <div class="user-info">
                   <img
                     v-if="hasValue(scope.row.headUrl)"
                     :src="scope.row.headUrl"
@@ -163,7 +163,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="项目经理" min-width="110">
+            <!-- <el-table-column label="项目经理" min-width="110">
               <template slot-scope="scope">
                 <div
                   v-if="scope.row.projectUserType == '1'"
@@ -193,7 +193,7 @@
                 </div>
                 <div v-else>--</div>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column prop="userLevelName" label="级别" min-width="80">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.userLevelName)">{{
