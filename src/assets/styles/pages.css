@@ -2820,10 +2820,6 @@
   min-height: calc(100vh - 172px);
 }
 
-.replay-link.is-padding {
-  padding: 0 0 56px 0;
-}
-
 .replay-info dt {
   display: flex;
   align-items: center;
@@ -6129,8 +6125,80 @@
 }
 
 .replay-okr.replay-edit .replay-link,
-.replay-okr.replay-communication .replay-link {
+.replay-okr.replay-communication.replay-detail .replay-link {
   margin: 0 auto 86px auto;
+}
+
+.replay-okr.replay-communication .replay-communicate {
+  margin-bottom: 20px;
+}
+
+.replay-communication .replay-communicate .el-form {
+  width: 100%;
+}
+
+.replay-communication .replay-communicate .el-form-item {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.replay-communication .replay-communicate .el-form-item:first-child {
+  margin-bottom: 6px;
+}
+
+.replay-communication .replay-communicate .el-form-item__content {
+  margin: 0 !important;
+  width: 100%;
+}
+
+.replay-communication .replay-communicate .el-form-item__label {
+  margin: 6px 0;
+  line-height: unset;
+}
+
+.replay-communication .replay-communicate .el-form-item:first-child .el-form-item__label {
+  margin-bottom: 0;
+}
+
+.replay-communication .replay-communicate .el-form-item .el-form-item__label {
+  width: unset !important;
+  text-align: left;
+}
+
+.replay-communication .replay-communicate dl {
+  display: flex;
+  align-items: center;
+}
+
+.replay-communication .replay-communicate dd dd {
+  margin-left: 20px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.replay-communication .replay-communicate dd dd div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 86px;
+  height: 28px;
+  border-radius: 14px;
+  border: 1px dashed transparent;
+  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(-45deg, #d5dde3 0, #d5dde3 0.2em, #fff 0, #fff 0.4em);
+  color: #7a828a;
+  cursor: pointer;
+}
+
+.replay-communication .replay-communicate dd dd .high-light {
+  background: linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(-45deg, #06aca9 0, #06aca9 0.2em, #fff 0, #fff 0.4em);
+  color: #06aca9;
+}
+
+.replay-communication .replay-communicate dd dd div:not(:last-child) {
+  margin-right: 10px;
 }
 
 .replay-okr.replay-detail .replay-link {
