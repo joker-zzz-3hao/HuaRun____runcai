@@ -3,17 +3,26 @@
     <el-tabs v-model="projectTab" @tab-click="handleClick" class="tl-tabs">
       <el-tab-pane label="项目信息" name="1">
         <tl-project-info
-          v-if="First"
+          :queryList="queryList"
           :server="server"
+          @changeTab="changeTab"
           :baseInfo="baseInfo"
+          :summaryList="summaryList"
         ></tl-project-info>
       </el-tab-pane>
       <el-tab-pane label="项目统计数据" name="2">
         <tl-project-statistics
-          v-if="Second"
           :summaryList="summaryList"
           :server="server"
         ></tl-project-statistics>
+      </el-tab-pane>
+      <el-tab-pane label="项目小组" name="3">
+        <tl-hour-group
+          @queryProjectTeam="queryProjectTeam"
+          :summaryList="summaryList"
+          :queryList="queryList"
+          :server="server"
+        ></tl-hour-group>
       </el-tab-pane>
       <div class="tabs-other-panel">
         <el-button
@@ -31,6 +40,7 @@
 <script>
 import projectInfo from './components/projectInfo';
 import projectStatistics from './components/projectStatistics';
+import hourGroup from './components/hourGroup';
 import Server from '../server';
 
 const server = new Server();
@@ -45,12 +55,14 @@ export default {
       summaryList: [],
       First: true,
       Second: false,
+      queryList: [],
     };
   },
   props: {},
   components: {
     'tl-project-info': projectInfo,
     'tl-project-statistics': projectStatistics,
+    'tl-hour-group': hourGroup,
   },
   mounted() {
     this.changeTab();
@@ -70,6 +82,14 @@ export default {
         if (res.code == '200') {
           this.summaryList = res.data;
         }
+      });
+      this.queryProjectTeam();
+    },
+    queryProjectTeam() {
+      this.server.queryProjectTeam({
+        projectId: this.$route.query.projectId,
+      }).then((res) => {
+        this.queryList = res.data;
       });
     },
     handleClick(data) {

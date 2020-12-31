@@ -66,6 +66,18 @@
           </dd>
         </dl>
         <dl class="dl-item">
+          <dt><span>代理项目经理</span></dt>
+          <dd>
+            <tl-create-select
+              @getSelectUser="getSelectUser"
+              btnText="修改"
+              placeholderText="请输入成员"
+              :userList="summaryList"
+              :type="'user'"
+            ></tl-create-select>
+          </dd>
+        </dl>
+        <dl class="dl-item">
           <dt><span>项目所属部门</span></dt>
           <dd>
             <em v-if="hasValue(baseInfo.parentOrgName)">{{
@@ -241,7 +253,7 @@
             <el-table-column
               fixed="right"
               label="操作"
-              width="60"
+              width="130"
               v-if="
                 baseInfo.projectUserVoList &&
                 baseInfo.projectUserVoList.length > 0
@@ -256,8 +268,19 @@
                   @click="deleteMember(scope.row)"
                   type="text"
                   class="tl-btn"
+                  style="margin-right: 10px"
                   >移除</el-button
                 >
+                <tl-create-select
+                  :userList="queryList"
+                  @getSelectId="getSelectId"
+                  btnText="移动到组"
+                  :removeBtn="true"
+                  @changeTab="$emit('changeTab')"
+                  :listData="scope.row"
+                  placeholderText="请输入成员"
+                  :selectId="scope.row.projectTeamId"
+                ></tl-create-select>
               </template>
             </el-table-column>
           </el-table>
@@ -286,6 +309,7 @@
 <script>
 import { mapState } from 'vuex';
 import crcloudTable from '@/components/crcloudTable';
+import createSelect from '../../components/createSelect';
 import addMember from './addMember';
 import checkManager from './checkManager';
 import CONST from '../../const';
@@ -308,12 +332,14 @@ export default {
       pWidth: '',
       emWidth: '',
       DisuserId: {},
+      userList: ['徐佳佳', '候敏', '曾伟', '许志鹏'],
     };
   },
   components: {
     'tl-crcloud-table': crcloudTable,
     'tl-add-member': addMember,
     'tl-check-manager': checkManager,
+    'tl-create-select': createSelect,
   },
   props: {
     server: {
@@ -326,6 +352,18 @@ export default {
       type: Object,
       default() {
         return {};
+      },
+    },
+    queryList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    summaryList: {
+      type: Array,
+      default() {
+        return [];
       },
     },
   },
@@ -354,6 +392,29 @@ export default {
     });
   },
   methods: {
+    getSelectUser(userId) {
+      this.server.setProjectAgentManager({
+        projectId: this.$route.query.projectId,
+        userId,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('设置代理负责人成功');
+        }
+      });
+    },
+    getSelectId(row, id) {
+      const params = {
+        userId: row.userId,
+        projectId: row.projectId,
+        projectTeamId: id,
+      };
+      this.server.addUserProjectTeam(params).then((res) => {
+        if (res.code == 200) {
+          this.$emit('changeTab');
+          this.$message.success('移动成功');
+        }
+      });
+    },
     deleteMember(data) {
       this.$xconfirm({
         title: '删除确认',

@@ -149,4 +149,34 @@ export default class Server extends ServerBase {
   getOrg(param) {
     return this._ajaxPost('gateway/system-service/sys/organization/getOrg', param);
   }
+
+  // 新增小组成员
+  addUserProjectTeam(param) {
+    return this._ajaxPost('gateway/project-service/project/add/addUserProjectTeam', param);
+  }
+
+  // 新增小组
+  saveOrUpdateProjectTeam(param) {
+    return this._ajaxPost('gateway/project-service/project/add/saveOrUpdateProjectTeam', param);
+  }
+
+  // 小组列表
+  queryProjectTeam(param) {
+    return this._ajaxPost('gateway/project-service/project/query/queryProjectTeam', param);
+  }
+
+  // 移除小组
+  delUserProjectTeam(param) {
+    return this._ajaxPost('gateway/project-service/project/delete/delUserProjectTeam', param);
+  }
+
+  // 移除小组
+  delProjectTeam(param) {
+    return this._ajaxPost('gateway/project-service/project/delete/delProjectTeam', param);
+  }
+
+  // 设置代理项目经理
+  setProjectAgentManager(param) {
+    return this._ajaxPost('gateway/project-service/project/update/setProjectAgentManager', param);
+  }
 }
