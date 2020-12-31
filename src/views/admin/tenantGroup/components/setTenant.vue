@@ -1,0 +1,353 @@
+<!--
+  功能：
+  作者：王志任
+  时间：2020年08月04日 15:38:15
+  备注：
+-->
+<template>
+  <div>
+    <el-dialog
+      :append-to-body="true"
+      :visible="visible"
+      @close="close"
+      :title="dicTitle"
+      :close-on-click-modal="false"
+      width="70%"
+    >
+      <div>
+        <el-form ref="dicForm" :model="formData" label-width="80px">
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item
+                label="字典编号"
+                prop="code"
+                :rules="[
+                  {
+                    required: true,
+                    validator: validateDicCode,
+                    trigger: 'blur',
+                  },
+                ]"
+              >
+                <el-input
+                  v-model.trim="formData.code"
+                  maxlength="50"
+                  clearable
+                ></el-input> </el-form-item
+            ></el-col>
+            <el-col :span="12">
+              <el-form-item
+                label="字典名称"
+                prop="name"
+                :rules="[
+                  {
+                    required: true,
+                    validator: validateDicName,
+                    trigger: 'blur',
+                  },
+                ]"
+              >
+                <el-input
+                  v-model.trim="formData.name"
+                  maxlength="50"
+                  clearable
+                ></el-input> </el-form-item
+            ></el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <el-form-item
+                label="状态"
+                prop="enabledFlag"
+                :rules="[
+                  {
+                    required: true,
+                    message: '请输选择请用状态',
+                    trigger: 'blur',
+                  },
+                ]"
+              >
+                <!-- <el-radio-group v-model="formData.enabledFlag">
+                  <el-radio :label="'Y'">启用</el-radio>
+                  <el-radio :label="'N'">停用</el-radio>
+                </el-radio-group> -->
+                <el-select
+                  v-model="formData.enabledFlag"
+                  popper-class="tl-select-dropdown"
+                  class="tl-select"
+                >
+                  <el-option
+                    v-for="item in enabledList"
+                    :key="item.enabledFlag"
+                    :value="item.enabledFlag"
+                    :label="item.name"
+                  ></el-option>
+                </el-select> </el-form-item
+            ></el-col>
+            <el-col :span="12">
+              <el-form-item label="备注" prop="description">
+                <el-input
+                  v-model.trim="formData.description"
+                  maxlength="100"
+                  clearable
+                ></el-input> </el-form-item
+            ></el-col>
+          </el-row>
+        </el-form>
+      </div>
+      <div>
+        <el-form
+          :rules="formTableData.rules"
+          :model="formTableData"
+          ref="formTable"
+        >
+          <el-table v-loading="tableLoading" :data="formTableData.tableData">
+            <el-table-column label="字典键" prop="value">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'tableData.' + scope.$index + '.value'"
+                  :rules="formTableData.rules.value"
+                >
+                  <el-input
+                    v-model.trim="scope.row.value"
+                    maxlength="50"
+                    clearable
+                  ></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="字典值" prop="meaning">
+              <template slot-scope="scope">
+                <el-form-item
+                  :prop="'tableData.' + scope.$index + '.meaning'"
+                  :rules="formTableData.rules.meaning"
+                >
+                  <el-input
+                    v-model.trim="scope.row.meaning"
+                    maxlength="50"
+                    clearable
+                  ></el-input>
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="字典排序" prop="orderSeq">
+              <template slot-scope="scope">
+                <el-input-number
+                  v-model.trim="scope.row.orderSeq"
+                  controls-position="right"
+                  :min="1"
+                  :max="1000"
+                  style="width: 90px"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column label="状态" prop="enabledFlag">
+              <template slot-scope="scope">
+                <div @click.capture.stop="dataChange(scope.row)">
+                  <el-switch
+                    active-value="Y"
+                    inactive-value="N"
+                    v-model="scope.row.enabledFlag"
+                    active-color="#13ce66"
+                  ></el-switch>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="备注" prop="description">
+              <template slot-scope="scope">
+                <el-input
+                  v-model.trim="scope.row.description"
+                  maxlength="50"
+                  clearable
+                ></el-input>
+              </template>
+            </el-table-column>
+            <el-table-column label="创建时间" prop="createTime">
+              <template slot-scope="scope">
+                <span>{{
+                  scope.row.createTime ? scope.row.createTime : "--"
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" prop="code">
+              <template slot-scope="scope">
+                <el-button type="text" @click="deleteItem(scope.row)"
+                  >删除</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="btn-box" style="margin-top: 10px">
+            <el-button
+              type="text"
+              @click="addItem"
+              class="tl-btn dotted-line list-add"
+              style="display: block; margin: 0 auto"
+            >
+              <i class="el-icon-plus"></i>新增
+            </el-button>
+          </div>
+        </el-form>
+        <div class="operating-box">
+          <el-button
+            :loading="loading"
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            @click="save"
+            >确认</el-button
+          >
+          <el-button
+            :disabled="loading"
+            plain
+            class="tl-btn amt-border-fadeout"
+            @click="cancel"
+            >取消</el-button
+          >
+        </div>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import validateMixin from '../validateMixin';
+
+export default {
+  name: 'createdic',
+  mixins: [validateMixin],
+  components: {
+  },
+  props: {
+    server: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+  data() {
+    return {
+      visible: false,
+      loading: false,
+      tableLoading: false,
+      dicTitle: '新增字典',
+      formTableData: {
+        rules: {
+          value: {
+            type: 'string',
+            required: true,
+            message: '请填写字典键',
+            trigger: 'blur',
+          },
+          meaning: {
+            type: 'string',
+            required: true,
+            message: '请填写字典值',
+            trigger: 'blur',
+          },
+        },
+        tableData: [],
+      },
+      formData: {
+        code: '',
+        name: '',
+        enabledFlag: 'Y',
+        description: '',
+        subList: [],
+      },
+      enabledList: [
+        {
+          enabledFlag: 'Y',
+          name: '启用',
+        },
+        {
+          enabledFlag: 'N',
+          name: '停用',
+        },
+      ],
+    };
+  },
+  created() {
+    this.init();
+  },
+  mounted() {},
+  computed: {},
+  methods: {
+    init() {
+
+    },
+
+    show() {
+      this.visible = true;
+    },
+    close(status) {
+      this.visible = false;
+      this.$emit('closeDicDialog', { refreshPage: status == 'refreshPage' });
+    },
+
+    save() {
+      let successTip = '新增成功';
+      if (this.optionType == 'edit') {
+        successTip = '编辑成功';
+      }
+      // 校验
+      const v1 = new Promise((resolve) => {
+        this.$refs.dicForm.validate((valid) => {
+          if (valid) resolve();
+        });
+      });
+      const v2 = new Promise((resolve) => {
+        this.$refs.formTable.validate((valid) => {
+          if (valid) resolve();
+        });
+      });
+      Promise.all([v1, v2]).then(() => {
+        this.formData.subList = this.formTableData.tableData;
+        this.loading = true;
+        this.server.addOrUpdate(this.formData).then((res) => {
+          if (res.code == 200) {
+            this.$message.success(successTip);
+            this.close('refreshPage');
+          }
+          this.loading = false;
+        });
+      });
+    },
+    cancel() {
+      this.close();
+    },
+    addItem() { // 添加本地数据
+      this.formTableData.tableData.push({
+        meaning: '',
+        value: '',
+        orderSeq: '',
+        enabledFlag: 'Y',
+        description: '',
+        randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
+      });
+    },
+    deleteItem(item) {
+      if (item.randomId) { // 删除本地数据
+        this.formTableData.tableData = this.formTableData.tableData.filter((dicItem) => dicItem.randomId != item.randomId);
+      } else { // 删除数据库数据
+        this.$confirm('是否确认删除该数据？，删除将无法恢复').then(() => {
+          this.server.deleteDicItem({ codeValueId: item.codeValueId }).then((res) => {
+            if (res.code == 200) {
+              this.formTableData.tableData = this.formTableData.tableData.filter(
+                (dicItem) => dicItem.codeValueId != item.codeValueId,
+              );
+              this.$message.success('删除成功');
+            }
+          });
+        });
+      }
+    },
+    dataChange(dicItem) {
+      dicItem.enabledFlag = dicItem.enabledFlag == 'Y' ? 'N' : 'Y';
+    },
+  },
+  watch: {},
+  updated() {},
+  beforeDestroy() {},
+};
+</script>
