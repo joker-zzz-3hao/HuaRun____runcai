@@ -6315,6 +6315,7 @@
   margin-top: 10px;
 }
 
+.replay-okr.replay-edit .final-score,
 .replay-okr.replay-detail .final-score,
 .replay-okr.replay-edit.replay-detail .final-score {
   padding: 12px 20px 18px 20px;
@@ -6324,6 +6325,7 @@
   background: #f8f9fb;
 }
 
+.replay-okr.replay-edit .final-score span,
 .replay-okr.replay-detail .final-score span,
 .replay-okr.replay-edit.replay-detail .final-score span {
   font-size: 16px;
