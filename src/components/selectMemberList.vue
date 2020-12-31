@@ -187,6 +187,7 @@ export default {
           roleId: this.$route.query.roleId,
           orgId: data.parentId,
           orgName: data.orgName,
+          ldapType: data.ldapType,
         });
       } else {
         this.roulelist.forEach((item, index) => {

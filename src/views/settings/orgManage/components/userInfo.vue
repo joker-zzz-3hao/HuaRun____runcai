@@ -38,6 +38,9 @@
             <span>{{ orgName }}</span>
           </span>
         </el-form-item>
+        <el-form-item label="用户类型">
+          <span>{{ formData.ldapType }}</span>
+        </el-form-item>
       </el-form>
     </div>
     <div class="operating-box">
@@ -112,6 +115,7 @@ export default {
         tenantName: this.tenantName,
         userType: 2,
         newPwd: '',
+        ldapType: '',
       },
 
     };

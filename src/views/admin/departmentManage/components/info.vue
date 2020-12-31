@@ -38,6 +38,9 @@
         <el-form-item label="所在部门">
           <span>{{ orgName }}</span>
         </el-form-item>
+        <el-form-item label="用户类型">
+          <span>{{ formData.ldapType }}</span>
+        </el-form-item>
       </el-form>
     </div>
     <div class="operating-box">
@@ -121,6 +124,7 @@ export default {
         newPwd: '',
         confirmPwd: '',
         orgIdList: [],
+        ldapType: '',
       },
     };
   },
