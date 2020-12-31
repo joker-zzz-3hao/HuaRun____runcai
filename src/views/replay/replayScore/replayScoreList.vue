@@ -11,7 +11,7 @@
             :popper-append-to-body="false"
             @change="okrReviewList"
             popper-class="tl-select-dropdown"
-            class="tl-select"
+            class="tl-select has-bg"
           >
             <el-option
               :label="item.periodName"
@@ -38,7 +38,7 @@
             }"
             @change="selectIdChange"
             popper-class="tl-cascader-popper"
-            class="tl-cascader"
+            class="tl-cascader has-bg"
           ></el-cascader>
         </dd>
       </dl>
@@ -51,7 +51,7 @@
           @change="okrReviewList"
           clearable
           popper-class="tl-select-dropdown"
-          class="tl-select"
+          class="tl-select has-bg"
         >
           <el-option
             :label="item.name"
