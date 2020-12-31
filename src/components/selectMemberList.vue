@@ -35,7 +35,11 @@
               <el-checkbox
                 :key="item.id"
                 class="tl-checkbox"
-                :disabled="disabledId == item.orgId || item.id == orgUserId || DisuserId[item.id]"
+                :disabled="
+                  disabledId == item.orgId ||
+                  item.id == orgUserId ||
+                  DisuserId[item.id]
+                "
                 @change="
                   !rouleType
                     ? checkOneMember($event, item)
@@ -193,6 +197,7 @@ export default {
           roleId: this.$route.query.roleId,
           orgId: data.parentId,
           orgName: data.orgName,
+          ldapType: data.ldapType,
         });
       } else {
         this.roulelist.forEach((item, index) => {
