@@ -121,6 +121,20 @@
         </dl>
       </elcollapseitem>
     </elcollapse>
+    <dl
+      v-if="okrMain.okrReviewCommunicationDetailEntity"
+      class="communicate-results"
+    >
+      <dd>
+        <span>复盘沟通结果</span>
+        <em v-if="okrMain.okrMainVo.reviewStatus === 0 || okrMain.okrMainVo.reviewStatus === 3">通过</em>
+        <em v-else-if="okrMain.okrMainVo.reviewStatus === 1">驳回</em>
+      </dd>
+      <dd>
+        <span>复盘沟通说明</span>
+        <em>{{ okrMain.okrReviewCommunicationDetailEntity.communication }}</em>
+      </dd>
+    </dl>
     <dl class="final-score">
       <dd>
         <span>OKR自评得分</span>
