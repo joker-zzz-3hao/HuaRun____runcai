@@ -280,15 +280,12 @@ export default {
   },
   methods: {
     listRoleUser(data) {
-      console.log(data);
       this.dataForm.tableData = data;
       this.selectListed = data;
       // 给职级、公司数组赋值
       this.dataForm.tableData.forEach((item) => {
-        // item.companyList = [];
-        // item.levelList = [];
-        item.companyList = this.companyListInternal;
-        item.levelList = this.levelListInternal;
+        item.companyList = [];
+        item.levelList = [];
         // 内部员工
         if (item.ldapType && item.ldapType == 'Full-Time') {
           item.companyList = this.companyListInternal;
