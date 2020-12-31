@@ -115,10 +115,10 @@
     </elcollapse>
     <div class="final-score">
       <span>OKR自评得分</span>
-      <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
+      <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0}}</em>
       <span>分</span>
     </div>
-    <dl class="dl-card-panel replay-record">
+    <dl class="dl-card-panel replay-communicate">
       <dt><em>复盘审批</em></dt>
       <dd>
         <el-form

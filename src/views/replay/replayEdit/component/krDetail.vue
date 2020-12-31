@@ -97,7 +97,7 @@
                   </span>
                 </dd>
               </dl>
-              <dl v-if="list.score * 100 != list.okrDetailProgress">
+              <dl v-if="Math.round(list.score * 100) != list.okrDetailProgress">
                 <dt>评分说明</dt>
                 <dd>
                   <el-form-item
@@ -337,7 +337,7 @@ export default {
           communicationLabel: item.communicationLabel,
           attachmentDtoList: item.attachmentDtoList,
           score: item.score,
-          remark: item.score * 100 == item.okrDetailProgress ? '' : item.scoreRemark,
+          remark: Math.round(item.score * 100) == item.okrDetailProgress ? '' : item.scoreRemark,
         }));
       }
     },

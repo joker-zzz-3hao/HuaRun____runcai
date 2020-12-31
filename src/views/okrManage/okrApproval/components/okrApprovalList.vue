@@ -8,7 +8,7 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" :empty-text="emptyText" class="tl-table">
+          <el-table :data="tableData" :empty-text="emptyText" class="tl-table" v-loading="tableLoading">
             <el-table-column prop="userName" label="姓名" min-width="140">
               <template slot-scope="scope">
                 <div class="user-info">
@@ -267,6 +267,7 @@ export default {
         okrCycle: {}, // 当前选择的周期
       },
       periodList: [], // 周期列表
+      tableLoading: false,
     };
   },
   created() {},
@@ -296,6 +297,7 @@ export default {
       if (this.hasPower('okr-approval-list')) {
         this.tableData = [];
         if (this.formData.periodId) {
+          this.tableLoading = true;
           this.server.getokrApproval({
             approvalStatus: this.formData.approvalStatus,
             approvalType: this.formData.approvalType,
@@ -309,6 +311,7 @@ export default {
               this.formData.total = res.data.total;
               this.formData.currentPage = res.data.currentPage;
             }
+            this.tableLoading = false;
           });
         }
       }
