@@ -2817,7 +2817,7 @@
   margin: 16px auto;
   width: 1060px;
   flex: unset;
-  min-height: calc(100vh - 172px);
+  min-height: calc(100vh - 190px);
 }
 
 .replay-info dt {
@@ -6290,21 +6290,26 @@
   color: #06aca9;
 }
 
+
+.replay-okr.replay-detail .communicate-results dd,
 .replay-okr.replay-edit.replay-detail .communicate-results dd {
   margin-left: 28px;
   display: flex;
   align-items: center;
 }
 
+.replay-okr.replay-detail .communicate-results dd span,
 .replay-okr.replay-edit.replay-detail .communicate-results dd span {
   flex: 0 0 136px;
   color: #879099;
 }
 
+.replay-okr.replay-detail .communicate-results dd em,
 .replay-okr.replay-edit.replay-detail .communicate-results dd em {
   color: #4d5155;
 }
 
+.replay-okr.replay-detail .communicate-results dd + dd,
 .replay-okr.replay-edit.replay-detail .communicate-results dd + dd {
   margin-top: 10px;
 }
