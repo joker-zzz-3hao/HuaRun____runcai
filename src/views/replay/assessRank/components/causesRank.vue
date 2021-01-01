@@ -4,7 +4,7 @@
     :visible="visible"
     :before-close="close"
     :close-on-click-modal="false"
-    class="tl-dialog check-judge"
+    class="tl-dialog causes-rank"
     width="800px"
   >
     <el-scrollbar>
@@ -93,4 +93,10 @@ export default {
 </script>
 
 <style>
+.causes-rank .el-dialog__body {
+  height: 500px;
+}
+.causes-rank .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
 </style>

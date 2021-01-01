@@ -110,6 +110,7 @@ export default class Server extends ServerBase {
   submitApproval(param) {
     return this._ajaxPost('gateway/talent-okr/assessment/result/approval', param);
   }
+
   // 复盘审批
   okrReviewApprove(param) {
     return this._ajaxPost('gateway/talent-okr/okr/okrReview/okrReviewApprove', param);

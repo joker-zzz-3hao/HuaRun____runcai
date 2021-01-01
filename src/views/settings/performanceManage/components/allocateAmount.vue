@@ -11,6 +11,8 @@
     @close="close"
     :title="title"
     :close-on-click-modal="false"
+    custom-class="custom-drawer allocate-amount"
+    class="tl-dialog"
   >
     <dl v-show="step == 1">
       <dt>请选择评定方式：</dt>
@@ -48,6 +50,7 @@
           >
             <span>{{ item.value + item.unit }}</span
             ><el-input
+              class="tl-input"
               v-model="item.applyValue"
               @blur="inputChange(item)"
             ></el-input

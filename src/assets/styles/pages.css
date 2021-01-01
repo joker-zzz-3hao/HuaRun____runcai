@@ -6360,6 +6360,10 @@
   height: 100%;
 }
 
+.replay-rank .cont-area {
+  justify-content: flex-start;
+}
+
 /* personal-center */
 .personal-center .cont-wrap {
   flex-direction: column;
