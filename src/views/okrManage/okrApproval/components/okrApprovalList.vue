@@ -8,7 +8,12 @@
         @searchList="searchList"
       >
         <div slot="tableContainer" class="table-container">
-          <el-table :data="tableData" :empty-text="emptyText" class="tl-table" v-loading="tableLoading">
+          <el-table
+            :data="tableData"
+            :empty-text="emptyText"
+            class="tl-table"
+            v-loading="tableLoading"
+          >
             <el-table-column prop="userName" label="姓名" min-width="140">
               <template slot-scope="scope">
                 <div class="user-info">
@@ -114,7 +119,7 @@
                 <el-button
                   type="text"
                   v-if="
-                    scope.row.approvalStatus == '0' &&
+                    [4, 5, 6, 0].includes(scope.row.approvalStatus) &&
                     hasPower('okr-approval-pass') &&
                     canApproval
                   "
@@ -196,6 +201,24 @@
                 ></el-option>
               </el-select>
             </el-form-item>
+            <el-form-item v-if="roleCode.includes('TENANT_ADMIN')">
+              <p>组织</p>
+              <el-cascader
+                v-model="orgFullIdList"
+                ref="cascader"
+                :options="departmentData"
+                :show-all-levels="false"
+                :props="{
+                  checkStrictly: true,
+                  value: 'orgId',
+                  label: 'orgName',
+                  children: 'children',
+                }"
+                @change="selectIdChange"
+                popper-class="tl-cascader-popper"
+                class="tl-cascader has-bg"
+              ></el-cascader>
+            </el-form-item>
             <el-form-item>
               <el-input
                 maxlength="64"
@@ -219,12 +242,6 @@
               >搜索</el-button
             >
           </el-form>
-          <!-- <el-button
-            type="primary"
-            @click="goUndertake"
-            class="tl-btn amt-bg-slip"
-            >OKR对齐</el-button
-          > -->
         </div>
       </div>
     </div>
@@ -268,6 +285,8 @@ export default {
       },
       periodList: [], // 周期列表
       tableLoading: false,
+      orgFullIdList: [],
+      departmentData: [],
     };
   },
   created() {},
@@ -278,6 +297,7 @@ export default {
     ...mapState('common', {
       okrApprovalDetail: (state) => state.okrApprovalDetail,
       okrApprovalStep: (state) => state.okrApprovalStep,
+      roleCode: (state) => state.roleCode,
     }),
   },
   methods: {
@@ -291,6 +311,10 @@ export default {
           self.formData.periodId = self.formData.okrCycle.periodId;
         }
       });
+      // 只有租户管理员才需要
+      if (self.roleCode.includes('TENANT_ADMIN')) {
+        self.getOrgTable();
+      }
     },
 
     searchList() {
@@ -305,6 +329,7 @@ export default {
             keyword: this.formData.keyword,
             pageSize: this.formData.pageSize,
             periodId: this.formData.periodId,
+            orgId: this.orgId,
           }).then((res) => {
             if (res.code == '200') {
               this.tableData = res.data.content;
@@ -324,8 +349,45 @@ export default {
       this.setDetailData(JSON.stringify(row));
       this.setOkrApprovalStep('2');
     },
-    goUndertake() {
-      this.go('undertakeMaps');
+    // 查询组织树
+    getOrgTable() {
+      this.server.getOrgTable().then((res) => {
+        if (res.code == '200') {
+          if (res.data) {
+            this.departmentData = [];
+            this.departmentData.push(res.data);
+            if (this.departmentData.length > 0) {
+              this.replaceName(this.departmentData[0]);
+            }
+            // 默认取第二层润联科技
+            this.orgFullId = this.departmentData[0].orgFullId;
+            this.orgId = this.departmentData[0].orgId;
+            this.orgFullIdList = this.orgFullId.split(':');
+            this.orgFullIdList.splice(this.orgFullIdList.length - 1, 1);
+            this.getOrgName(this.departmentData, 0);
+            this.searchList();
+          }
+        }
+      });
+    },
+    getOrgName(data, index) {
+      data.forEach((item) => {
+        if (this.orgFullIdList[index] == item.orgId) {
+          if (item.children && item.children.length > 0 && this.orgFullIdList[index + 1]) {
+            this.getOrgName(item.children, index + 1);
+          } else if ((index + 1) == this.orgFullIdList.length) {
+            this.test = item.orgName;
+          }
+        }
+      });
+    },
+    selectIdChange(data) {
+      this.orgFullId = `${data.join(':')}:`;
+      this.orgFullIdList = data;
+      this.$refs.cascader.dropDownVisible = false;
+      this.getOrgName(this.departmentData, 0);
+      this.orgId = data[data.length - 1];
+      this.searchList();
     },
   },
   watch: {

@@ -13,13 +13,20 @@ const APPROVAL_STATUS_LIST = [
   { label: '待审批', value: '0' },
   { label: '审批通过', value: '1' },
   { label: '被退回', value: '2' },
+  { label: '撤回', value: '3' },
+  { label: '待审批', value: '4' },
+  { label: '待审批', value: '5' },
+  { label: '待审批', value: '6' },
   { label: '全部', value: '' },
 ];
 const APPROVAL_STATUS_MAP = {
   0: '待审批',
   1: '审批通过',
   2: '被退回',
-  3: '全部',
+  3: '撤回',
+  4: '待审批',
+  5: '待审批',
+  6: '待审批',
 };
 const APPROVAL_TYPE_LIST = [
   { label: '创建', value: '0' },
