@@ -5,7 +5,7 @@
     :before-close="close"
     title="历史提交记录"
     :close-on-click-modal="false"
-    custom-class="custom-drawer creat-project"
+    custom-class="custom-drawer rank-history"
     class="tl-dialog"
     width="800px"
   >
@@ -105,4 +105,10 @@ export default {
 </script>
 
 <style>
+.rank-history .el-dialog__body {
+  height: 400px;
+}
+.rank-history .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
 </style>

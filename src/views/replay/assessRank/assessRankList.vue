@@ -30,10 +30,18 @@
     <div v-else>
       <div class="cont-area">
         <div>
-          <span>部门总数</span>
-          <em>{{ sortMsg.orgSum || 0 }}</em>
-          <span>未复核</span>
-          <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
+          <dl class="dl-item">
+            <dt>部门总数</dt>
+            <dd>
+              <em>{{ sortMsg.orgSum || 0 }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt>未复核</dt>
+            <dd>
+              <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
+            </dd>
+          </dl>
           <dl v-for="rule in ruleDetailContentList" :key="rule.applyId">
             <dt>{{ rule.ruleName }}</dt>
             <dd
@@ -44,17 +52,33 @@
               <em v-if="item.applyValue">（{{ item.applyValue }}个）</em>
             </dd>
           </dl>
-        </div>
-        <div>
-          <span>绩效复核状态</span>
-          <em v-if="sortMsg.approvalStatus">{{
-            CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus].name
-          }}</em>
-          <em v-else>--</em>
-          <span>绩效复核时间</span>
-          <em>{{ sortMsg.reviewTime || "--" }}</em>
-          <span>驳回原因</span>
-          <em>{{ sortMsg.approvalMsg || "--" }}</em>
+          <dl>
+            <dt>绩效复核状态</dt>
+            <dd v-if="sortMsg.approvalStatus">
+              <i
+                :class="
+                  CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus]
+                    .className
+                "
+              ></i>
+              <em>{{
+                CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus].name
+              }}</em>
+            </dd>
+            <dd v-else>--</dd>
+          </dl>
+          <dl>
+            <dt>绩效复核时间</dt>
+            <dd>
+              <em>{{ sortMsg.reviewTime || "--" }}</em>
+            </dd>
+          </dl>
+          <dl v-if="sortMsg.approvalMsg">
+            <dt>驳回原因</dt>
+            <dd>
+              <em>{{ sortMsg.approvalMsg }}</em>
+            </dd>
+          </dl>
         </div>
         <el-button type="text" @click="showbeforeList"
           >查看历史提交记录</el-button
@@ -336,7 +360,8 @@ export default {
       tableData.forEach((item, index) => {
         this.$set(tableData[index], 'sort', index + 1);
         // 重新赋值系数
-        this.$set(tableData[index], this.propList[0], this.propData[index].content);
+        console.log(this.propData[index].content);
+        this.$set(tableData[index], this.propList[0], this.propData[index].content || '');
         this.$set(tableData[index], 'periodRuleDetailId', this.propData[index].periodRuleDetailId);
       });
     },
