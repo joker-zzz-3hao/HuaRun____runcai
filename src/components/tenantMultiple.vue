@@ -27,7 +27,7 @@
       >
     </div>
     <div slot="reference">
-      <div class="btn-display" style="display: flex">
+      <div class="btn-display">
         <i class="el-icon-circle-plus-outline"></i>添加租户
       </div>
     </div>
@@ -100,5 +100,6 @@ export default {
 </script>
 <style lang="css">
 .multi-tenant .btn-display {
+  display: flex;
 }
 </style>

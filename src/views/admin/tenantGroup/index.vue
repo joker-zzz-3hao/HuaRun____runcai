@@ -16,6 +16,12 @@
         <div slot="tableContainer" class="table-container">
           <el-table ref="dicTable" v-loading="loading" :data="tableData">
             <el-table-column
+              width="100px"
+              type="index"
+              align="left"
+              label="序号"
+            ></el-table-column>
+            <el-table-column
               min-width="100px"
               align="left"
               prop="groupName"
