@@ -11,13 +11,14 @@
         <span class="lines"></span>
       </el-button>
     </dt>
-    <dd
+    <!-- 屏蔽评分说明-0101 -->
+    <!-- <dd
       class="flex-end explain"
       v-if="$route.name == 'replayScoreDetail'"
       @click="openRule"
     >
       <i class="icon-help"></i><em>评分说明</em>
-    </dd>
+    </dd> -->
     <dd class="dl-list-group">
       <dl class="dl-item user-info">
         <dd v-if="okrMain.okrMainVo.headUrl">

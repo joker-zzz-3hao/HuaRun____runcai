@@ -97,7 +97,10 @@
         </span>
       </dd>
     </dl>
-    <dl class="dl-card-panel" v-if="data.approvalStatus == '0' && canApproval">
+    <dl
+      class="dl-card-panel"
+      v-if="[4, 5, 6, 0].includes(data.approvalStatus) && canApproval"
+    >
       <dt>
         <em>审批</em>
       </dt>
