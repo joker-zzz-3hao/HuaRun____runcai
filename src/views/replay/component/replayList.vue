@@ -131,9 +131,9 @@
                     CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus].classname
                   "
                 ></i>
-                <em>{{
+                <span>{{
                   CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus].name
-                }}</em>
+                }}</span>
               </template>
             </el-table-column>
             <el-table-column

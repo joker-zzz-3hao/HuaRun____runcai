@@ -49,10 +49,16 @@
             ></el-cascader>
           </dd>
         </dl> -->
-        <div>
+      </div>
+    </div>
+    <div>
+      <dl>
+        <dt>绩效评定规则</dt>
+        <dd>
           <el-dropdown @command="addAmount">
             <span class="el-dropdown-link">
-              添加评定规则<i class="el-icon-arrow-down el-icon--right"></i>
+              <i class="el-icon-plus"></i>
+              添加评定规则
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item
@@ -63,10 +69,9 @@
               >
             </el-dropdown-menu>
           </el-dropdown>
-        </div>
-      </div>
-    </div>
-    <div>
+        </dd>
+      </dl>
+
       <dl
         class="layout-flex"
         v-for="amountData in amountDataList"

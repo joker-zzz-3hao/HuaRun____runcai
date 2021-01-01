@@ -27,7 +27,7 @@ const REVIEW_STATUS_LIST = [
 const REPLAY_STATUS_LIST = [
   { name: '全部', status: '' },
   { name: '待经管复核', status: 3 },
-  { name: '已复盘结束复核', status: 0 },
+  { name: '复盘结束', status: 0 },
 ];
 const REPLAY_ASSESS_STATUS_LIST = [
   { name: '全部', status: '' },
