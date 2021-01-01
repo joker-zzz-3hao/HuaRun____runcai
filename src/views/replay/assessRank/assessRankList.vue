@@ -272,7 +272,7 @@ export default {
           console.log(this.propData);
           if (this.ruleDetailContentList.length > 0) {
             this.noData = false;
-            this.getSort();
+            this.$nextTick(() => { this.getSort(); });
           } else {
             this.noData = true;
           }
