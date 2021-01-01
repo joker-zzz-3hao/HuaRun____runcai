@@ -43,6 +43,9 @@ const APPROVAL_HISTROY_MAP = {
   1: '通过',
   2: '退回',
   3: '撤回',
+  4: '提交',
+  5: '提交',
+  6: '提交',
 };
 const IMAGES_MAP = {
   jpg: true,
