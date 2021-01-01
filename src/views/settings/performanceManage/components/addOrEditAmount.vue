@@ -10,6 +10,8 @@
     :visible="visible"
     @close="close"
     :close-on-click-modal="false"
+    custom-class="custom-drawer edit-amount"
+    class="tl-dialog"
   >
     <span>{{
       "请线下确认“" + selectedRule.ruleName + "”总数量，再进行设置"
@@ -17,7 +19,11 @@
     <div>
       <div v-for="item in selectedRule.ruleDetailList" :key="item.ruleDetailId">
         <span>{{ item.value + item.unit }}</span
-        ><el-input v-model="item.applyValue" @blur="inputBlur(item)"></el-input
+        ><el-input
+          class="tl-input"
+          v-model="item.applyValue"
+          @blur="inputBlur(item)"
+        ></el-input
         ><span>个</span>
         <span v-if="item.showError">{{ item.errorText }}</span>
       </div>

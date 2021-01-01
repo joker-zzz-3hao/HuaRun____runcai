@@ -96,6 +96,19 @@ export default [{
     },
     component: () => import('@/views/admin/listenerData/index'),
   },
+  {
+    // 监听数据统计
+    path: '/tenantGroup',
+    name: 'tenantGroup',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'tenantManage',
+      title: 'tenantGroup',
+      power: 'listenerData',
+    },
+    component: () => import('@/views/admin/tenantGroup/index'),
+  },
   ],
 },
 ];

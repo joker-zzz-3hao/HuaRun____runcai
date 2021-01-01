@@ -82,10 +82,18 @@
               label="OKR周期"
               min-width="120"
             ></el-table-column>
-            <el-table-column
-              prop="reviewStatusCn"
-              label="复核状态"
-            ></el-table-column>
+            <el-table-column prop="reviewStatus" label="复核状态">
+              <template slot-scope="scope">
+                <i
+                  :class="
+                    CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus].classname
+                  "
+                ></i>
+                <span>{{
+                  CONST.REVIEW_STATUS_MAP[scope.row.reviewStatus].name
+                }}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="okrProgress" label="OKR进度" min-width="180">
               <template slot-scope="scope">
                 <tl-process

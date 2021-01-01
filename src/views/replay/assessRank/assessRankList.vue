@@ -23,144 +23,178 @@
         </dd>
       </dl>
     </div>
-    <div v-if="noData" class="tl-card-panel no-data">
-      <div class="no-data-bg"></div>
-      <div class="no-data-txt">部门还未分配绩效系数，请等待...</div>
-    </div>
-    <div v-else>
-      <div class="cont-area">
-        <div>
-          <span>部门总数</span>
-          <em>{{ sortMsg.orgSum || 0 }}</em>
-          <span>未复核</span>
-          <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
-          <dl v-for="rule in ruleDetailContentList" :key="rule.applyId">
-            <dt>{{ rule.ruleName }}</dt>
-            <dd
-              v-for="item in rule.periodRuleDetailList"
-              :key="item.ruleDetailId"
-            >
-              <span>{{ item.value }}{{ item.unit }} </span>
-              <em v-if="item.applyValue">（{{ item.applyValue }}个）</em>
-            </dd>
-          </dl>
-        </div>
-        <div>
-          <span>绩效复核状态</span>
-          <em v-if="sortMsg.approvalStatus">{{
-            CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus].name
-          }}</em>
-          <em v-else>--</em>
-          <span>绩效复核时间</span>
-          <em>{{ sortMsg.reviewTime || "--" }}</em>
-          <span>驳回原因</span>
-          <em>{{ sortMsg.approvalMsg || "--" }}</em>
-        </div>
-        <el-button type="text" @click="showbeforeList"
-          >查看历史提交记录</el-button
-        >
+    <div class="cont-area">
+      <div v-if="noData" class="tl-card-panel no-data">
+        <div class="no-data-bg"></div>
+        <div class="no-data-txt">部门还未分配绩效系数，请等待...</div>
       </div>
-      <div>
-        <span>调整绩效排名</span>
-        <em
-          >你好，部门绩效需等到整体复核结束后，您才可以进行调整，请等待，谢谢！</em
-        >
-      </div>
-      <div class="cont-area">
-        <tl-crcloud-table :isPage="false">
-          <div slot="tableContainer" class="table-container">
-            <el-table
-              :data="tableData"
-              class="tl-table tableSort"
-              row-key="orgId"
-            >
-              <el-table-column prop="sort" label="排序" min-width="55">
-                <template slot-scope="scope">
-                  <el-button type="text" @click="upGo(tableData, scope.$index)"
-                    >向上</el-button
-                  >
-                  <el-button
-                    type="text"
-                    @click="downGo(tableData, scope.$index)"
-                    >向下</el-button
-                  >
-                </template>
-              </el-table-column>
-
-              <el-table-column
-                prop="sort"
-                label="序号"
-                min-width="65"
-              ></el-table-column>
-              <el-table-column
-                prop="orgName"
-                label="部门"
-                min-width="170"
-              ></el-table-column>
-
-              <el-table-column prop="userName" label="负责人" min-width="100">
-              </el-table-column>
-              <el-table-column
-                prop="selfAssessmentScore"
-                label="自评得分"
-                min-width="100"
+      <template v-else>
+        <div class="cont-area1111">
+          <div>
+            <dl class="dl-item">
+              <dt>部门总数</dt>
+              <dd>
+                <em>{{ sortMsg.orgSum || 0 }}</em>
+              </dd>
+            </dl>
+            <dl class="dl-item">
+              <dt>未复核</dt>
+              <dd>
+                <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
+              </dd>
+            </dl>
+            <dl v-for="rule in ruleDetailContentList" :key="rule.applyId">
+              <dt>{{ rule.ruleName }}</dt>
+              <dd
+                v-for="item in rule.periodRuleDetailList"
+                :key="item.ruleDetailId"
               >
-              </el-table-column>
-              <el-table-column
-                prop="finalScore"
-                label="复核得分"
-                min-width="100"
-              >
-              </el-table-column>
-              <!-- 动态 -->
-              <el-table-column
-                v-for="rule in ruleDetailContentList"
-                :key="rule.applyId"
-                :prop="rule.ruleId"
-                :label="rule.ruleName"
-                min-width="100"
-              >
-              </el-table-column>
-            </el-table>
+                <span>{{ item.value }}{{ item.unit }} </span>
+                <em v-if="item.applyValue">（{{ item.applyValue }}个）</em>
+              </dd>
+            </dl>
+            <dl>
+              <dt>绩效复核状态</dt>
+              <dd v-if="sortMsg.approvalStatus">
+                <i
+                  :class="
+                    CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus]
+                      .className
+                  "
+                ></i>
+                <em>{{
+                  CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus].name
+                }}</em>
+              </dd>
+              <dd v-else>--</dd>
+            </dl>
+            <dl>
+              <dt>绩效复核时间</dt>
+              <dd>
+                <em>{{ sortMsg.reviewTime || "--" }}</em>
+              </dd>
+            </dl>
+            <dl v-if="sortMsg.approvalMsg">
+              <dt>驳回原因</dt>
+              <dd>
+                <em>{{ sortMsg.approvalMsg }}</em>
+              </dd>
+            </dl>
           </div>
-        </tl-crcloud-table>
-      </div>
-      <div>
-        <span>*是否已线下沟通</span>
-        <el-radio-group
-          v-model.trim="sortMsg.enableCommunicate"
-          :disabled="sortMsg.approvalStatus == 2 || sortMsg.approvalStatus == 3"
-        >
-          <el-radio class="tl-radio" v-model="radio" :label="2"
-            >已沟通</el-radio
+          <el-button type="text" @click="showbeforeList"
+            >查看历史提交记录</el-button
           >
-          <el-radio class="tl-radio" v-model="radio" :label="1"
-            >未沟通</el-radio
+        </div>
+        <div>
+          <span>调整绩效排名</span>
+          <em
+            >你好，部门绩效需等到整体复核结束后，您才可以进行调整，请等待，谢谢！</em
           >
-        </el-radio-group>
-      </div>
-      <div>
-        <el-button
-          type="primary"
-          class="tl-btn amt-bg-slip"
-          @click="assessmentSave"
-          :disabled="sortMsg.approvalStatus == 2 || sortMsg.approvalStatus == 3"
-          >暂存</el-button
-        >
+        </div>
+        <div class="cont-areaasda">
+          <tl-crcloud-table :isPage="false">
+            <div slot="tableContainer" class="table-container">
+              <el-table
+                :data="tableData"
+                class="tl-table tableSort"
+                row-key="orgId"
+              >
+                <el-table-column prop="sort" label="排序" min-width="55">
+                  <template slot-scope="scope">
+                    <el-button
+                      type="text"
+                      @click="upGo(tableData, scope.$index)"
+                      >向上</el-button
+                    >
+                    <el-button
+                      type="text"
+                      @click="downGo(tableData, scope.$index)"
+                      >向下</el-button
+                    >
+                  </template>
+                </el-table-column>
 
-        <!-- :disabled="sortMsg.orgSum != sortMsg.reviewedOrgSum" -->
-        <el-button
-          type="primary"
-          class="tl-btn amt-bg-slip"
-          @click="submitValidator()"
-          :disabled="
-            sortMsg.approvalStatus == 2 ||
-            sortMsg.approvalStatus == 3 ||
-            sortMsg.orgSum != sortMsg.reviewedOrgSum
-          "
-          >提交</el-button
-        >
-      </div>
+                <el-table-column
+                  prop="sort"
+                  label="序号"
+                  min-width="65"
+                ></el-table-column>
+                <el-table-column
+                  prop="orgName"
+                  label="部门"
+                  min-width="170"
+                ></el-table-column>
+
+                <el-table-column prop="userName" label="负责人" min-width="100">
+                </el-table-column>
+                <el-table-column
+                  prop="selfAssessmentScore"
+                  label="自评得分"
+                  min-width="100"
+                >
+                </el-table-column>
+                <el-table-column
+                  prop="finalScore"
+                  label="复核得分"
+                  min-width="100"
+                >
+                </el-table-column>
+                <!-- 动态 -->
+                <el-table-column
+                  v-for="rule in ruleDetailContentList"
+                  :key="rule.applyId"
+                  :prop="rule.ruleId"
+                  :label="rule.ruleName"
+                  min-width="100"
+                >
+                </el-table-column>
+              </el-table>
+            </div>
+          </tl-crcloud-table>
+        </div>
+        <div class="footer-panel">
+          <div>
+            <span>*是否已线下沟通</span>
+            <el-radio-group
+              v-model.trim="sortMsg.enableCommunicate"
+              :disabled="
+                sortMsg.approvalStatus == 2 || sortMsg.approvalStatus == 3
+              "
+            >
+              <el-radio class="tl-radio" v-model="radio" :label="2"
+                >已沟通</el-radio
+              >
+              <el-radio class="tl-radio" v-model="radio" :label="1"
+                >未沟通</el-radio
+              >
+            </el-radio-group>
+          </div>
+          <div>
+            <el-button
+              type="primary"
+              class="tl-btn amt-bg-slip"
+              @click="assessmentSave"
+              :disabled="
+                sortMsg.approvalStatus == 2 || sortMsg.approvalStatus == 3
+              "
+              >暂存</el-button
+            >
+
+            <!-- :disabled="sortMsg.orgSum != sortMsg.reviewedOrgSum" -->
+            <el-button
+              type="primary"
+              class="tl-btn amt-bg-slip"
+              @click="submitValidator()"
+              :disabled="
+                sortMsg.approvalStatus == 2 ||
+                sortMsg.approvalStatus == 3 ||
+                sortMsg.orgSum != sortMsg.reviewedOrgSum
+              "
+              >提交</el-button
+            >
+          </div>
+        </div>
+      </template>
     </div>
     <rank-history-list ref="beforeList"></rank-history-list>
     <causes-rank
@@ -336,7 +370,8 @@ export default {
       tableData.forEach((item, index) => {
         this.$set(tableData[index], 'sort', index + 1);
         // 重新赋值系数
-        this.$set(tableData[index], this.propList[0], this.propData[index].content);
+        console.log(this.propData[index].content);
+        this.$set(tableData[index], this.propList[0], this.propData[index].content || '');
         this.$set(tableData[index], 'periodRuleDetailId', this.propData[index].periodRuleDetailId);
       });
     },

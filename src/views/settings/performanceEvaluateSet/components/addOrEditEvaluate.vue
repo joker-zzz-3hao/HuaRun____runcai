@@ -11,6 +11,8 @@
     @close="close"
     :title="title"
     :close-on-click-modal="false"
+    custom-class="custom-drawer edit-evaluate"
+    class="tl-dialog"
   >
     <div v-show="step == 1">
       <el-form ref="dicForm" :model="performanceData" label-width="100px">
@@ -22,6 +24,7 @@
           ]"
         >
           <el-input
+            class="tl-input"
             style="width: 90%"
             v-model.trim="performanceData.ruleName"
             maxlength="30"
@@ -38,7 +41,7 @@
             <div class="inline-flex">
               <div>
                 <el-input
-                  class="input-value"
+                  class="tl-input input-value"
                   :class="{ 'input-color': ruleItem.showContentError }"
                   v-model.trim="ruleItem.value"
                   maxlength="20"
@@ -50,7 +53,7 @@
                 </span>
               </div>
               <el-input
-                class="input-unit"
+                class="tl-input input-unit"
                 v-model.trim="ruleItem.unit"
                 maxlength="20"
                 placeholder="如有单位，请填写"
@@ -59,7 +62,7 @@
               <div style="width: 100%">
                 <el-input
                   v-model="ruleItem.description"
-                  class="textarea-content"
+                  class="tl-textarea textarea-content"
                   :class="{ 'input-color': ruleItem.showRemarkError }"
                   type="textarea"
                   style="width: 100%"
@@ -96,10 +99,16 @@
         </el-form-item>
         <div class="margin-top">
           <el-form-item label="应用范围" prop="ruleType">
-            <el-radio v-model="performanceData.ruleType" label="1"
+            <el-radio
+              class="tl-radio"
+              v-model="performanceData.ruleType"
+              label="1"
               >部门</el-radio
             >
-            <el-radio v-model="performanceData.ruleType" label="2"
+            <el-radio
+              class="tl-radio"
+              v-model="performanceData.ruleType"
+              label="2"
               >个人</el-radio
             >
           </el-form-item>

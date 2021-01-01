@@ -3,10 +3,11 @@
     class="replay-okr"
     :class="{
       'replay-edit': $route.name == 'replayEdit',
-      'replay-communication replay-detail': $route.name == 'replayLink',
+      'replay-communication replay-detail':
+        $route.name == 'replayLink' || $route.name == 'replayApproval',
       'replay-detail': $route.name == 'replayDetail',
       'replay-edit replay-detail': $route.name == 'replayScoreDetail',
-      'replay-communication replay-detail': $route.name == 'replayApproval',
+      'replay-rank': $route.name == 'assessRank',
     }"
   >
     <div

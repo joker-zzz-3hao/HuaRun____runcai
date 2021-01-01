@@ -383,7 +383,7 @@ export default {
 
   },
   created() {
-    if ([1, '1', 3, '3'].includes(this.okrItemStatus) || (this.okrItemStatus == 2 && this.reviewStatus == 1 )) {
+    if ([1, '1', 3, '3'].includes(this.okrItemStatus) || (this.okrItemStatus == 2 && this.reviewStatus == 1)) {
       this.tabMenuList = [
         {
           menuName: '更新进展',

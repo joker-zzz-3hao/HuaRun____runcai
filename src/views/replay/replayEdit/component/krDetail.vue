@@ -214,11 +214,13 @@
         </dl>
       </elcollapseitem>
     </elcollapse>
-    <div class="final-score">
-      <span>OKR自评得分</span>
-      <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
-      <span>分</span>
-    </div>
+    <dl class="final-score">
+      <dd>
+        <span>OKR自评得分</span>
+        <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
+        <span>分</span>
+      </dd>
+    </dl>
     <tl-footer
       :btnText="'提交复盘'"
       :saveLoad="saveLoad"
