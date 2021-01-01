@@ -89,7 +89,9 @@
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 >
-                  <el-button type="text" class="tl-btn"> 编辑</el-button>
+                  <el-button type="text" class="tl-btn is-disabled">
+                    编辑</el-button
+                  >
                 </el-tooltip>
                 <el-button
                   v-else
@@ -106,7 +108,9 @@
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 >
-                  <el-button type="text" class="tl-btn"> 删除</el-button>
+                  <el-button type="text" class="tl-btn is-disabled">
+                    删除</el-button
+                  >
                 </el-tooltip>
                 <el-button
                   v-else
