@@ -105,14 +105,16 @@
                   <template slot-scope="scope">
                     <el-button
                       type="text"
+                      class="tl-btn"
                       @click="upGo(tableData, scope.$index)"
-                      >向上</el-button
-                    >
+                      ><i class="el-icon-top"></i
+                    ></el-button>
                     <el-button
                       type="text"
+                      class="tl-btn"
                       @click="downGo(tableData, scope.$index)"
-                      >向下</el-button
-                    >
+                      ><i class="el-icon-bottom"></i
+                    ></el-button>
                   </template>
                 </el-table-column>
 

@@ -178,7 +178,9 @@
                       }」`
                     }}</span>
                     <template v-if="cycleFirst.reason">
-                      <span v-if="cycleFirst.approvalStatus === 0"
+                      <!--  -->
+                      <span
+                        v-if="[0, 4, 5, 6].includes(cycleFirst.approvalStatus)"
                         >变更原因</span
                       >
                       <span v-else-if="cycleFirst.approvalStatus === 3"
