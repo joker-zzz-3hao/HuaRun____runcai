@@ -7,6 +7,7 @@
         $route.name == 'replayLink' || $route.name == 'replayApproval',
       'replay-detail': $route.name == 'replayDetail',
       'replay-edit replay-detail': $route.name == 'replayScoreDetail',
+      'replay-rank': $route.name == 'assessRank',
     }"
   >
     <div
