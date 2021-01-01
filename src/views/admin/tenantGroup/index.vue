@@ -12,28 +12,23 @@
       </div>
     </div>
     <div class="cont-area">
-      <crcloud-table
-        :total="total"
-        :pageSize.sync="pageSize"
-        :currentPage.sync="currentPage"
-        @searchList="searchList"
-      >
+      <crcloud-table @searchList="searchList" :isPage="false">
         <div slot="tableContainer" class="table-container">
           <el-table ref="dicTable" v-loading="loading" :data="tableData">
             <el-table-column
               min-width="100px"
               align="left"
-              prop="code"
+              prop="groupName"
               label="租户群组"
             ></el-table-column>
             <el-table-column
               min-width="100px"
               align="left"
-              prop="name"
+              prop="createTime"
               label="创建时间"
             ></el-table-column>
             <el-table-column
-              width="130px"
+              width="150px"
               fixed="right"
               align="left"
               label="操作"
@@ -47,7 +42,7 @@
                 >
                 <el-button
                   type="text"
-                  @click="editGroup(scope.row)"
+                  @click="addOrEditGroup(scope.row)"
                   size="small"
                   >编辑</el-button
                 >
@@ -70,15 +65,15 @@
       :server="server"
       :codeId="codeId"
       :optionType="optionType"
-      @closeAddEditDialog="closeAddEditDialog"
+      @closeDialog="closeDialog"
     ></tl-add-edit-group>
     <tl-set-tenant
       ref="setTenant"
-      v-if="showDicDialog"
+      v-if="showSetTenantDialog"
       :server="server"
       :codeId="codeId"
       :optionType="optionType"
-      @closeDicDialog="closeDicDialog"
+      @closeDialog="closeDialog"
     ></tl-set-tenant>
   </div>
 </template>
@@ -99,11 +94,8 @@ export default {
   data() {
     return {
       server,
-      showDicDialog: false,
+      showSetTenantDialog: false,
       showAddOrEditGroup: false,
-      currentPage: 1,
-      pageSize: 10,
-      total: 0,
       tableData: [],
       loading: false,
       codeId: '',
@@ -125,30 +117,21 @@ export default {
         this.loading = true;
         this.server.queryOfPage(params).then((res) => {
           if (res.code == 200) {
-            this.total = res.data.total;
-            this.currentPage = res.data.currentPage;
-            this.pageSize = res.data.pageSize;
-            this.tableData = res.data.content;
+            this.tableData = res.data;
           }
           this.loading = false;
         });
       }
     },
-    addOrEditGroup(dic) {
-      if (dic.codeId) {
-        this.codeId = String(dic.codeId);
-        this.optionType = 'edit';
-      } else {
-        this.optionType = 'add';
-      }
+    addOrEditGroup(group) {
       this.showAddOrEditGroup = true;
       this.$nextTick(() => {
-        this.$refs.addOrEditGroup.show();
+        this.$refs.addOrEditGroup.show(group);
       });
     },
-    deleteDic(dic) {
-      this.$confirm('是否确认删除该数据？，删除将无法恢复').then(() => {
-        this.server.deleteDic({ codeId: dic.codeId }).then((res) => {
+    deleteGroup(grpup) {
+      this.$confirm('是否确认删除该群组？').then(() => {
+        this.server.deleteGroup({ groupId: grpup.groupId }).then((res) => {
           if (res.code == 200) {
             this.$message.success('删除成功');
             this.searchList();
@@ -156,12 +139,18 @@ export default {
         });
       });
     },
-    closeAddEditDialog(data) {
+    setTenant(group) {
+      this.showSetTenantDialog = true;
+      this.$nextTick(() => {
+        this.$refs.setTenant.show(group);
+      });
+    },
+    closeDialog(data) {
       // 需要刷新则刷新页面;
       if (data.refreshPage) {
         this.searchList();
       }
-      this.showDicDialog = false;
+      this.showSetTenantDialog = false;
       this.showAddOrEditGroup = false;
     },
     clear() {

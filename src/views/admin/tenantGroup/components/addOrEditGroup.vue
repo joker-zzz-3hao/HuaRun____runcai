@@ -15,12 +15,15 @@
       width="30%"
     >
       <div>
-        <el-form ref="dicForm" :model="formData" label-width="120px">
+        <el-form ref="dataForm" :model="formData" label-width="120px">
           <el-form-item
             label="租户群组名称"
-            :rules="[{ required: true, message: '请填写群组名称' }]"
+            prop="groupName"
+            :rules="[
+              { required: true, message: '请填写群组名称', trigger: blur },
+            ]"
           >
-            <el-input v-model="formData.groupName"></el-input
+            <el-input v-model="formData.groupName" maxlength="50"></el-input
           ></el-form-item>
         </el-form>
         <div class="operating-box">
@@ -64,7 +67,6 @@ export default {
       loading: false,
       diaTitle: '',
       formData: {
-
         groupName: '',
       },
       optionType: 'add',
@@ -76,7 +78,9 @@ export default {
   computed: {},
   methods: {
     show(group) {
-      if (group) {
+      if (group.groupId) {
+        this.formData.groupName = group.groupName;
+        this.formData.groupId = group.groupId;
         this.diaTitle = '编辑租户群组';
         this.optionType = 'edit';
       } else {
@@ -87,17 +91,19 @@ export default {
     },
     close(status) {
       this.visible = false;
-      this.$emit('closeAddEditDialog', { refreshPage: status == 'refreshPage' });
+      this.$emit('closeDialog', { refreshPage: status == 'refreshPage' });
     },
     save() {
+      let option = 'addGroup';
       let successTip = '新增成功';
       if (this.optionType == 'edit') {
         successTip = '编辑成功';
+        option = 'editGroup';
       }
-      this.$refs.dataForm.validat((valid) => {
+      this.$refs.dataForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.server.addOrUpdate(this.formData).then((res) => {
+          this.server[option](this.formData).then((res) => {
             if (res.code == 200) {
               this.$message.success(successTip);
               this.close('refreshPage');

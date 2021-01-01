@@ -1,28 +1,28 @@
 import ServerBase from '@/ajax/serverBase';
 
 export default class Server extends ServerBase {
-  // 查询数据字典列表
+  // 新增群组
+  addGroup(param) {
+    return this._ajaxPost('gateway/system-service/tenantGroup/create', param);
+  }
+
+  // 编辑群组
+  editGroup(param) {
+    return this._ajaxPost('gateway/system-service/tenantGroup/update', param);
+  }
+
+  // 删除群组
+  deleteGroup(param) {
+    return this._ajaxPost('gateway/system-service/tenantGroup/remove', param);
+  }
+
+  // 查询群组列表
   queryOfPage(param) {
+    return this._ajaxPost('gateway/system-service/tenantGroup/query', param);
+  }
+
+  // 某个群组已设置的租户
+  getTenantList(param) {
     return this._ajaxPost('gateway/system-service/sys/dictionary/queryOfPage', param);
-  }
-
-  // 新增、编辑数据字典
-  addOrUpdate(param) {
-    return this._ajaxPost('gateway/system-service/sys/dictionary/addOrUpdate', param);
-  }
-
-  // 查询数据字详情典
-  queryDicDetail(param) {
-    return this._ajaxPost('gateway/system-service/sys/dictionary/value/queryOfPage', param);
-  }
-
-  // 删除数据字典
-  deleteDic(param) {
-    return this._ajaxPost('gateway/system-service/sys/dictionary/deleteById', param);
-  }
-
-  // 删除数据字典项
-  deleteDicItem(param) {
-    return this._ajaxPost('gateway/system-service/sys/dictionary/value/deleteById', param);
   }
 }
