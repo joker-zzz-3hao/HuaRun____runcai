@@ -7,6 +7,7 @@
 <template>
   <div>
     <div class="operating-area">
+      <div class="page-title">绩效管理</div>
       <div class="operating-box">
         <dl class="dl-item">
           <dt>OKR周期</dt>
@@ -17,7 +18,7 @@
               placeholder="请选择目标周期"
               :popper-append-to-body="false"
               popper-class="tl-select-dropdown"
-              class="tl-select"
+              class="tl-select has-bg w180"
               @change="periodChange"
             >
               <el-option
@@ -51,101 +52,107 @@
         </dl> -->
       </div>
     </div>
-    <div>
-      <dl>
-        <dt>绩效评定规则</dt>
-        <dd>
-          <el-dropdown @command="addAmount">
-            <span class="el-dropdown-link">
-              <i class="el-icon-plus"></i>
-              添加评定规则
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item
-                v-for="item in ruleList"
-                :key="item.ruleId"
-                :command="item.ruleId"
-                >{{ item.ruleName }}</el-dropdown-item
-              >
-            </el-dropdown-menu>
-          </el-dropdown>
-        </dd>
-      </dl>
-
-      <dl
-        class="layout-flex"
-        v-for="amountData in amountDataList"
-        :key="amountData.periodRuleId"
-      >
-        <dt>{{ amountData.ruleName + "：" }}</dt>
-        <dd
-          v-for="item in amountData.periodRuleDetailList"
-          :key="item.periodRuleDetailId"
-          class="layout-flex dd-margin"
-        >
-          {{ item.value + item.unit + "（" + item.applyValue + "个）" }}
-        </dd>
-        <dd>
-          <el-button @click="deleteRule(amountData)" type="text"
-            >删除</el-button
-          >
-        </dd>
-        <dd>
-          <el-button type="text" @click="updateAmount(amountData)"
-            >修改</el-button
-          >
-        </dd>
-      </dl>
-    </div>
     <div class="cont-area">
-      <crcloud-table :isPage="false" @searchList="searchList">
-        <div slot="tableContainer" class="table-container">
-          <el-table
-            ref="performanceEvaluate"
-            v-loading="loading"
-            :data="orgData"
+      <div class="cont-panel">
+        <dl class="dl-list">
+          <dt>绩效评定规则</dt>
+          <dd>
+            <el-dropdown @command="addAmount">
+              <span class="el-dropdown-link">
+                <i class="el-icon-plus"></i>
+                添加评定规则
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  v-for="item in ruleList"
+                  :key="item.ruleId"
+                  :command="item.ruleId"
+                  >{{ item.ruleName }}</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </el-dropdown>
+          </dd>
+        </dl>
+        <dl
+          class="layout-flex"
+          v-for="amountData in amountDataList"
+          :key="amountData.periodRuleId"
+        >
+          <dt>{{ amountData.ruleName + "：" }}</dt>
+          <dd
+            v-for="item in amountData.periodRuleDetailList"
+            :key="item.periodRuleDetailId"
+            class="layout-flex dd-margin"
           >
-            <el-table-column
-              label="部门"
-              align="left"
-              prop="orgName"
-              min-width="150px"
-            ></el-table-column>
-            <el-table-column
-              label="负责人"
-              align="left"
-              prop="userName"
-              min-width="150px"
-            ></el-table-column>
+            {{ item.value + item.unit + "（" + item.applyValue + "个）" }}
+          </dd>
+          <dd>
+            <el-button
+              type="text"
+              class="tl-btn"
+              @click="deleteRule(amountData)"
+              >删除</el-button
+            >
+          </dd>
+          <dd>
+            <el-button
+              class="tl-btn"
+              type="text"
+              @click="updateAmount(amountData)"
+              >修改</el-button
+            >
+          </dd>
+        </dl>
 
-            <el-table-column
-              v-for="column in colums"
-              :key="column.name"
-              :label="column.label"
-              align="left"
-              min-width="200px"
-              :prop="column.name"
+        <crcloud-table :isPage="false" @searchList="searchList">
+          <div slot="tableContainer" class="table-container">
+            <el-table
+              ref="performanceEvaluate"
+              v-loading="loading"
+              :data="orgData"
             >
-            </el-table-column>
-            <el-table-column
-              label="操作"
-              align="left"
-              width="120px"
-              fixed="right"
-            >
-              <template slot-scope="scope">
-                <el-button
-                  type="text"
-                  @click="allocateAmount(scope.row)"
-                  size="small"
-                >
-                  设置</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </crcloud-table>
+              <el-table-column
+                label="部门"
+                align="left"
+                prop="orgName"
+                min-width="150px"
+              ></el-table-column>
+              <el-table-column
+                label="负责人"
+                align="left"
+                prop="userName"
+                min-width="150px"
+              ></el-table-column>
+
+              <el-table-column
+                v-for="column in colums"
+                :key="column.name"
+                :label="column.label"
+                align="left"
+                min-width="200px"
+                :prop="column.name"
+              >
+              </el-table-column>
+              <el-table-column
+                label="操作"
+                align="left"
+                width="120px"
+                fixed="right"
+              >
+                <template slot-scope="scope">
+                  <el-button
+                    type="text"
+                    class="tl-btn"
+                    @click="allocateAmount(scope.row)"
+                  >
+                    设置</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </crcloud-table>
+      </div>
     </div>
     <tl-create-evaluate
       ref="addOrEditAmount"
