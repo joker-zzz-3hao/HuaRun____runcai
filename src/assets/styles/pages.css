@@ -6360,8 +6360,111 @@
   height: 100%;
 }
 
+.replay-rank {
+  margin-bottom: 86px;
+  min-height: calc(100vh - 172px);
+}
+
+.view-cont.replay-rank {
+  margin-bottom: 16px;
+  min-height: calc(100vh - 102px);
+}
+
+.no-data-wrap .tl-card-panel {
+  box-shadow: unset;
+}
+
 .replay-rank .cont-area {
   justify-content: flex-start;
+}
+
+.replay-rank .cont-area .dl-group {
+  margin: 0 0 16px 0;
+  padding: 20px 20px 10px 20px;
+  display: flex;
+  align-items: baseline;
+  background: #f4f6f8;
+  flex-wrap: wrap;
+}
+
+.replay-rank .cont-area .dl-group .dl-item {
+  align-items: baseline;
+}
+
+.replay-rank .cont-area .dl-group .dl-item:nth-child(1) {
+  flex: 1 1 11%;
+}
+
+.replay-rank .cont-area .dl-group .dl-item:nth-child(2) {
+  flex: 1 1 22%;
+}
+
+.replay-rank .cont-area .dl-group .dl-item:nth-child(3) {
+  flex: 1 1 33%;
+}
+
+.replay-rank .cont-area .dl-group .dl-item:nth-child(4) {
+  flex: 1 1 33%;
+}
+
+.replay-rank .cont-area .dl-group .dl-item:nth-child(5) {
+  flex: 1 1 33%;
+}
+
+.replay-rank .cont-area .dl-group .dl-item:nth-child(6) {
+  flex: 1 1 55%;
+}
+
+.replay-rank .cont-area .dl-group .dl-item dt {
+  margin-right: 10px;
+  color: #acb6bf;
+}
+
+.replay-rank .cont-area .dl-group .dl-item:nth-child(1) dd,
+.replay-rank .cont-area .dl-group .dl-item:nth-child(2) dd {
+  font-family: DINAlternate-Bold;
+  font-size: 34px;
+  color: #685df1;
+}
+
+.replay-rank .cont-area .dl-group .dl-item:nth-child(5) dd:not(:last-child) {
+  margin-right: 16px;
+}
+
+.replay-rank .cont-area .dl-group .dl-item:nth-child(5) dd em {
+  color: #4d5155;
+}
+
+.replay-rank .cont-area .dl-group .dl-item:nth-child(5) dd span {
+  color: #879099;
+}
+
+.replay-rank .cont-area .dl-group .tl-btn {
+  flex: 1 1 12%;
+  padding: 0;
+  text-align: right;
+}
+
+.replay-rank .footer-panel {
+  padding: 0 30px 0 0;
+  justify-content: space-between;
+}
+
+.replay-rank .footer-panel div:first-child {
+  margin-left: 212px;
+  transition: all .4s ease-out;
+}
+
+.is-shrink + .replay-rank .footer-panel div:first-child {
+  margin-left: 106px;
+}
+
+.replay-rank .footer-panel div:first-child > span {
+  color: #fb4c59;
+}
+
+.replay-rank .footer-panel div:first-child em {
+  margin-right: 30px;
 }
 
 /* personal-center */

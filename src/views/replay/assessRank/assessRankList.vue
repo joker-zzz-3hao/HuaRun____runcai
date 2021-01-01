@@ -1,5 +1,5 @@
 <template>
-  <div class="replay-list">
+  <div class="replay-list" :class="{ 'no-data-wrap': noData }">
     <div class="operating-box">
       <dl class="dl-item">
         <dt>周期</dt>
@@ -29,63 +29,65 @@
         <div class="no-data-txt">部门还未分配绩效系数，请等待...</div>
       </div>
       <template v-else>
-        <div class="cont-area1111">
-          <div>
-            <dl class="dl-item">
-              <dt>部门总数</dt>
-              <dd>
-                <em>{{ sortMsg.orgSum || 0 }}</em>
-              </dd>
-            </dl>
-            <dl class="dl-item">
-              <dt>未复核</dt>
-              <dd>
-                <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
-              </dd>
-            </dl>
-            <dl v-for="rule in ruleDetailContentList" :key="rule.applyId">
-              <dt>{{ rule.ruleName }}</dt>
-              <dd
-                v-for="item in rule.periodRuleDetailList"
-                :key="item.ruleDetailId"
-              >
-                <span>{{ item.value }}{{ item.unit }} </span>
-                <em v-if="item.applyValue">（{{ item.applyValue }}个）</em>
-              </dd>
-            </dl>
-            <dl>
-              <dt>绩效复核状态</dt>
-              <dd v-if="sortMsg.approvalStatus">
-                <i
-                  :class="
-                    CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus]
-                      .className
-                  "
-                ></i>
-                <em>{{
-                  CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus].name
-                }}</em>
-              </dd>
-              <dd v-else>--</dd>
-            </dl>
-            <dl>
-              <dt>绩效复核时间</dt>
-              <dd>
-                <em>{{ sortMsg.reviewTime || "--" }}</em>
-              </dd>
-            </dl>
-            <dl v-if="sortMsg.approvalMsg">
-              <dt>驳回原因</dt>
-              <dd>
-                <em>{{ sortMsg.approvalMsg }}</em>
-              </dd>
-            </dl>
-          </div>
-          <el-button type="text" @click="showbeforeList"
+        <div class="dl-group">
+          <dl class="dl-item">
+            <dt>部门总数</dt>
+            <dd>
+              <em>{{ sortMsg.orgSum || 0 }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt>未复核</dt>
+            <dd>
+              <em>{{ sortMsg.orgSum - sortMsg.reviewedOrgSum || 0 }}</em>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt>绩效复核状态</dt>
+            <dd v-if="sortMsg.approvalStatus">
+              <i
+                :class="
+                  CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus]
+                    .className
+                "
+              ></i>
+              <em>{{
+                CONST.APPROVAL_SCORE_STATUS_MAP[sortMsg.approvalStatus].name
+              }}</em>
+            </dd>
+            <dd v-else><em>--</em></dd>
+          </dl>
+          <dl class="dl-item">
+            <dt>绩效复核时间</dt>
+            <dd>
+              <em>{{ sortMsg.reviewTime || "--" }}</em>
+            </dd>
+          </dl>
+          <dl
+            v-for="rule in ruleDetailContentList"
+            :key="rule.applyId"
+            class="dl-item"
+          >
+            <dt>{{ rule.ruleName }}</dt>
+            <dd
+              v-for="item in rule.periodRuleDetailList"
+              :key="item.ruleDetailId"
+            >
+              <em>{{ item.value }}{{ item.unit }}</em>
+              <span v-if="item.applyValue">({{ item.applyValue }}个)</span>
+            </dd>
+          </dl>
+          <dl v-if="sortMsg.approvalMsg" class="dl-item">
+            <dt>驳回原因</dt>
+            <dd>
+              <em>{{ sortMsg.approvalMsg }}</em>
+            </dd>
+          </dl>
+          <el-button type="text" @click="showbeforeList" class="tl-btn"
             >查看历史提交记录</el-button
           >
         </div>
-        <div>
+        <div class="adjust-rank">
           <span>调整绩效排名</span>
           <em
             >你好，部门绩效需等到整体复核结束后，您才可以进行调整，请等待，谢谢！</em
@@ -154,7 +156,7 @@
         </div>
         <div class="footer-panel">
           <div>
-            <span>*是否已线下沟通</span>
+            <span>*</span><em>是否已线下沟通</em>
             <el-radio-group
               v-model.trim="sortMsg.enableCommunicate"
               :disabled="
