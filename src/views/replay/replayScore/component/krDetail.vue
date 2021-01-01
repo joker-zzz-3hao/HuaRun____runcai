@@ -229,12 +229,12 @@
     <dl v-if="okrMain.okrMainVo" class="final-score">
       <dd>
         <span>OKR自评得分</span>
-        <em>{{ okrMain.okrMainVo.selfAssessmentScore }}</em>
+        <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
         <span>分</span>
       </dd>
       <dd>
         <span>OKR复核最终得分</span>
-        <em>{{ okrMain.okrMainVo.finalScore }}</em>
+        <em>{{ okrMain.okrMainVo.finalScore || 0 }}</em>
         <span>分</span>
       </dd>
     </dl>

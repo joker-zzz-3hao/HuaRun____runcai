@@ -11,6 +11,8 @@
     @close="close"
     :title="title"
     :close-on-click-modal="false"
+    custom-class="custom-drawer edit-evaluate"
+    class="tl-dialog"
   >
     <div v-show="step == 1">
       <el-form ref="dicForm" :model="performanceData" label-width="100px">
