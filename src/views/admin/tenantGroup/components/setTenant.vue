@@ -15,26 +15,50 @@
       width="60%"
     >
       <div>
+        <div class="operating-area">
+          <dl class="condition-lists tag-lists has-delete">
+            <dd>
+              <tl-tenantMultiple
+                :tenantList="tenantList"
+                v-model="searchTenant"
+                :showSelect="false"
+                @change="selectedChange"
+              ></tl-tenantMultiple>
+            </dd>
+          </dl>
+        </div>
         <crcloud-table :isPage="false" @searchList="searchList">
           <div slot="tableContainer" class="table-container">
             <el-table ref="dicTable" v-loading="loading" :data="tableData">
               <el-table-column
                 min-width="100px"
                 align="left"
-                prop="code"
+                prop="tenantName"
                 label="租户"
               ></el-table-column>
               <el-table-column
                 min-width="100px"
                 align="left"
-                prop="name"
+                prop="defaultFlag"
                 label="是否默认租户"
-              ></el-table-column>
+              >
+                <template slot-scope="scope">
+                  <div>
+                    <el-checkbox
+                      @change="defaultFlagChange(scope.row)"
+                      v-model="scope.row.defaultFlag"
+                      >{{
+                        scope.row.defaultFlag == 1 ? "是" : "否"
+                      }}</el-checkbox
+                    >
+                  </div>
+                </template></el-table-column
+              >
               <el-table-column
                 min-width="100px"
                 align="left"
-                prop="name"
-                label="创建时间"
+                prop="createTime"
+                label="加入时间"
               ></el-table-column>
               <el-table-column
                 width="150px"
@@ -46,7 +70,7 @@
                   <el-button
                     type="text"
                     size="small"
-                    @click="deleteTenant(scope.row)"
+                    @click="removeTenant(scope.row)"
                     >移除</el-button
                   >
                 </template>
@@ -69,10 +93,12 @@
 </template>
 
 <script>
+import tenantMultiple from '@/components/tenantMultiple';
 
 export default {
   name: 'setTenant',
   components: {
+    'tl-tenantMultiple': tenantMultiple,
   },
   props: {
     server: {
@@ -87,7 +113,9 @@ export default {
       visible: false,
       loading: false,
       tableData: [],
-
+      group: {},
+      tenantList: [],
+      searchTenant: [],
     };
   },
   created() {
@@ -96,13 +124,46 @@ export default {
   computed: {},
   methods: {
     show(group) {
-      this.server.getTenantList({ group }).then((res) => {
+      this.group = group;
+      this.searchList();
+      this.queryTenants();
+      this.visible = true;
+    },
+
+    searchList() {
+      this.server.getTenantByGroupId({ groupId: this.group.groupId }).then((res) => {
         if (res.code == 200) {
-          // this.tableData = res.data;
-          this.tableData = [{}, {}];
+          this.tableData = res.data;
+          this.tableData.forEach((element) => {
+            element.defaultFlag = Number(element.defaultFlag) == 1;
+          });
+          this.$forceUpdate();
         }
       });
-      this.visible = true;
+    },
+    queryTenants() {
+      this.server.queryTenants().then((res) => {
+        if (res.code == 200) {
+          this.tenantList = res.data;
+        }
+      });
+    },
+    selectedChange(list) {
+      const params = {
+        groupDetailList: [],
+        groupId: this.group.groupId,
+      };
+      list.forEach((id) => {
+        params.groupDetailList.push({
+          tenantId: id,
+        });
+      });
+      this.server.addTenant(params).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('添加成功');
+          this.searchList();
+        }
+      });
     },
     close(status) {
       this.visible = false;
@@ -120,6 +181,31 @@ export default {
     },
     cancel() {
       this.close();
+    },
+    addEdit() {
+
+    },
+    defaultFlagChange(tenant) {
+      this.server.setDefaultTenant({
+        groupId: this.group.groupId,
+        id: tenant.id,
+        defaultFlag: tenant.defaultFlag == false ? 2 : 1,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('操作成功');
+          this.searchList();
+        }
+      });
+    },
+    removeTenant(tenant) {
+      this.server.removeTenant({
+        id: tenant.id,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('操作成功');
+          this.searchList();
+        }
+      });
     },
   },
   watch: {},
