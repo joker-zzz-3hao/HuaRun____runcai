@@ -9,7 +9,12 @@
     class="tl-dialog"
     width="1000px"
     title="更新进展"
-    :class="{ 'only-history': !([1, '1', 3, '3'].includes(okrItemStatus) || (okrItemStatus == 2 && reviewStatus == 1 ))}"
+    :class="{
+      'only-history': !(
+        [1, '1', 3, '3'].includes(okrItemStatus) ||
+        (okrItemStatus == 2 && reviewStatus == 1)
+      ),
+    }"
   >
     <tl-tabs :current.sync="currentIndex" :tabMenuList="tabMenuList"> </tl-tabs>
     <div class="flex-up">
@@ -19,7 +24,9 @@
           <div
             class="tl-custom-timeline"
             v-if="
-              currentIndex === 0 && [1, '1', 3, '3'].includes(okrItemStatus) || (okrItemStatus == 2 && reviewStatus == 1 )
+              currentIndex === 0 &&
+              ([1, '1', 3, '3'].includes(okrItemStatus) ||
+                (okrItemStatus == 2 && reviewStatus == 1))
             "
           >
             <div class="last-update" v-if="hasValue(historyFirst)">

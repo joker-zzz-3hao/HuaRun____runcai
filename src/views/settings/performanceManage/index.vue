@@ -84,7 +84,10 @@
             :key="item.periodRuleDetailId"
             class="layout-flex dd-margin"
           >
-            {{ item.value + item.unit + "（" + item.applyValue + "个）" }}
+            {{ item.value + item.unit }}
+            （
+            <em>{{ item.applyValue }}</em>
+            个）
           </dd>
           <dd>
             <el-button
@@ -115,15 +118,14 @@
                 label="部门"
                 align="left"
                 prop="orgName"
-                min-width="150px"
+                min-width="100px"
               ></el-table-column>
               <el-table-column
                 label="负责人"
                 align="left"
                 prop="userName"
-                min-width="150px"
+                min-width="90px"
               ></el-table-column>
-
               <el-table-column
                 v-for="column in colums"
                 :key="column.name"
@@ -132,11 +134,14 @@
                 min-width="200px"
                 :prop="column.name"
               >
+                <template slot-scope="scope">
+                  <span>{{ scope.row[column.name] || "暂未设置" }}</span>
+                </template>
               </el-table-column>
               <el-table-column
                 label="操作"
                 align="left"
-                width="120px"
+                width="100px"
                 fixed="right"
               >
                 <template slot-scope="scope">
