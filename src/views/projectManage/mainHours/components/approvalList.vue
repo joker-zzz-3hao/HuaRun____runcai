@@ -230,7 +230,7 @@
                         <el-button
                           type="primary"
                           class="tl-btn amt-bg-slip"
-                          @click="alertSelect(scope, true)"
+                          @click="showRowchange(scope, 'change', true)"
                           >确认审批</el-button
                         >
                         <el-button
@@ -397,7 +397,7 @@
               <template slot-scope="scope">
                 <el-button
                   v-if="scope.row.approvalStatus == '1'"
-                  @click="alertSelect(scope, false)"
+                  @click="showRowchange(scope, 'one')"
                   type="text"
                   class="tl-btn"
                   >确认审批</el-button
@@ -442,6 +442,7 @@
     <tl-select-approval
       ref="selectApproval"
       @alertSelectAll="alertSelectAll"
+      @alertSelectOne="alertSelectOne"
     ></tl-select-approval>
   </div>
 </template>
@@ -754,6 +755,27 @@ export default {
         this.$refs.selectApproval.show(this.tableDataSelect);
       });
     },
+    showRowchange(scope, type, desc) {
+      const { row } = scope;
+      if (type == 'change') {
+        if (desc) {
+          if (!this.tableData[scope.$index].remark) {
+            this.$message.error('修改理由不能为空');
+            return false;
+          }
+        }
+        this.$nextTick(() => {
+          this.close(scope);
+          this.$refs.selectApproval.show([{ ...row }], type, this.checkList);
+        });
+      } else if (type == 'one') {
+        this.$nextTick(() => {
+          this.$refs.selectApproval.show([{ ...row }], type);
+        });
+      } else {
+        this.$refs.selectApproval.show([{ ...row }]);
+      }
+    },
     alertSelectAll() {
       // this.$xconfirm({
       //   title: '确认批量审批',
@@ -762,6 +784,25 @@ export default {
 
       // });
       this.server.timeSheetListapproval({ workList: this.workList }).then((res) => {
+        if (res.code == '200') {
+          this.$message.success('审批成功');
+          this.$refs.selectApproval.close();
+          this.searchList();
+          this.tableDataSelect = [];
+          this.workList = [];
+        }
+      });
+    },
+    alertSelectOne(row) {
+      const params = {
+        sourceId: row.sourceId,
+        projectApprovalId: row.projectApprovalId,
+        weekSum: row.weekSum,
+        weekWorkList: row.checkList,
+        weekBegin: row.weekBegin,
+        remark: row.remark || '',
+      };
+      this.server.timeSheetListapproval({ workList: [params] }).then((res) => {
         if (res.code == '200') {
           this.$message.success('审批成功');
           this.$refs.selectApproval.close();
