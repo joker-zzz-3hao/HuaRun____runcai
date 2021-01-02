@@ -222,7 +222,7 @@
             <el-table-column prop="createDate" label="加入时间" min-width="180">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.createDate)">{{
-                  scope.row.createDate
+                  dateFormat("YYYY-mm-dd HH:MM:SS", scope.row.createDate)
                 }}</span>
                 <span v-else>--</span>
               </template>
