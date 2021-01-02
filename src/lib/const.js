@@ -54,7 +54,11 @@ const IMAGES_MAP = {
   bmp: true,
   gif: true,
 };
-
+const OKR_TYPE_MAP = {
+  1: '部门',
+  2: '个人',
+  3: '公司',
+};
 export default {
   bbb,
   CYCLE_LIST,
@@ -65,4 +69,5 @@ export default {
   APPROVAL_TYPE_MAP,
   APPROVAL_HISTROY_MAP,
   IMAGES_MAP,
+  OKR_TYPE_MAP,
 };
