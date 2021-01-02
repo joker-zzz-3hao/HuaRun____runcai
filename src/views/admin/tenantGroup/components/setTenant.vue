@@ -10,198 +10,87 @@
       :append-to-body="true"
       :visible="visible"
       @close="close"
-      :title="dicTitle"
+      title="租户管理"
       :close-on-click-modal="false"
-      width="70%"
+      width="60%"
     >
       <div>
-        <el-form ref="dicForm" :model="formData" label-width="80px">
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <el-form-item
-                label="字典编号"
-                prop="code"
-                :rules="[
-                  {
-                    required: true,
-                    validator: validateDicCode,
-                    trigger: 'blur',
-                  },
-                ]"
+        <div class="operating-area">
+          <dl class="condition-lists tag-lists has-delete">
+            <dd>
+              <tl-tenantMultiple
+                :tenantList="tenantList"
+                v-model="searchTenant"
+                :showSelect="false"
+                @change="selectedChange"
+              ></tl-tenantMultiple>
+            </dd>
+          </dl>
+        </div>
+        <crcloud-table :isPage="false" @searchList="searchList">
+          <div slot="tableContainer" class="table-container">
+            <el-table ref="dicTable" v-loading="loading" :data="tableData">
+              <el-table-column
+                width="100px"
+                type="index"
+                align="left"
+                label="序号"
+              ></el-table-column>
+              <el-table-column
+                min-width="100px"
+                align="left"
+                prop="tenantName"
+                label="租户"
+              ></el-table-column>
+              <el-table-column
+                min-width="100px"
+                align="left"
+                prop="defaultFlag"
+                label="是否默认租户"
               >
-                <el-input
-                  v-model.trim="formData.code"
-                  maxlength="50"
-                  clearable
-                ></el-input> </el-form-item
-            ></el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="字典名称"
-                prop="name"
-                :rules="[
-                  {
-                    required: true,
-                    validator: validateDicName,
-                    trigger: 'blur',
-                  },
-                ]"
+                <template slot-scope="scope">
+                  <div>
+                    <el-checkbox
+                      @change="defaultFlagChange(scope.row)"
+                      v-model="scope.row.defaultFlag"
+                      >{{
+                        scope.row.defaultFlag == 1 ? "是" : "否"
+                      }}</el-checkbox
+                    >
+                  </div>
+                </template></el-table-column
               >
-                <el-input
-                  v-model.trim="formData.name"
-                  maxlength="50"
-                  clearable
-                ></el-input> </el-form-item
-            ></el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <el-form-item
-                label="状态"
-                prop="enabledFlag"
-                :rules="[
-                  {
-                    required: true,
-                    message: '请输选择请用状态',
-                    trigger: 'blur',
-                  },
-                ]"
+              <el-table-column
+                min-width="100px"
+                align="left"
+                prop="createTime"
+                label="加入时间"
+              ></el-table-column>
+              <el-table-column
+                width="150px"
+                fixed="right"
+                align="left"
+                label="操作"
               >
-                <!-- <el-radio-group v-model="formData.enabledFlag">
-                  <el-radio :label="'Y'">启用</el-radio>
-                  <el-radio :label="'N'">停用</el-radio>
-                </el-radio-group> -->
-                <el-select
-                  v-model="formData.enabledFlag"
-                  popper-class="tl-select-dropdown"
-                  class="tl-select"
-                >
-                  <el-option
-                    v-for="item in enabledList"
-                    :key="item.enabledFlag"
-                    :value="item.enabledFlag"
-                    :label="item.name"
-                  ></el-option>
-                </el-select> </el-form-item
-            ></el-col>
-            <el-col :span="12">
-              <el-form-item label="备注" prop="description">
-                <el-input
-                  v-model.trim="formData.description"
-                  maxlength="100"
-                  clearable
-                ></el-input> </el-form-item
-            ></el-col>
-          </el-row>
-        </el-form>
-      </div>
-      <div>
-        <el-form
-          :rules="formTableData.rules"
-          :model="formTableData"
-          ref="formTable"
-        >
-          <el-table v-loading="tableLoading" :data="formTableData.tableData">
-            <el-table-column label="字典键" prop="value">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'tableData.' + scope.$index + '.value'"
-                  :rules="formTableData.rules.value"
-                >
-                  <el-input
-                    v-model.trim="scope.row.value"
-                    maxlength="50"
-                    clearable
-                  ></el-input>
-                </el-form-item>
-              </template>
-            </el-table-column>
-            <el-table-column label="字典值" prop="meaning">
-              <template slot-scope="scope">
-                <el-form-item
-                  :prop="'tableData.' + scope.$index + '.meaning'"
-                  :rules="formTableData.rules.meaning"
-                >
-                  <el-input
-                    v-model.trim="scope.row.meaning"
-                    maxlength="50"
-                    clearable
-                  ></el-input>
-                </el-form-item>
-              </template>
-            </el-table-column>
-            <el-table-column label="字典排序" prop="orderSeq">
-              <template slot-scope="scope">
-                <el-input-number
-                  v-model.trim="scope.row.orderSeq"
-                  controls-position="right"
-                  :min="1"
-                  :max="1000"
-                  style="width: 90px"
-                ></el-input-number>
-              </template>
-            </el-table-column>
-            <el-table-column label="状态" prop="enabledFlag">
-              <template slot-scope="scope">
-                <div @click.capture.stop="dataChange(scope.row)">
-                  <el-switch
-                    active-value="Y"
-                    inactive-value="N"
-                    v-model="scope.row.enabledFlag"
-                    active-color="#13ce66"
-                  ></el-switch>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="备注" prop="description">
-              <template slot-scope="scope">
-                <el-input
-                  v-model.trim="scope.row.description"
-                  maxlength="50"
-                  clearable
-                ></el-input>
-              </template>
-            </el-table-column>
-            <el-table-column label="创建时间" prop="createTime">
-              <template slot-scope="scope">
-                <span>{{
-                  scope.row.createTime ? scope.row.createTime : "--"
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" prop="code">
-              <template slot-scope="scope">
-                <el-button type="text" @click="deleteItem(scope.row)"
-                  >删除</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
-          <div class="btn-box" style="margin-top: 10px">
-            <el-button
-              type="text"
-              @click="addItem"
-              class="tl-btn dotted-line list-add"
-              style="display: block; margin: 0 auto"
-            >
-              <i class="el-icon-plus"></i>新增
-            </el-button>
+                <template slot-scope="scope">
+                  <el-button
+                    type="text"
+                    size="small"
+                    @click="removeTenant(scope.row)"
+                    >移除</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
           </div>
-        </el-form>
-        <div class="operating-box">
-          <el-button
-            :loading="loading"
-            type="primary"
-            class="tl-btn amt-bg-slip"
-            @click="save"
-            >确认</el-button
-          >
+        </crcloud-table>
+        <div class="operating-box btn-margin-top">
           <el-button
             :disabled="loading"
             plain
             class="tl-btn amt-border-fadeout"
             @click="cancel"
-            >取消</el-button
+            >关闭</el-button
           >
         </div>
       </div>
@@ -210,12 +99,12 @@
 </template>
 
 <script>
-import validateMixin from '../validateMixin';
+import tenantMultiple from '@/components/tenantMultiple';
 
 export default {
-  name: 'createdic',
-  mixins: [validateMixin],
+  name: 'setTenant',
   components: {
+    'tl-tenantMultiple': tenantMultiple,
   },
   props: {
     server: {
@@ -229,121 +118,100 @@ export default {
     return {
       visible: false,
       loading: false,
-      tableLoading: false,
-      dicTitle: '新增字典',
-      formTableData: {
-        rules: {
-          value: {
-            type: 'string',
-            required: true,
-            message: '请填写字典键',
-            trigger: 'blur',
-          },
-          meaning: {
-            type: 'string',
-            required: true,
-            message: '请填写字典值',
-            trigger: 'blur',
-          },
-        },
-        tableData: [],
-      },
-      formData: {
-        code: '',
-        name: '',
-        enabledFlag: 'Y',
-        description: '',
-        subList: [],
-      },
-      enabledList: [
-        {
-          enabledFlag: 'Y',
-          name: '启用',
-        },
-        {
-          enabledFlag: 'N',
-          name: '停用',
-        },
-      ],
+      tableData: [],
+      group: {},
+      tenantList: [],
+      searchTenant: [],
     };
   },
   created() {
-    this.init();
   },
   mounted() {},
   computed: {},
   methods: {
-    init() {
-
+    show(group) {
+      this.group = group;
+      this.searchList();
+      this.queryTenants();
+      this.visible = true;
     },
 
-    show() {
-      this.visible = true;
+    searchList() {
+      this.server.getTenantByGroupId({ groupId: this.group.groupId }).then((res) => {
+        if (res.code == 200) {
+          this.tableData = res.data;
+          this.tableData.forEach((element) => {
+            element.defaultFlag = Number(element.defaultFlag) == 1;
+          });
+          this.$forceUpdate();
+        }
+      });
+    },
+    queryTenants() {
+      this.server.queryTenants().then((res) => {
+        if (res.code == 200) {
+          this.tenantList = res.data;
+        }
+      });
+    },
+    selectedChange(list) {
+      const params = {
+        groupDetailList: [],
+        groupId: this.group.groupId,
+      };
+      list.forEach((id) => {
+        params.groupDetailList.push({
+          tenantId: id,
+        });
+      });
+      this.server.addTenant(params).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('添加成功');
+          this.searchList();
+        }
+      });
     },
     close(status) {
       this.visible = false;
-      this.$emit('closeDicDialog', { refreshPage: status == 'refreshPage' });
+      this.$emit('closeDialog', { refreshPage: status == 'refreshPage' });
     },
-
     save() {
-      let successTip = '新增成功';
-      if (this.optionType == 'edit') {
-        successTip = '编辑成功';
-      }
-      // 校验
-      const v1 = new Promise((resolve) => {
-        this.$refs.dicForm.validate((valid) => {
-          if (valid) resolve();
-        });
-      });
-      const v2 = new Promise((resolve) => {
-        this.$refs.formTable.validate((valid) => {
-          if (valid) resolve();
-        });
-      });
-      Promise.all([v1, v2]).then(() => {
-        this.formData.subList = this.formTableData.tableData;
-        this.loading = true;
-        this.server.addOrUpdate(this.formData).then((res) => {
-          if (res.code == 200) {
-            this.$message.success(successTip);
-            this.close('refreshPage');
-          }
-          this.loading = false;
-        });
+      this.loading = true;
+      this.server.addOrUpdate().then((res) => {
+        if (res.code == 200) {
+          this.$message.success('添加成功');
+          this.close('refreshPage');
+        }
+        this.loading = false;
       });
     },
     cancel() {
       this.close();
     },
-    addItem() { // 添加本地数据
-      this.formTableData.tableData.push({
-        meaning: '',
-        value: '',
-        orderSeq: '',
-        enabledFlag: 'Y',
-        description: '',
-        randomId: Math.random().toString(36).substr(3), // 添加随机id，用于删除环节
+    addEdit() {
+
+    },
+    defaultFlagChange(tenant) {
+      this.server.setDefaultTenant({
+        groupId: this.group.groupId,
+        id: tenant.id,
+        defaultFlag: tenant.defaultFlag == false ? 2 : 1,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('操作成功');
+          this.searchList();
+        }
       });
     },
-    deleteItem(item) {
-      if (item.randomId) { // 删除本地数据
-        this.formTableData.tableData = this.formTableData.tableData.filter((dicItem) => dicItem.randomId != item.randomId);
-      } else { // 删除数据库数据
-        this.$confirm('是否确认删除该数据？，删除将无法恢复').then(() => {
-          this.server.deleteDicItem({ codeValueId: item.codeValueId }).then((res) => {
-            if (res.code == 200) {
-              this.formTableData.tableData = this.formTableData.tableData.filter(
-                (dicItem) => dicItem.codeValueId != item.codeValueId,
-              );
-              this.$message.success('删除成功');
-            }
-          });
-        });
-      }
-    },
-    dataChange(dicItem) {
-      dicItem.enabledFlag = dicItem.enabledFlag == 'Y' ? 'N' : 'Y';
+    removeTenant(tenant) {
+      this.server.removeTenant({
+        id: tenant.id,
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success('操作成功');
+          this.searchList();
+        }
+      });
     },
   },
   watch: {},
@@ -351,3 +219,9 @@ export default {
   beforeDestroy() {},
 };
 </script>
+<style lang="css">
+.btn-margin-top {
+  margin-top: 20px;
+  margin-bottom: -10px;
+}
+</style>

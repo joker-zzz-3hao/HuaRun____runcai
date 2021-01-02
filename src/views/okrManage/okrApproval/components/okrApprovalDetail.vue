@@ -97,7 +97,10 @@
         </span>
       </dd>
     </dl>
-    <dl class="dl-card-panel" v-if="data.approvalStatus == '0' && canApproval">
+    <dl
+      class="dl-card-panel"
+      v-if="hasApproval && canApproval"
+    >
       <dt>
         <em>审批</em>
       </dt>
@@ -175,7 +178,9 @@
                       }」`
                     }}</span>
                     <template v-if="cycleFirst.reason">
-                      <span v-if="cycleFirst.approvalStatus === 0"
+                      <!--  -->
+                      <span
+                        v-if="[0, 4, 5, 6].includes(cycleFirst.approvalStatus)"
                         >变更原因</span
                       >
                       <span v-else-if="cycleFirst.approvalStatus === 3"
@@ -264,7 +269,23 @@ export default {
     ...mapState('common', {
       okrApprovalDetail: (state) => state.okrApprovalDetail,
       okrApprovalStep: (state) => state.okrApprovalStep,
+      roleCode: (state) => state.roleCode,
     }),
+   hasApproval() {
+      if (this.roleCode.includes('ORG_ADMIN')) {
+        if (this.data.approvalStatus === 4 && this.data.ownerFlag) {
+          return true;
+        }
+        if (this.data.approvalStatus === 6 && !this.data.ownerFlag) {
+          return true;
+        }
+        return false;
+      }
+      if (this.roleCode.includes('TENANT_ADMIN') && this.data.approvalStatus === 5) {
+        return true;
+      }
+      return false;
+    },    
   },
   mounted() {},
   methods: {

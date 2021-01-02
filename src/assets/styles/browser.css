@@ -46,6 +46,11 @@ _:future,
   .weekly-cont .tl-form.is-edit .form-item-group:first-child .el-form-item__content {
     width: 932px;
   }
+
+  .replay-rank .cont-area .dl-group .dl-item:nth-child(5) {
+    flex: 1;
+    flex-basis: calc(33% + 5px);
+  }
 }
 
 @media screen and (min-width:1921px) {
@@ -57,6 +62,11 @@ _:future,
   .weekly-cont .tl-form.is-edit .form-item-group:first-child .el-form-item__content {
     flex: 0 0 932px;
     width: 932px;
+  }
+
+  .replay-rank .cont-area .dl-group .dl-item:nth-child(5) {
+    flex: 1;
+    flex-basis: calc(33% + 5px);
   }
 }
 

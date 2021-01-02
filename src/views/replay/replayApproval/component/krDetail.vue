@@ -68,7 +68,7 @@
           <dd>
             <dl>
               <dt>自评分</dt>
-              <dd>{{ list.score }}</dd>
+              <dd>{{ list.score || 0 }}</dd>
             </dl>
             <dl v-if="list.scoreRemark">
               <dt>评分说明</dt>
@@ -104,8 +104,10 @@
                 <dd v-if="list.measure.length == 0">未填写</dd>
               </dl>
             </template>
-            <div @click="openMore(list)">
-              <i :class="list.openAdvantage === true ? 'close' : 'open'"></i>
+            <div @click="openMore(list)" class="fold-extend">
+              <i
+                :class="list.openAdvantage === true ? 'has-fold' : 'has-extend'"
+              ></i>
               <span v-if="list.openAdvantage">收起</span>
               <span v-else>展开</span>
             </div>
@@ -115,7 +117,7 @@
     </elcollapse>
     <div class="final-score">
       <span>OKR自评得分</span>
-      <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0}}</em>
+      <em>{{ okrMain.okrMainVo.selfAssessmentScore || 0 }}</em>
       <span>分</span>
     </div>
     <dl class="dl-card-panel replay-communicate">

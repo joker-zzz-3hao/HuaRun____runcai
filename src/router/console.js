@@ -335,8 +335,8 @@ export default [{
         path: '/replayApproval',
         name: 'replayApproval',
         meta: {
-          hasMainMenu: true,
-          isSubMenu: true,
+          hasMainMenu: false,
+          isSubMenu: false,
           parentRoute: 'myOkr',
           title: 'replayApproval',
           belongsTo: 'replayList',
