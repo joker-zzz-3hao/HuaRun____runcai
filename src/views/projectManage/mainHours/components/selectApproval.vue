@@ -190,7 +190,7 @@ export default {
     },
     show(row, type, time) {
       this.type = type;
-      if (type) {
+      if (type == 'change') {
         console.log(time);
         this.tableDataRow = row;
         this.tableDataRow[0].timeSheet = time.length * 0.5;
@@ -234,8 +234,8 @@ export default {
     },
     approval() {
       const { type } = this;
-      if (type) {
-        this.$emit('alertSelectOne');
+      if (type == 'change' || type == 'one') {
+        this.$emit('alertSelectOne', this.tableDataRow[0]);
       } else {
         this.$emit('alertSelectAll');
       }

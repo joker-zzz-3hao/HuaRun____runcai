@@ -397,7 +397,7 @@
               <template slot-scope="scope">
                 <el-button
                   v-if="scope.row.approvalStatus == '1'"
-                  @click="showRowchange(scope)"
+                  @click="showRowchange(scope, 'one')"
                   type="text"
                   class="tl-btn"
                   >确认审批</el-button
@@ -757,7 +757,7 @@ export default {
     },
     showRowchange(scope, type, desc) {
       const { row } = scope;
-      if (type) {
+      if (type == 'change') {
         if (desc) {
           if (!this.tableData[scope.$index].remark) {
             this.$message.error('修改理由不能为空');
@@ -768,10 +768,12 @@ export default {
           this.close(scope);
           this.$refs.selectApproval.show([{ ...row }], type, this.checkList);
         });
-      } else {
+      } else if (type == 'one') {
         this.$nextTick(() => {
-          this.$refs.selectApproval.show([{ ...row }]);
+          this.$refs.selectApproval.show([{ ...row }], type);
         });
+      } else {
+        this.$refs.selectApproval.show([{ ...row }]);
       }
     },
     alertSelectAll() {
@@ -798,9 +800,9 @@ export default {
         weekSum: row.weekSum,
         weekWorkList: row.checkList,
         weekBegin: row.weekBegin,
-        remark: row.remark,
+        remark: row.remark || '',
       };
-      this.server.timeSheetListapproval(params).then((res) => {
+      this.server.timeSheetListapproval({ workList: [params] }).then((res) => {
         if (res.code == '200') {
           this.$message.success('审批成功');
           this.$refs.selectApproval.close();
