@@ -97,7 +97,10 @@
         </span>
       </dd>
     </dl>
-    <dl class="dl-card-panel" v-if="data.approvalStatus == '0' && canApproval">
+    <dl
+      class="dl-card-panel"
+      v-if="hasApproval && canApproval"
+    >
       <dt>
         <em>审批</em>
       </dt>
@@ -175,7 +178,9 @@
                       }」`
                     }}</span>
                     <template v-if="cycleFirst.reason">
-                      <span v-if="cycleFirst.approvalStatus === 0"
+                      <!--  -->
+                      <span
+                        v-if="[0, 4, 5, 6].includes(cycleFirst.approvalStatus)"
                         >变更原因</span
                       >
                       <span v-else-if="cycleFirst.approvalStatus === 3"
@@ -239,7 +244,7 @@ export default {
       okrId: '',
       data: {},
       tableList: [],
-      okrData: {},
+      okrData: { attachmentList: [] },
       loading: false,
       ruleForm: {
         approvalStatus: '1',
@@ -247,12 +252,6 @@ export default {
       },
       cycleList: [],
       cycleFirst: {},
-      attachmentList: [{
-        name: '润联科技.jpg',
-        resourceId: '217980e1-5877-4ebb-ae76-4877c6cb7fd9',
-        resourceName: '润联科技.jpg',
-        resourceUrl: 'http://cr-talent-test.crc.oss-hn01.crcloud.com/%2Ftalent-dev/CR0011000054/217980e1-5877-4ebb-ae76-4877c6cb7fd9?AWSAccessKeyId=VGFsZW50RGV2VXNlcg%3D%3D&Expires=1606586772&Signature=g%2Ba9hGD3ySZ%2Bs91xCrpo%2BvYYzlY%3D',
-      }],
     };
   },
   components: {
@@ -270,7 +269,26 @@ export default {
     ...mapState('common', {
       okrApprovalDetail: (state) => state.okrApprovalDetail,
       okrApprovalStep: (state) => state.okrApprovalStep,
+      roleCode: (state) => state.roleCode,
     }),
+    hasApproval() {
+      if (this.roleCode.includes('TENANT_ADMIN') && this.data.approvalStatus === 5) {
+        return true;
+      }
+      if (this.roleCode.includes('ORG_ADMIN')) {
+        if (this.data.approvalStatus === 4 && this.data.ownerFlag) {
+          return true;
+        }
+        if (this.data.approvalStatus === 6 && !this.data.ownerFlag && !this.roleCode.includes('TENANT_ADMIN')) {
+          return true;
+        }
+        if (this.data.okrBelongType === 2 && this.data.approvalStatus === 4) {
+          return true;
+        }
+        return false;
+      }
+      return false;
+    },
   },
   mounted() {},
   methods: {
@@ -354,7 +372,7 @@ export default {
       const origin = window.location.origin
         ? window.location.origin
         : window.location.href.split('/#')[0];
-      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKRMODIFY&sourceKey=${this.data.okrMainId}`;
+      const url = `${origin}/gateway/system-service/sys/attachment/outside/download?resourceId=${fileObj.resourceId}&sourceType=OKRMODIFY&sourceKey=`;
       window.open(url);
     },
   },

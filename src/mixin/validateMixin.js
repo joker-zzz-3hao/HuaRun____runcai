@@ -151,5 +151,14 @@ export default {
         callback();
       }
     },
+    // 校验得分
+    validateScore(rule, value, callback) {
+      console.log(value);
+      if (value === undefined) {
+        callback('请输入评分');
+      } else {
+        callback();
+      }
+    },
   },
 };

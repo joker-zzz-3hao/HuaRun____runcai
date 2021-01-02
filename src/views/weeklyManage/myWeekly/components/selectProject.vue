@@ -19,6 +19,7 @@
             <el-radio-group v-model="selectData">
               <el-radio
                 class="tl-radio"
+                ref="radioList"
                 v-for="(project, index) in projectList"
                 :label="project.projectId"
                 :key="project.projectId"

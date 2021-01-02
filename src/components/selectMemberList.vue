@@ -21,17 +21,12 @@
               v-for="(item, index) in selectList"
               :key="index"
               @click="getqueryOrgAndUser(item)"
-              >{{ item.name }}</em
-            >
+            >{{ item.name }}</em>
           </div>
         </div>
         <el-scrollbar>
           <ul class="txt-list" v-show="showLoad">
-            <li
-              v-for="(item, index) in data"
-              :key="index"
-              @click="getqueryOrgAndUser(item)"
-            >
+            <li v-for="(item, index) in data" :key="index" @click="getqueryOrgAndUser(item)">
               <el-checkbox
                 :key="item.id"
                 class="tl-checkbox"
@@ -55,7 +50,7 @@
                 <!-- <el-tooltip
                   :content="'LDAP账号：' + item.userAccount"
                   placement="top"
-                > -->
+                >-->
                 <em>{{ item.name }}({{ item.userAccount }})</em>
                 <!-- </el-tooltip> -->
               </el-checkbox>
@@ -71,8 +66,7 @@
         <div class="transfer-head">
           <div class="selected-number">
             <span>已选</span>
-            <em>{{ roulelist.length }}</em
-            >人
+            <em>{{ roulelist.length }}</em>人
           </div>
           <div class="clear" @click="clearMember">清空</div>
         </div>
@@ -81,15 +75,10 @@
             <li v-for="(item, index) in roulelist" :key="index">
               <div class="img-user">
                 <img v-if="false" src="@/assets/images/user/user.jpg" alt />
-                <div class="user-name" v-else>
-                  {{ checkName(item.userName) }}
-                </div>
+                <div class="user-name" v-else>{{ checkName(item.userName) }}</div>
               </div>
               <em>{{ item.userName }}({{ item.userAccount }})</em>
-              <i
-                class="el-icon-close"
-                @click="deleteMember(index, item.userId)"
-              ></i>
+              <i class="el-icon-close" @click="deleteMember(index, item.userId)"></i>
             </li>
           </ul>
         </el-scrollbar>
@@ -131,6 +120,7 @@ export default {
     this.getSelected();
 
     this.dialogTableVisible = true;
+
     this.getqueryOrgAndUser({});
   },
   methods: {
@@ -161,6 +151,7 @@ export default {
       this.light = 0;
     },
     getqueryOrgAndUser(item) {
+      console.log(item);
       if (item.type == 'USER') return false;
       this.showLoad = false;
       this.selectList[item.level - 2] = item;
@@ -171,7 +162,6 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.data = res.data;
-          console.log(this.data);
           this.showLoad = true;
         }
       });
@@ -245,6 +235,7 @@ export default {
           label: item.userName,
           id: item.id,
           type: 'user',
+          orgNmae: item.orgName,
           userId: item.userId,
           orgId: item.orgId,
           orgName: item.orgName,

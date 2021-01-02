@@ -1,5 +1,5 @@
 <template>
-  <dl class="dl-card-panel replay-record">
+  <dl class="dl-card-panel replay-record" v-if="activities.length">
     <dt><em>复盘记录</em></dt>
     <dd>
       <div class="tl-custom-timeline">
@@ -10,7 +10,14 @@
               <div class="list-cont">
                 <div class="operate-type">
                   <em>{{ item.userName }}</em>
-                  <span>{{ item.content }}</span>
+                  <span v-if="item.operateName"
+                    >「{{ item.operateName }}」</span
+                  >
+                  <span v-if="item.operateResult"
+                    >「{{ item.operateResult }}」</span
+                  >
+                  <em v-if="item.content">原因</em>
+                  <span v-if="item.content">「{{ item.content }}」</span>
                 </div>
               </div>
             </div>

@@ -21,4 +21,9 @@ export default class Server extends ServerBase {
   getTypeConfig(param) {
     return this._ajaxPost('gateway/system-service/sys/config/query', param);
   }
+
+  // 查询组织
+  getOrgTable(param) {
+    return this._ajaxPost('gateway/talent-query/okr/query/orgTable', param);
+  }
 }

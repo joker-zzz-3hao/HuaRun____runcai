@@ -192,7 +192,7 @@ export default {
           params.push({
             orgName: projectManagerObj.length > 0 ? projectManagerObj[0].orgName : '',
             projectId: self.$route.query.projectId || '',
-            userAccount: projectManagerObj.length > 0 ? projectManagerObj[0].userAccount : '',
+            userAccount: self.formData.projectManager,
             userLevel: self.formData.userLevel,
             userName: projectManagerObj.length > 0 ? projectManagerObj[0].userName : '',
             userPost: 'Project-Mng',

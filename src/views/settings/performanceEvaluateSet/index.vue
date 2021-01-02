@@ -37,40 +37,32 @@
                     scope.row.ruleDetailList.length - 1 != index ? "、" : ""
                   }}
                 </span>
-              </template></el-table-column
-            >
+              </template>
+            </el-table-column>
             <el-table-column
               label="设置时间"
               align="left"
               prop="createTime"
               min-width="165px"
-              ><template slot-scope="scope">
-                <div>
-                  {{
-                    dateFormat(
-                      "YYYY-mm-dd HH:MM:SS",
-                      scope.row.createTime
-                    )
-                  }}
-                </div>
-              </template></el-table-column
             >
+              <template slot-scope="scope">
+                <div>
+                  {{ dateFormat("YYYY-mm-dd HH:MM:SS", scope.row.createTime) }}
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column
               label="更新时间"
               align="left"
               prop="updateTime"
               min-width="165px"
-              ><template slot-scope="scope">
-                <div>
-                  {{
-                    dateFormat(
-                      "YYYY-mm-dd HH:MM:SS",
-                      scope.row.updateTime
-                    )
-                  }}
-                </div>
-              </template></el-table-column
             >
+              <template slot-scope="scope">
+                <div>
+                  {{ dateFormat("YYYY-mm-dd HH:MM:SS", scope.row.updateTime) }}
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column
               label="添加人"
               align="left"
@@ -89,8 +81,7 @@
                   type="text"
                   class="tl-btn"
                   @click="addOrEditEvaluate(scope.row)"
-                >
-                  详情</el-button
+                  >详情</el-button
                 >
                 <el-tooltip
                   v-if="scope.row.status > 0"
@@ -99,15 +90,16 @@
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 >
-                  <el-button type="text" class="tl-btn"> 编辑</el-button>
+                  <el-button type="text" class="tl-btn is-disabled">
+                    编辑</el-button
+                  >
                 </el-tooltip>
                 <el-button
                   v-else
                   type="text"
                   class="tl-btn"
                   @click="addOrEditEvaluate(scope.row)"
-                >
-                  编辑</el-button
+                  >编辑</el-button
                 >
                 <el-tooltip
                   v-if="scope.row.status > 0"
@@ -116,7 +108,9 @@
                   placement="top"
                   popper-class="tl-tooltip-popper"
                 >
-                  <el-button type="text" class="tl-btn"> 删除</el-button>
+                  <el-button type="text" class="tl-btn is-disabled">
+                    删除</el-button
+                  >
                 </el-tooltip>
                 <el-button
                   v-else
