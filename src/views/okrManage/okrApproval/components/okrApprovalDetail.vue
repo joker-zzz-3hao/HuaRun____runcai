@@ -271,7 +271,10 @@ export default {
       okrApprovalStep: (state) => state.okrApprovalStep,
       roleCode: (state) => state.roleCode,
     }),
-   hasApproval() {
+    hasApproval() {
+      if (this.roleCode.includes('TENANT_ADMIN') && this.data.approvalStatus === 5) {
+        return true;
+      }
       if (this.roleCode.includes('ORG_ADMIN')) {
         if (this.data.approvalStatus === 4 && this.data.ownerFlag) {
           return true;
@@ -281,11 +284,8 @@ export default {
         }
         return false;
       }
-      if (this.roleCode.includes('TENANT_ADMIN') && this.data.approvalStatus === 5) {
-        return true;
-      }
       return false;
-    },    
+    },
   },
   mounted() {},
   methods: {
