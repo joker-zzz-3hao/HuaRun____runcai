@@ -23,29 +23,6 @@
             </el-select>
           </dd>
         </dl>
-        <dl class="dl-item">
-          <dt>团队成员</dt>
-          <dd>
-            <el-select
-              v-model="userId"
-              placeholder="请选择"
-              filterable
-              style="width: 118px"
-              @change="searchList"
-              popper-class="tl-select-dropdown"
-              class="tl-select has-bg"
-            >
-              <el-option label="全部" value=""> </el-option>
-              <el-option
-                v-for="(item, index) in options"
-                :key="index"
-                :label="item.userName"
-                :value="item.userId"
-              >
-              </el-option>
-            </el-select>
-          </dd>
-        </dl>
       </div>
       <dl class="dl-item">
         <dd>
@@ -153,7 +130,56 @@
           </dd>
         </dl>
       </div>
-
+      <div class="operating-box">
+        <div class="dl-list">
+          <dl class="dl-item">
+            <dt>所属组</dt>
+            <dd>
+              <el-select
+                v-model="projectTeamId"
+                placeholder="请选择"
+                filterable
+                style="width: 118px"
+                @change="searchList"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option label="全部" value=""> </el-option>
+                <el-option
+                  v-for="(item, index) in teamList"
+                  :key="index"
+                  :label="item.projectTeamName"
+                  :value="item.projectTeamId"
+                >
+                </el-option>
+              </el-select>
+            </dd>
+          </dl>
+          <dl class="dl-item">
+            <dt>团队成员</dt>
+            <dd>
+              <el-select
+                v-model="userId"
+                placeholder="请选择"
+                filterable
+                style="width: 140px"
+                @change="searchList"
+                popper-class="tl-select-dropdown"
+                class="tl-select"
+              >
+                <el-option label="全部" value=""> </el-option>
+                <el-option
+                  v-for="(item, index) in options"
+                  :key="index"
+                  :label="item.userName"
+                  :value="item.userId"
+                >
+                </el-option>
+              </el-select>
+            </dd>
+          </dl>
+        </div>
+      </div>
       <tl-crcloud-table
         :total="total"
         :currentPage.sync="currentPage"
@@ -314,6 +340,8 @@ export default {
       insideBudget: 0,
       outerConsultBudget: 0,
       queryPrice: 0,
+      teamList: [],
+      projectTeamId: '',
     };
   },
 
@@ -385,9 +413,12 @@ export default {
       const oneDate = 24 * 60 * 60 * 1000;
       const prevDate = new Date().getTime() - oneDate * 6;
       const date = this.dateFormat('YYYY-mm-dd', new Date(prevDate));
+      console.log(date);
       this.server.getCalendar({ date }).then((res) => {
         // eslint-disable-next-line max-len
-        const indexs = res.data.findIndex((item) => new Date(item.weekBegin).getTime() <= prevDate && prevDate < new Date(item.weekEnd).getTime());
+        const indexs = res.data.findIndex((item) => new Date(item.weekBegin.replace(/-/g, '/')).getTime() <= prevDate && prevDate < (new Date(item.weekEnd.replace(/-/g, '/')).getTime() + oneDate));
+        console.log(new Date('2020-12-27'.replace(/-/g, '/')).getTime());
+
         if (indexs) {
           this.week = `${this.dateFormat('mm月dd日', res.data[indexs].weekBegin)}至${this.dateFormat('mm月dd日', res.data[indexs].weekEnd)}`;
         }
@@ -402,6 +433,7 @@ export default {
         userId: this.userId,
         currentPage: this.currentPage,
         pageSize: this.pageSize,
+        projectTeamId: this.projectTeamId,
       }).then((res) => {
         this.tableData = res.data.content;
         this.total = res.data.total;
@@ -418,12 +450,20 @@ export default {
       this.summaryList();
       this.searchList();
       this.getMoneyPrice();
+      this.queryProjectTeam();
     },
     summaryList() {
       this.server.summaryList({ projectId: this.formData.projectId }).then((res) => {
         if (res.code == 200) {
           this.options = res.data;
         }
+      });
+    },
+    queryProjectTeam() {
+      this.server.queryProjectTeam({
+        projectId: this.formData.projectId,
+      }).then((res) => {
+        this.teamList = res.data;
       });
     },
     timeSheetList() {
@@ -477,6 +517,7 @@ export default {
             this.summaryList();
             this.searchList();
             this.getMoneyPrice();
+            this.queryProjectTeam();
           }
         }
       });

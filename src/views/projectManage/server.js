@@ -179,4 +179,9 @@ export default class Server extends ServerBase {
   setProjectAgentManager(param) {
     return this._ajaxPost('gateway/project-service/project/update/setProjectAgentManager', param);
   }
+
+  // 设置代理项目经理
+  queryProjectCost(param) {
+    return this._ajaxPost('gateway/project-service/project/query/queryProjectCost', param);
+  }
 }

@@ -68,9 +68,11 @@
         <dl class="dl-item">
           <dt><span>代理项目经理</span></dt>
           <dd>
+            <em>{{ baseInfo.projectAgentManagerUserName }}</em>
             <tl-create-select
               @getSelectUser="getSelectUser"
               btnText="修改"
+              :selectId="baseInfo.projectAgentManagerUserId"
               placeholderText="请输入成员"
               :userList="summaryList"
               :type="'user'"
@@ -374,6 +376,10 @@ export default {
     }),
   },
   mounted() {
+    if (this.baseInfo.projectUserVoList.length == 0) {
+      this.isManage = true;
+      return false;
+    }
     if (this.baseInfo.projectUserVoList) {
       this.baseInfo.projectUserVoList.forEach((item) => {
         if (item.projectUserType == '1') {
@@ -398,6 +404,7 @@ export default {
         userId,
       }).then((res) => {
         if (res.code == 200) {
+          this.$emit('changeTab');
           this.$message.success('设置代理负责人成功');
         }
       });

@@ -365,6 +365,18 @@ export default [{
     component: () => import('@/views/projectManage/mainHours/index'),
   },
   {
+    path: '/HainDemo',
+    name: 'HainDemo',
+    meta: {
+      hasMainMenu: true,
+      isSubMenu: true,
+      parentRoute: 'projectManage',
+      title: 'HainDemo',
+      power: '',
+    },
+    component: () => import('@/views/projectManage/HainDemo'),
+  },
+  {
     // 周报管理
     // 我的周报
     path: '/myWeekly',
