@@ -139,7 +139,7 @@ export default {
           this.formData.userStatus = res.data.userStatus;
           this.formData.tenantName = res.data.tenantName;
           this.orgName = res.data.orgName;
-          this.ldapType = res.data.ldapType;
+          this.formData.ldapType = res.data.ldapType;
         }
         this.visible = true;
       });
