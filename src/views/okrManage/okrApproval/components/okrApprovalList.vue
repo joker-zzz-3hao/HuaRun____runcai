@@ -49,7 +49,7 @@
             <el-table-column
               prop="okrBelongType"
               label="OKR类型"
-              min-width="160"
+              min-width="80"
             >
                <template slot-scope="scope">
                  <span>
