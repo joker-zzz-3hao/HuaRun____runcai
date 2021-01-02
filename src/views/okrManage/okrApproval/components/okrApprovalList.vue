@@ -70,6 +70,7 @@
                     unchange: scope.row.approvalType == '1',
                   }"
                 ></i>
+                <!-- <span v-if="[0,4,5,6].includes(scope.row.approvalStatus) && hasApproval(scope.row)">审批中</span> -->
                 <span>{{
                   CONST.APPROVAL_STATUS_MAP[scope.row.approvalStatus]
                 }}</span>

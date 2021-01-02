@@ -144,12 +144,20 @@
                   label="自评得分"
                   min-width="100"
                 >
+                <template slot-scope="scope">
+                  <span v-if="scope.row.selfAssessmentScore ===  ''">未自评</span>
+                  <span v-else>{{scope.row.selfAssessmentScore}}分</span>
+                </template>
                 </el-table-column>
                 <el-table-column
                   prop="finalScore"
                   label="复核得分"
                   min-width="100"
                 >
+                <template slot-scope="scope">
+                  <span v-if="scope.row.finalScore ===  ''">未复核</span>
+                  <span v-else>{{scope.row.finalScore}}分</span>
+                </template>
                 </el-table-column>
                 <!-- 动态 -->
                 <el-table-column
@@ -249,6 +257,7 @@ export default {
       ruleDetailContentList: [],
       propList: [],
       noData: true,
+      sortObj: '',
     };
   },
   mounted() {
@@ -263,6 +272,9 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.queryList();
+          if (this.sortObj !== ''){
+            this.sortObj.destroy();
+          }
         }
       });
     },
@@ -273,9 +285,9 @@ export default {
         if (res.code == 200) {
           this.sortMsg = res.data;
           // 除了复核中清空
-          if (this.sortMsg.approvalStatus != 2) {
-            this.sortMsg.enableCommunicate = 0;
-          }
+          // if (this.sortMsg.approvalStatus != 2) {
+          //   this.sortMsg.enableCommunicate = 0;
+          // }
           this.ruleDetailContentList = this.sortMsg.ruleDetailContentList || [];
           this.tableData = res.data.orgResultDetailMapList;
           this.propList = this.ruleDetailContentList.map((rule) => rule.ruleId);
@@ -284,7 +296,9 @@ export default {
           console.log(this.propData);
           if (this.ruleDetailContentList.length > 0) {
             this.noData = false;
-            this.$nextTick(() => { this.getSort(); });
+            if (this.sortMsg.approvalStatus != 2 && this.sortMsg.approvalStatus != 3) {
+              this.$nextTick(() => { this.getSort(); });
+            }
           } else {
             this.noData = true;
           }
@@ -367,7 +381,7 @@ export default {
     getSort() {
       const table = document.querySelector('.el-table__body-wrapper tbody');
       const self = this;
-      Sortable.create(table, {
+      this.sortObj=  Sortable.create(table, {
         onEnd({ newIndex, oldIndex }) {
         //  console.log(newIndex, oldIndex);
           const targetRow = self.tableData.splice(oldIndex, 1)[0];
