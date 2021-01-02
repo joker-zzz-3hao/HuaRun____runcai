@@ -128,8 +128,6 @@ export default {
     };
   },
   mounted() {
-    console.log(`11${this.userInfo}`);
-    console.log(this.orgUserId);
     this.getSelected();
 
     this.dialogTableVisible = true;
@@ -147,6 +145,7 @@ export default {
             roleId: this.$route.query.roleId,
             orgId: item.parentId,
             orgName: item.orgName,
+            ldapType: item.ldapType,
           });
         });
         this.member = this.roulelist;
