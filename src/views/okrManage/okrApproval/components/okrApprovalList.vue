@@ -390,6 +390,9 @@ export default {
       this.searchList();
     },
     hasApproval(row) {
+      if (this.roleCode.includes('TENANT_ADMIN') && row.approvalStatus === 5) {
+        return true;
+      }
       if (this.roleCode.includes('ORG_ADMIN')) {
         if (row.approvalStatus === 4 && row.ownerFlag) {
           return true;
@@ -398,9 +401,6 @@ export default {
           return true;
         }
         return false;
-      }
-      if (this.roleCode.includes('TENANT_ADMIN') && row.approvalStatus === 5) {
-        return true;
       }
       return false;
     },
