@@ -13,15 +13,9 @@
       <div class="select-target">
         <div class="transfer-head">
           <div class="crumbs">
-<<<<<<< Updated upstream
-            <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''">{{
-              userInfo.tenantInfo.tenantName
-            }}</em>
-=======
             <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''">
               {{ userInfo.tenantInfo.tenantName }}
             </em>
->>>>>>> Stashed changes
             <em
               :class="light == item.id ? 'is-subset' : ''"
               v-for="(item, index) in selectList"
