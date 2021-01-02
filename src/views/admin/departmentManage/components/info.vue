@@ -39,7 +39,9 @@
           <span>{{ orgName }}</span>
         </el-form-item>
         <el-form-item label="用户类型">
-          <span>{{ formData.ldapType }}</span>
+          <span>{{
+            formData.ldapType == "Contractor" ? "外部员工" : "内部员工"
+          }}</span>
         </el-form-item>
       </el-form>
     </div>
@@ -144,6 +146,7 @@ export default {
           this.formData.userMail = res.data.userMail;
           this.formData.userStatus = res.data.userStatus;
           this.formData.tenantName = res.data.tenantName;
+          this.formData.ldapType = res.data.ldapType;
           this.formData.loginPwd = 'Wang@123456';
           this.orgName = res.data.orgName;
           this.setOrgIdList(res.data.orgId);
