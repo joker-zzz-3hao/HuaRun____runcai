@@ -119,7 +119,7 @@
                 <el-button
                   type="text"
                   v-if="
-                    [4, 5, 6, 0].includes(scope.row.approvalStatus) &&
+                    hasApproval(scope.row) &&
                     hasPower('okr-approval-pass') &&
                     canApproval
                   "
@@ -388,6 +388,21 @@ export default {
       this.getOrgName(this.departmentData, 0);
       this.orgId = data[data.length - 1];
       this.searchList();
+    },
+    hasApproval(row) {
+      if (this.roleCode.includes('ORG_ADMIN')) {
+        if (row.approvalStatus === 4 && row.ownerFlag) {
+          return true;
+        }
+        if (row.approvalStatus === 6 && !row.ownerFlag) {
+          return true;
+        }
+        return false;
+      }
+      if (this.roleCode.includes('TENANT_ADMIN') && row.approvalStatus === 5) {
+        return true;
+      }
+      return false;
     },
   },
   watch: {
