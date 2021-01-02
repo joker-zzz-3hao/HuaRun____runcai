@@ -47,6 +47,17 @@
               min-width="160"
             ></el-table-column>
             <el-table-column
+              prop="okrBelongType"
+              label="OKR类型"
+              min-width="160"
+            >
+               <template slot-scope="scope">
+                 <span>
+                   {{CONST.OKR_TYPE_MAP[scope.row.okrBelongType || 2]}}
+                 </span>
+               </template>
+            </el-table-column>
+            <el-table-column
               prop="approvalStatus"
               label="审批状态"
               min-width="90"
@@ -398,6 +409,9 @@ export default {
           return true;
         }
         if (row.approvalStatus === 6 && !row.ownerFlag && !this.roleCode.includes('TENANT_ADMIN')) {
+          return true;
+        }
+        if (row.okrBelongType === 2 && row.approvalStatus === 4) {
           return true;
         }
         return false;
