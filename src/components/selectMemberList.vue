@@ -13,9 +13,15 @@
       <div class="select-target">
         <div class="transfer-head">
           <div class="crumbs">
+<<<<<<< Updated upstream
             <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''">{{
               userInfo.tenantInfo.tenantName
             }}</em>
+=======
+            <em @click="clearUser" :class="light == 0 ? 'is-subset' : ''">
+              {{ userInfo.tenantInfo.tenantName }}
+            </em>
+>>>>>>> Stashed changes
             <em
               :class="light == item.id ? 'is-subset' : ''"
               v-for="(item, index) in selectList"
@@ -224,6 +230,7 @@ export default {
           userAccount: data.userAccount,
           orgId: this.rouleType ? data.orgId : data.parentId,
           orgName: data.orgName,
+          ldapType: data.ldapType,
         }];
       } else {
         this.roulelist.forEach((item, index) => {
@@ -265,6 +272,7 @@ export default {
           parentId: item.orgId,
           userAccount: item.userAccount,
           orgName: item.orgName,
+          ldapType: item.ldapType,
           type: 'USER',
         }));
       });
