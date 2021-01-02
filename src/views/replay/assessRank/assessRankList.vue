@@ -107,12 +107,20 @@
                       type="text"
                       class="tl-btn"
                       @click="upGo(tableData, scope.$index)"
+                      :disabled="
+                        sortMsg.approvalStatus == 2 ||
+                        sortMsg.approvalStatus == 3
+                      "
                       ><i class="el-icon-top"></i
                     ></el-button>
                     <el-button
                       type="text"
                       class="tl-btn"
                       @click="downGo(tableData, scope.$index)"
+                      :disabled="
+                        sortMsg.approvalStatus == 2 ||
+                        sortMsg.approvalStatus == 3
+                      "
                       ><i class="el-icon-bottom"></i
                     ></el-button>
                   </template>
