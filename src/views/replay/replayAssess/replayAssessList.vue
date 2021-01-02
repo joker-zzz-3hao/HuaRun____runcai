@@ -132,6 +132,7 @@
                     scope.row.approvalStatus == 4
                   "
                   type="text"
+                  class="tl-btn"
                   @click="showAssesspast(scope.row, 'detail')"
                   >详情
                 </el-button>
