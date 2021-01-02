@@ -272,7 +272,7 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.queryList();
-          if (this.sortObj !== ''){
+          if (this.sortObj !== '') {
             this.sortObj.destroy();
           }
         }
@@ -381,7 +381,7 @@ export default {
     getSort() {
       const table = document.querySelector('.el-table__body-wrapper tbody');
       const self = this;
-      this.sortObj=  Sortable.create(table, {
+      this.sortObj = Sortable.create(table, {
         onEnd({ newIndex, oldIndex }) {
         //  console.log(newIndex, oldIndex);
           const targetRow = self.tableData.splice(oldIndex, 1)[0];
