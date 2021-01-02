@@ -279,7 +279,7 @@ export default {
         if (this.data.approvalStatus === 4 && this.data.ownerFlag) {
           return true;
         }
-        if (this.data.approvalStatus === 6 && !this.data.ownerFlag) {
+        if (this.data.approvalStatus === 6 && !this.data.ownerFlag && !this.roleCode.includes('TENANT_ADMIN')) {
           return true;
         }
         return false;

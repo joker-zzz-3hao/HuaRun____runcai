@@ -397,7 +397,7 @@ export default {
         if (row.approvalStatus === 4 && row.ownerFlag) {
           return true;
         }
-        if (row.approvalStatus === 6 && !row.ownerFlag) {
+        if (row.approvalStatus === 6 && !row.ownerFlag && !this.roleCode.includes('TENANT_ADMIN')) {
           return true;
         }
         return false;
