@@ -137,6 +137,7 @@ export default {
             roleId: this.$route.query.roleId,
             orgId: item.parentId,
             orgName: item.orgName,
+            ldapType: item.ldapType,
           });
         });
         this.member = this.roulelist;
