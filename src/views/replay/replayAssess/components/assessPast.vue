@@ -83,9 +83,6 @@
       <el-button plain @click="refuse" class="tl-btn amt-border-fadeout"
         >驳回</el-button
       >
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
-        >返回</el-button
-      >
     </div>
     <tl-assess-refuse
       ref="assessrefuse"

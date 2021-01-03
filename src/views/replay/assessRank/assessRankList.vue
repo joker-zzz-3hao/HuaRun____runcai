@@ -89,7 +89,7 @@
         </div>
         <div class="adjust-rank">
           <span>调整绩效排名</span>
-          <em
+          <em v-if="sortMsg.orgSum > sortMsg.reviewedOrgSum"
             >你好，部门绩效需等到整体复核结束后，您才可以进行调整，请等待，谢谢！</em
           >
         </div>

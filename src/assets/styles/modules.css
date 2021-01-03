@@ -3806,12 +3806,32 @@
   align-items: center;
 }
 
+.w60 {
+  width: 60px;
+}
+
+.w70 {
+  width: 70px;
+}
+
+.w80 {
+  width: 80px;
+}
+
+.w90 {
+  width: 90px;
+}
+
 .w100 {
   width: 100px;
 }
 
 .w120 {
   width: 120px;
+}
+
+.w130 {
+  width: 130px;
 }
 
 .w180 {

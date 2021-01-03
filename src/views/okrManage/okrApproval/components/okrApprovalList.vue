@@ -131,7 +131,7 @@
                 <el-button
                   type="text"
                   v-if="
-                    (hasApproval(scope.row) || canApproval) &&
+                    hasApproval(scope.row) &&
                     hasPower('okr-approval-pass')
                   "
                   @click.native.prevent="okrApproval(scope.row)"
@@ -415,6 +415,9 @@ export default {
           return true;
         }
         return false;
+      }
+      if (this.canApproval) {
+        return true;
       }
       return false;
     },

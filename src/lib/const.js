@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-01-03 10:35:03
+ * @LastEditTime: 2021-01-03 15:48:00
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \cr-talent-web\src\lib\const.js
+ */
 const bbb = 1;
 const CYCLE_LIST = [
   { label: '2020年第一季度', value: 1 },
@@ -29,9 +37,9 @@ const APPROVAL_STATUS_MAP = {
   6: '待审批',
 };
 const APPROVAL_TYPE_LIST = [
+  { label: '全部', value: '' },
   { label: '创建', value: '0' },
   { label: '变更', value: '1' },
-  { label: '全部', value: '' },
 ];
 const APPROVAL_TYPE_MAP = {
   0: '创建',

@@ -1,13 +1,6 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年12月01日 10:34:43
-  备注：
--->
 <template>
-  <div>
+  <div class="performance-manage">
     <div class="operating-area">
-      <div class="page-title">绩效管理</div>
       <div class="operating-box">
         <dl class="dl-item">
           <dt>OKR周期</dt>
@@ -54,7 +47,7 @@
     </div>
     <div class="cont-area">
       <div class="cont-panel">
-        <dl class="dl-list">
+        <dl class="evaluation-rule">
           <dt>绩效评定规则</dt>
           <dd>
             <el-dropdown @command="addAmount">
@@ -74,20 +67,21 @@
           </dd>
         </dl>
         <dl
-          class="layout-flex"
+          class="evaluation-list-group"
           v-for="amountData in amountDataList"
           :key="amountData.periodRuleId"
         >
-          <dt>{{ amountData.ruleName + "：" }}</dt>
-          <dd
-            v-for="item in amountData.periodRuleDetailList"
-            :key="item.periodRuleDetailId"
-            class="layout-flex dd-margin"
-          >
-            {{ item.value + item.unit }}
-            （
-            <em>{{ item.applyValue }}</em>
-            个）
+          <dt>{{ amountData.ruleName }}</dt>
+          <dd>
+            <div
+              v-for="item in amountData.periodRuleDetailList"
+              :key="item.periodRuleDetailId"
+            >
+              <span>{{ item.value + item.unit }}</span>
+              <em
+                >(<span>{{ item.applyValue }}个</span>)</em
+              >
+            </div>
           </dd>
           <dd>
             <el-button
@@ -96,8 +90,6 @@
               @click="deleteRule(amountData)"
               >删除</el-button
             >
-          </dd>
-          <dd>
             <el-button
               class="tl-btn"
               type="text"
@@ -106,13 +98,13 @@
             >
           </dd>
         </dl>
-
         <crcloud-table :isPage="false" @searchList="searchList">
           <div slot="tableContainer" class="table-container">
             <el-table
               ref="performanceEvaluate"
               v-loading="loading"
               :data="orgData"
+              class="tl-table"
             >
               <el-table-column
                 label="部门"
@@ -141,7 +133,7 @@
               <el-table-column
                 label="操作"
                 align="left"
-                width="100px"
+                width="55px"
                 fixed="right"
               >
                 <template slot-scope="scope">
@@ -401,14 +393,3 @@ export default {
   beforeDestroy() {},
 };
 </script>
-<style lang="css">
-.layout-flex {
-  display: flex;
-}
-.dd-margin {
-  margin-right: 10px;
-}
-.text-gray {
-  color: gray;
-}
-</style>
