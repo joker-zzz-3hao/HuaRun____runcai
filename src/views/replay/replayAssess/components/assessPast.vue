@@ -5,7 +5,7 @@
     :before-close="close"
     :close-on-click-modal="false"
     class="tl-dialog check-judge"
-    width="800px"
+    width="1000px"
   >
     <div class="dl-list-group">
       <!-- 第一次提交 -->
@@ -21,12 +21,12 @@
         <dt>提交时间</dt>
         <dd>{{ row.submitTime }}</dd>
       </dl>
+      <dl>
+        <dt>是否已线下沟通</dt>
+        <dd>{{ CONST.COMMUN_MAP[row.enableCommunicate || 1] }}</dd>
+      </dl>
       <!-- 第二次提交  -->
       <template v-if="row.reviewTime">
-        <dl>
-          <dt @click="openHistory">历史提交记录》</dt>
-        </dl>
-
         <dl>
           <dt>复核结果</dt>
           <dd>
@@ -43,9 +43,12 @@
           <dt>绩效复核时间</dt>
           <dd>{{ row.reviewTime || "--" }}</dd>
         </dl>
-        <dl v-if="row.approvalMsg">
+        <dl v-if="row.approvalMsg" class="dismiss-reason">
           <dt>驳回原因</dt>
           <dd>{{ row.approvalMsg }}</dd>
+        </dl>
+        <dl class="open-history">
+          <dt @click="openHistory">历史提交记录》</dt>
         </dl>
       </template>
     </div>
@@ -72,10 +75,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <dl>
-      <dt>是否已线下沟通</dt>
-      <dd>{{ CONST.COMMUN_MAP[row.enableCommunicate || 1] }}</dd>
-    </dl>
     <div slot="footer" class="dialog-footer" v-if="row.approvalStatus == 2">
       <el-button type="primary" @click="sumbit" class="tl-btn amt-bg-slip"
         >确定</el-button

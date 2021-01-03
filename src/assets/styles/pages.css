@@ -1396,6 +1396,42 @@
   margin: 0 0 30px 10px;
 }
 
+.check-judge .dl-list-group,
+.check-judge .dl-list-group dl {
+  display: flex;
+  align-items: center;
+}
+
+.check-judge .dl-list-group {
+  flex-wrap: wrap;
+}
+
+.check-judge .dl-list-group dl {
+  margin: 0 0 14px 0;
+  flex: 1 1 33%;
+}
+
+.check-judge .dl-list-group dl dt {
+  margin-right: 10px;
+  color: #879099;
+}
+
+.check-judge .dl-list-group .open-history dt {
+  margin: 0;
+  color: #685df1;
+  cursor: pointer;
+}
+
+.check-judge .dl-list-group .dismiss-reason {
+  flex: 1;
+  flex-basis: calc(54% + 3px);
+}
+
+.check-judge .dl-list-group .open-history {
+  flex: 1 1 11.5%;
+  justify-content: flex-end;
+}
+
 /* okr-detail */
 .tl-drawer .okr-detail {
   padding: 0 2px 30px 0;
