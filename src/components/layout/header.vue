@@ -9,31 +9,6 @@
         <div class="logo"></div>
       </div>
       <dl class="toggle-department">
-        <dt v-if="userInfo.orgList && userInfo.orgList.length > 1">
-          切换组织架构
-        </dt>
-        <dd v-if="userInfo.orgList && userInfo.orgList.length <= 1">
-          {{ userInfo.orgName }}
-        </dd>
-        <dd v-else>
-          <el-select
-            v-model="orgId"
-            @change="switchOrg"
-            :popper-append-to-body="true"
-            popper-class="tl-select-dropdown toggle-teams"
-            class="tl-select w220"
-          >
-            <el-option
-              v-for="item in userInfo.orgList"
-              :key="item.orgId"
-              :label="item.orgName"
-              :value="item.orgId"
-            >
-            </el-option>
-          </el-select>
-        </dd>
-      </dl>
-      <dl class="toggle-department">
         <dt v-if="userInfo.orgList && userInfo.orgList.length > 1">切换团队</dt>
         <dd v-if="userInfo.orgList && userInfo.orgList.length <= 1">
           {{ userInfo.orgName }}
