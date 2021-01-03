@@ -7605,3 +7605,199 @@
 .update-progress .okr-risk .tl-custom-popover {
   margin: 0px 42px 0 0;
 }
+
+/* 绩效管理 */
+.tl-dialog .edit-evaluate {
+  width: 1000px;
+}
+
+.edit-evaluate .el-form-item:nth-child(1) .el-form-item__content {
+  margin-right: 100px;
+}
+
+.edit-evaluate .el-form-item:nth-child(2) {
+  margin-bottom: 6px;
+}
+
+.edit-evaluate .el-form-item__content {
+  line-height: unset;
+}
+
+.edit-evaluate .tl-input {
+  margin: 0;
+}
+
+.edit-evaluate .el-button--text {
+  margin: 0;
+  padding: 0;
+  min-width: unset;
+}
+
+.edit-evaluate .el-button--text:not(:last-child) {
+  margin-right: 16px;
+}
+
+.edit-evaluate .el-input__inner {
+  padding: 0 5px;
+}
+
+.edit-evaluate .flex-start {
+  align-items: flex-start;
+}
+
+.edit-evaluate .flex-start .edit-ipt {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-evaluate .flex-start .edit-ipt .error-text {
+  margin-top: 3px;
+  color: #fb4c59;
+}
+
+.edit-evaluate .flex-start .edit-ipt:nth-child(1) .tl-input {
+  margin-right: 6px;
+}
+
+.edit-evaluate .flex-start > span {
+  margin: 10px 10px 0 30px;
+}
+
+.edit-evaluate .flex-start .el-textarea__inner {
+  min-height: 40px !important;
+}
+
+.edit-evaluate .flex-start .edit-ipt:nth-of-type(3) {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.edit-evaluate .el-form-item:nth-child(3) .el-form-item__content {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.edit-evaluate .item-group:not(:last-child) {
+  margin-bottom: 14px;
+}
+
+.edit-evaluate .item-group .add-delete-btn {
+  width: 80px;
+}
+
+.edit-evaluate .evaluation-detail dt {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #28262a;
+}
+
+.edit-evaluate .evaluation-detail dd {
+  margin-bottom: 14px;
+  display: flex;
+}
+
+.edit-evaluate .evaluation-detail dd > span {
+  flex: 0 0 100px;
+  color: #acb6bf;
+}
+
+.edit-evaluate .evaluation-detail dd > em {
+  color: #28262a;
+}
+
+.edit-evaluate .evaluation-describe {
+  display: flex;
+  color: #acb6bf;
+}
+
+.edit-evaluate .evaluation-describe pre {
+  margin: 0;
+  padding: 0;
+}
+
+.edit-evaluate .evaluation-describe span {
+  margin-right: 10px;
+}
+
+.edit-evaluate .evaluation-results {
+  flex: 0 0 100px;
+  color: #28262a;
+}
+
+.performance-manage .cont-area {
+  padding: 16px;
+  border-color: transparent;
+}
+
+.performance-manage .evaluation-rule {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.performance-manage .evaluation-rule dt {
+  margin-right: 20px;
+  color: #4d5155;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.performance-manage .el-dropdown-link {
+  color: #685df1;
+}
+
+.performance-manage .el-dropdown-link i {
+  font-weight: 700;
+}
+
+.evaluation-list-group,
+.evaluation-list-group dd {
+  display: flex;
+  align-items: center;
+}
+
+.evaluation-list-group {
+  margin: 0 0 10px 0;
+  padding: 20px;
+  background: #f4f6f8;
+  height: 50px;
+}
+
+.evaluation-list-group dt {
+  margin-right: 10px;
+  flex: 0 0 76px;
+  color: #4d5155;
+}
+
+.evaluation-list-group dd:nth-of-type(1) {
+  flex: 1;
+}
+
+.evaluation-list-group .el-button--text {
+  margin: 0;
+  padding: 0;
+  min-width: unset;
+}
+
+.evaluation-list-group dd .el-button--text:not(:last-child) {
+  margin-right: 20px;
+}
+
+.evaluation-list-group dd div:not(:last-child) {
+  margin-right: 30px;
+}
+
+.evaluation-list-group dd div > span {
+  margin-right: 4px;
+  color: #4d5155;
+}
+
+.evaluation-list-group dd div > em {
+  color: #4d5155;
+}
+
+.evaluation-list-group dd div > em span {
+  color: #685df1;
+}
