@@ -1,9 +1,3 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年12月02日 15:22:31
-  备注：
--->
 <template>
   <el-dialog
     :append-to-body="true"
@@ -14,68 +8,74 @@
     custom-class="custom-drawer allocate-amount"
     class="tl-dialog"
   >
-    <dl v-show="step == 1">
-      <dt>请选择评定方式：</dt>
-      <dd>
-        <el-select
-          v-model="periodRuleId"
-          :popper-append-to-body="false"
-          popper-class="tl-select-dropdown"
-          class="tl-select"
-          @change="dataChange"
-          ><el-option
-            v-for="item in amountDataList"
-            :key="item.periodRuleId"
-            :label="item.ruleName"
-            :value="item.periodRuleId"
-          ></el-option
-        ></el-select>
-        <dl class="layout-flex">
-          <dt>当前剩余可分配{{ remainAmount.ruleName }}数量：</dt>
-          <dd
+    <div v-show="step == 1" class="dl-group">
+      <dl>
+        <dt>请选择评定方式</dt>
+        <dd>
+          <el-select
+            v-model="periodRuleId"
+            :popper-append-to-body="false"
+            popper-class="tl-select-dropdown"
+            class="tl-select"
+            @change="dataChange"
+            ><el-option
+              v-for="item in amountDataList"
+              :key="item.periodRuleId"
+              :label="item.ruleName"
+              :value="item.periodRuleId"
+            ></el-option
+          ></el-select>
+        </dd>
+      </dl>
+      <dl>
+        <dt>当前剩余可分配{{ remainAmount.ruleName }}数量</dt>
+        <dd>
+          <div
             v-for="item in remainAmount.periodRuleDetailList"
             :key="item.periodRuleDetailId"
-            class="layout-flex dd-margin"
           >
-            {{ item.value + "（" + item.applyValue + "个）" }}
-          </dd>
-        </dl>
-
-        <dl class="layout-flex">
-          <dt>设置'{{ amountData.ruleName }}'数量：</dt>
-          <dd
+            <em>{{ item.value }}分</em
+            ><span
+              >(<em>{{ item.applyValue }}个</em>)</span
+            >
+          </div>
+        </dd>
+      </dl>
+      <dl>
+        <dt>设置'{{ amountData.ruleName }}'数量</dt>
+        <dd>
+          <div
             v-for="item in amountData.periodRuleDetailList"
             :key="item.periodRuleDetailId"
-            class="layout-flex dd-margin"
           >
-            <span>{{ item.value + item.unit }}</span
-            ><el-input
-              class="tl-input"
+            <span>{{ item.value + item.unit }}</span>
+            <el-input
+              class="tl-input w40"
               v-model="item.applyValue"
               @blur="inputChange(item)"
-            ></el-input
-            ><span>个</span>
+            ></el-input>
+            <span>个</span>
             <span v-if="item.showError">{{ item.errorText }}</span>
-          </dd>
-        </dl>
-      </dd>
-    </dl>
-    <dl v-show="step == 2">
-      <dd>
-        <dl class="layout-flex">
-          <dt>{{ amountData.ruleName }}数量：</dt>
-          <dd
+          </div>
+        </dd>
+      </dl>
+    </div>
+    <div v-show="step == 2" class="dl-group">
+      <dl class="show-results">
+        <dt>{{ amountData.ruleName }}数量</dt>
+        <dd>
+          <div
             v-for="item in amountData.periodRuleDetailList"
             :key="item.periodRuleDetailId"
-            class="layout-flex dd-margin"
           >
-            <span>{{ item.value + item.unit }}</span
-            ><em>{{ Number(item.applyValue || 0) }}</em
-            ><span>个</span>
-          </dd>
-        </dl>
-      </dd>
-    </dl>
+            <em>{{ item.value + item.unit }}</em
+            ><span
+              >(<em>{{ Number(item.applyValue || 0) }}个</em>)</span
+            >
+          </div>
+        </dd>
+      </dl>
+    </div>
     <div class="operating-box">
       <el-button
         :loading="loading"

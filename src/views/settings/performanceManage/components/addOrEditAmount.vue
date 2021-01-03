@@ -1,9 +1,3 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年12月02日 15:22:31
-  备注：
--->
 <template>
   <el-dialog
     :append-to-body="true"

@@ -7801,3 +7801,74 @@
 .evaluation-list-group dd div > em span {
   color: #685df1;
 }
+
+.tl-dialog .allocate-amount {
+  width: 1000px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:first-child dt {
+  margin-right: 20px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl {
+  margin-bottom: 10px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:not(:first-child) {
+  margin-bottom: 16px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:not(:first-child) dt {
+  margin-bottom: 14px;
+  color: #acb6bf;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:not(:first-child) dd {
+  display: flex;
+  align-items: center;
+}
+
+.tl-dialog .allocate-amount .dl-group dl .tl-input {
+  margin: 0 6px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl .tl-input .el-input__inner {
+  padding: 0 5px;
+  text-align: center;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:nth-of-type(2) dd > div > em {
+  margin-right: 4px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:nth-of-type(2) dd > div > span > em {
+  color: #685df1;
+}
+
+.tl-dialog .allocate-amount .dl-group dl dd > div {
+  margin-right: 30px;
+}
+
+.tl-dialog .allocate-amount .dl-group .show-results {
+  flex-direction: column;
+  align-items: flex-start !important;
+}
+
+.tl-dialog .allocate-amount .dl-group .show-results dd {
+  margin-top: 10px;
+  display: flex;
+}
+
+.tl-dialog .allocate-amount .dl-group .show-results dd > div > em {
+  margin-right: 4px;
+  color: #4d5155;
+}
+
+.tl-dialog .allocate-amount .dl-group .show-results dd > div > span > em {
+  color: #685df1;
+}
