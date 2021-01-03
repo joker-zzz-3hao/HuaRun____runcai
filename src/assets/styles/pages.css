@@ -7607,7 +7607,8 @@
 }
 
 /* 绩效管理 */
-.tl-dialog .edit-evaluate {
+.tl-dialog .edit-evaluate,
+.tl-dialog .edit-amount {
   width: 1000px;
 }
 
@@ -7871,4 +7872,26 @@
 
 .tl-dialog .allocate-amount .dl-group .show-results dd > div > span > em {
   color: #685df1;
+}
+
+.tl-dialog .edit-amount dl dd > div {
+  display: flex;
+  align-items: center;
+}
+
+.tl-dialog .edit-amount dl dd > div .tl-input {
+  margin: 0 6px;
+}
+
+.tl-dialog .edit-amount dl dd > div .el-input__inner {
+  padding: 0 5px;
+  text-align: center;
+}
+
+.tl-dialog .edit-amount .dl-group {
+  display: flex;
+}
+
+.tl-dialog .edit-amount .dl-group dl:not(:last-child) {
+  margin-right: 30px;
 }
