@@ -7,14 +7,17 @@
     :close-on-click-modal="false"
     custom-class="custom-drawer creat-project"
     class="tl-dialog"
-    width="800px"
+    width="1000px"
+    :modal="true"
+    :modal-append-to-body="true"
+    @closed="closed"
   >
     <el-scrollbar>
       <el-table :data="tableData" row-key="resultHistoryId" class="tl-table">
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-table :data="props.row.list">
-              <el-table-column prop="sort" label="序号" width="30">
+              <el-table-column prop="sort" label="序号" width="80">
               </el-table-column>
               <el-table-column prop="orgName" label="部门"> </el-table-column>
               <el-table-column prop="userName" label="负责人">
@@ -98,6 +101,9 @@ export default {
     },
     close() {
       this.visible = false;
+    },
+    closed() {
+      this.$emit('update:exist', false);
     },
   },
 

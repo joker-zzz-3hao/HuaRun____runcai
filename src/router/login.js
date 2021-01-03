@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-28 14:31:03
+ * @LastEditTime: 2021-01-03 10:48:04
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \cr-talent-web\src\router\login.js
+ */
 export default [
   {
     path: '/loginIndex',
@@ -65,6 +73,17 @@ export default [
           isBrowser: true,
         },
         component: () => import('@/views/browser/index'),
+
+      },
+      {
+        // 浏览器选择页
+        path: '/transferTenant',
+        name: 'transferTenant',
+        meta: {
+          title: '租户选择',
+          power: '',
+        },
+        component: () => import('@/views/login/transferTenant'),
 
       },
     ],

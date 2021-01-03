@@ -1396,6 +1396,42 @@
   margin: 0 0 30px 10px;
 }
 
+.check-judge .dl-list-group,
+.check-judge .dl-list-group dl {
+  display: flex;
+  align-items: center;
+}
+
+.check-judge .dl-list-group {
+  flex-wrap: wrap;
+}
+
+.check-judge .dl-list-group dl {
+  margin: 0 0 14px 0;
+  flex: 1 1 33%;
+}
+
+.check-judge .dl-list-group dl dt {
+  margin-right: 10px;
+  color: #879099;
+}
+
+.check-judge .dl-list-group .open-history dt {
+  margin: 0;
+  color: #685df1;
+  cursor: pointer;
+}
+
+.check-judge .dl-list-group .dismiss-reason {
+  flex: 1;
+  flex-basis: calc(54% + 3px);
+}
+
+.check-judge .dl-list-group .open-history {
+  flex: 1 1 11.5%;
+  justify-content: flex-end;
+}
+
 /* okr-detail */
 .tl-drawer .okr-detail {
   padding: 0 2px 30px 0;
@@ -4492,6 +4528,12 @@
 }
 
 /* 团队周报 */
+.teams-weekly .teams-weekly {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .teams-weekly .operating-area .el-cascader {
   line-height: unset;
 }
@@ -4598,6 +4640,10 @@
   align-items: center;
   justify-content: space-between;
   color: #4d5155;
+}
+
+.teams-weekly .tl-card-list > dd:nth-of-type(1) {
+  height: 26px;
 }
 
 .teams-weekly .tl-card-list > dd > span {
@@ -7604,4 +7650,294 @@
 
 .update-progress .okr-risk .tl-custom-popover {
   margin: 0px 42px 0 0;
+}
+
+/* 绩效管理 */
+.tl-dialog .edit-evaluate,
+.tl-dialog .edit-amount {
+  width: 1000px;
+}
+
+.edit-evaluate .el-form-item:nth-child(1) .el-form-item__content {
+  margin-right: 100px;
+}
+
+.edit-evaluate .el-form-item:nth-child(2) {
+  margin-bottom: 6px;
+}
+
+.edit-evaluate .el-form-item__content {
+  line-height: unset;
+}
+
+.edit-evaluate .tl-input {
+  margin: 0;
+}
+
+.edit-evaluate .el-button--text {
+  margin: 0;
+  padding: 0;
+  min-width: unset;
+}
+
+.edit-evaluate .el-button--text:not(:last-child) {
+  margin-right: 16px;
+}
+
+.edit-evaluate .el-input__inner {
+  padding: 0 5px;
+}
+
+.edit-evaluate .flex-start {
+  align-items: flex-start;
+}
+
+.edit-evaluate .flex-start .edit-ipt {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-evaluate .flex-start .edit-ipt .error-text {
+  margin-top: 3px;
+  color: #fb4c59;
+}
+
+.edit-evaluate .flex-start .edit-ipt:nth-child(1) .tl-input {
+  margin-right: 6px;
+}
+
+.edit-evaluate .flex-start > span {
+  margin: 10px 10px 0 30px;
+}
+
+.edit-evaluate .flex-start .el-textarea__inner {
+  min-height: 40px !important;
+}
+
+.edit-evaluate .flex-start .edit-ipt:nth-of-type(3) {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.edit-evaluate .el-form-item:nth-child(3) .el-form-item__content {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.edit-evaluate .item-group:not(:last-child) {
+  margin-bottom: 14px;
+}
+
+.edit-evaluate .item-group .add-delete-btn {
+  width: 80px;
+}
+
+.edit-evaluate .evaluation-detail dt {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #28262a;
+}
+
+.edit-evaluate .evaluation-detail dd {
+  margin-bottom: 14px;
+  display: flex;
+}
+
+.edit-evaluate .evaluation-detail dd > span {
+  flex: 0 0 100px;
+  color: #acb6bf;
+}
+
+.edit-evaluate .evaluation-detail dd > em {
+  color: #28262a;
+}
+
+.edit-evaluate .evaluation-describe {
+  display: flex;
+  color: #acb6bf;
+}
+
+.edit-evaluate .evaluation-describe pre {
+  margin: 0;
+  padding: 0;
+}
+
+.edit-evaluate .evaluation-describe span {
+  margin-right: 10px;
+}
+
+.edit-evaluate .evaluation-results {
+  flex: 0 0 100px;
+  color: #28262a;
+}
+
+.performance-manage .cont-area {
+  padding: 16px;
+  border-color: transparent;
+}
+
+.performance-manage .evaluation-rule {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.performance-manage .evaluation-rule dt {
+  margin-right: 20px;
+  color: #4d5155;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.performance-manage .el-dropdown-link {
+  color: #685df1;
+}
+
+.performance-manage .el-dropdown-link i {
+  font-weight: 700;
+}
+
+.evaluation-list-group,
+.evaluation-list-group dd {
+  display: flex;
+  align-items: center;
+}
+
+.evaluation-list-group {
+  margin: 0 0 10px 0;
+  padding: 20px;
+  background: #f4f6f8;
+  height: 50px;
+}
+
+.evaluation-list-group dt {
+  margin-right: 10px;
+  flex: 0 0 76px;
+  color: #4d5155;
+}
+
+.evaluation-list-group dd:nth-of-type(1) {
+  flex: 1;
+}
+
+.evaluation-list-group .el-button--text {
+  margin: 0;
+  padding: 0;
+  min-width: unset;
+}
+
+.evaluation-list-group dd .el-button--text:not(:last-child) {
+  margin-right: 20px;
+}
+
+.evaluation-list-group dd div:not(:last-child) {
+  margin-right: 30px;
+}
+
+.evaluation-list-group dd div > span {
+  margin-right: 4px;
+  color: #4d5155;
+}
+
+.evaluation-list-group dd div > em {
+  color: #4d5155;
+}
+
+.evaluation-list-group dd div > em span {
+  color: #685df1;
+}
+
+.tl-dialog .allocate-amount {
+  width: 1000px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:first-child dt {
+  margin-right: 20px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl {
+  margin-bottom: 10px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:not(:first-child) {
+  margin-bottom: 16px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:not(:first-child) dt {
+  margin-bottom: 14px;
+  color: #acb6bf;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:not(:first-child) dd {
+  display: flex;
+  align-items: center;
+}
+
+.tl-dialog .allocate-amount .dl-group dl .tl-input {
+  margin: 0 6px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl .tl-input .el-input__inner {
+  padding: 0 5px;
+  text-align: center;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:nth-of-type(2) dd > div > em {
+  margin-right: 4px;
+}
+
+.tl-dialog .allocate-amount .dl-group dl:nth-of-type(2) dd > div > span > em {
+  color: #685df1;
+}
+
+.tl-dialog .allocate-amount .dl-group dl dd > div {
+  margin-right: 30px;
+}
+
+.tl-dialog .allocate-amount .dl-group .show-results {
+  flex-direction: column;
+  align-items: flex-start !important;
+}
+
+.tl-dialog .allocate-amount .dl-group .show-results dd {
+  margin-top: 10px;
+  display: flex;
+}
+
+.tl-dialog .allocate-amount .dl-group .show-results dd > div > em {
+  margin-right: 4px;
+  color: #4d5155;
+}
+
+.tl-dialog .allocate-amount .dl-group .show-results dd > div > span > em {
+  color: #685df1;
+}
+
+.tl-dialog .edit-amount dl dd > div {
+  display: flex;
+  align-items: center;
+}
+
+.tl-dialog .edit-amount dl dd > div .tl-input {
+  margin: 0 6px;
+}
+
+.tl-dialog .edit-amount dl dd > div .el-input__inner {
+  padding: 0 5px;
+  text-align: center;
+}
+
+.tl-dialog .edit-amount .dl-group {
+  display: flex;
+}
+
+.tl-dialog .edit-amount .dl-group dl:not(:last-child) {
+  margin-right: 30px;
 }

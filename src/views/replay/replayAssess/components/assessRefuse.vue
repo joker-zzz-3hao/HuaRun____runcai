@@ -5,7 +5,10 @@
     :before-close="close"
     :close-on-click-modal="false"
     class="tl-dialog check-judge"
-    width="600px"
+    width="1000px"
+    :modal="true"
+    :modal-append-to-body="true"
+    @closed="closed"
   >
     <div slot="title" class="check-title">请输入驳回原因</div>
     <el-form :model="formData" ref="dataForm" class="tl-form">
@@ -56,6 +59,9 @@ export default {
     close() {
       this.visible = false;
       this.$refs.dataForm.resetFields();
+    },
+    closed() {
+      this.$emit('update:exist', false);
     },
     submit() {
       this.$refs.dataForm.validate((valid) => {

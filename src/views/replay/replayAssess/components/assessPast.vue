@@ -5,7 +5,8 @@
     :before-close="close"
     :close-on-click-modal="false"
     class="tl-dialog check-judge"
-    width="800px"
+    width="1000px"
+    title="绩效复核"
   >
     <div class="dl-list-group">
       <!-- 第一次提交 -->
@@ -21,12 +22,12 @@
         <dt>提交时间</dt>
         <dd>{{ row.submitTime }}</dd>
       </dl>
+      <dl>
+        <dt>是否已线下沟通</dt>
+        <dd>{{ CONST.COMMUN_MAP[row.enableCommunicate || 1] }}</dd>
+      </dl>
       <!-- 第二次提交  -->
       <template v-if="row.reviewTime">
-        <dl>
-          <dt @click="openHistory">历史提交记录》</dt>
-        </dl>
-
         <dl>
           <dt>复核结果</dt>
           <dd>
@@ -43,9 +44,12 @@
           <dt>绩效复核时间</dt>
           <dd>{{ row.reviewTime || "--" }}</dd>
         </dl>
-        <dl v-if="row.approvalMsg">
+        <dl v-if="row.approvalMsg" class="dismiss-reason">
           <dt>驳回原因</dt>
           <dd>{{ row.approvalMsg }}</dd>
+        </dl>
+        <dl class="open-history">
+          <dt @click="openHistory">历史提交记录》</dt>
         </dl>
       </template>
     </div>
@@ -72,10 +76,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <dl>
-      <dt>是否已线下沟通</dt>
-      <dd>{{ CONST.COMMUN_MAP[row.enableCommunicate || 1] }}</dd>
-    </dl>
     <div slot="footer" class="dialog-footer" v-if="row.approvalStatus == 2">
       <el-button type="primary" @click="sumbit" class="tl-btn amt-bg-slip"
         >确定</el-button
@@ -83,15 +83,18 @@
       <el-button plain @click="refuse" class="tl-btn amt-border-fadeout"
         >驳回</el-button
       >
-      <el-button plain @click="close" class="tl-btn amt-border-fadeout"
-        >返回</el-button
-      >
     </div>
     <tl-assess-refuse
+      :exist.sync="showRefuse"
+      v-if="showRefuse"
       ref="assessrefuse"
       @success="sumbitAssess"
     ></tl-assess-refuse>
-    <rank-history-list ref="beforeList"></rank-history-list>
+    <rank-history-list
+      :exist.sync="showHistory"
+      v-if="showHistory"
+      ref="beforeList"
+    ></rank-history-list>
   </el-dialog>
 </template>
 
@@ -118,6 +121,8 @@ export default {
       tableData: [],
       propList: [],
       propData: '',
+      showRefuse: false,
+      showHistory: false,
     };
   },
   props: {
@@ -151,6 +156,7 @@ export default {
       });
     },
     refuse() {
+      this.showRefuse = true;
       this.$nextTick(() => {
         this.$refs.assessrefuse.show();
       });
@@ -188,11 +194,22 @@ export default {
       });
     },
     openHistory() {
-      this.$refs.beforeList.show(this.periodId, this.sortMsg.resultId);
+      this.showHistory = true;
+      this.$nextTick(() => {
+        this.$refs.beforeList.show(this.periodId, this.sortMsg.resultId);
+      });
     },
   },
 };
 </script>
 
 <style>
+.tl-dialog + .tl-dialog {
+  z-index: 2004 !important;
+}
+
+.tl-dialog + .tl-dialog +.v-modal {
+  opacity: 0.1;
+  z-index: 2003 !important;
+}
 </style>

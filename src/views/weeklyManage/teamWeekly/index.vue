@@ -1,19 +1,11 @@
-<!--
- * @Author: your name
- * @Date: 2020-12-29 23:12:40
- * @LastEditTime: 2020-12-29 23:27:59
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: \cr-talent-web\src\views\weeklyManage\teamWeekly\index.vue
--->
 <template>
-  <div>
-    <div v-show="isList">
-      <tl-list @showInfo="showInfo"></tl-list>
-    </div>
-    <div v-if="!isList">
-      <tl-info @showList="showList" :infoParams="infoParams"></tl-info>
-    </div>
+  <div class="teams-weekly">
+    <tl-list @showInfo="showInfo" v-show="isList"></tl-list>
+    <tl-info
+      v-if="!isList"
+      @showList="showList"
+      :infoParams="infoParams"
+    ></tl-info>
   </div>
 </template>
 

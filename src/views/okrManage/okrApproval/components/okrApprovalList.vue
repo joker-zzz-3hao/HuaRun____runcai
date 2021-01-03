@@ -132,8 +132,7 @@
                   type="text"
                   v-if="
                     hasApproval(scope.row) &&
-                    hasPower('okr-approval-pass') &&
-                    canApproval
+                    hasPower('okr-approval-pass')
                   "
                   @click.native.prevent="okrApproval(scope.row)"
                   class="tl-btn"
@@ -416,6 +415,9 @@ export default {
           return true;
         }
         return false;
+      }
+      if (this.canApproval) {
+        return true;
       }
       return false;
     },

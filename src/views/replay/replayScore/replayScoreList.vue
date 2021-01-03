@@ -100,7 +100,7 @@
                   :data="scope.row.okrProgress"
                 ></tl-process> </template
             ></el-table-column>
-            <el-table-column prop="selfAssessmentScore" label="OKR得分">
+            <el-table-column prop="selfAssessmentScore" label="OKR自评得分">
               <template slot-scope="scope">
                 <span v-if="scope.row.selfAssessmentScore != null">
                   {{ scope.row.selfAssessmentScore }}分
@@ -108,7 +108,7 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column prop="finalScore" label="复核得分">
+            <el-table-column prop="finalScore" label="OKR复核得分">
               <template slot-scope="scope">
                 <span v-if="scope.row.finalScore != null">
                   {{ scope.row.finalScore }}分

@@ -1,9 +1,3 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年12月02日 15:22:31
-  备注：
--->
 <template>
   <el-dialog
     :append-to-body="true"
@@ -12,21 +6,23 @@
     :close-on-click-modal="false"
     custom-class="custom-drawer edit-amount"
     class="tl-dialog"
+    :title="title"
   >
-    <span>{{
-      "请线下确认“" + selectedRule.ruleName + "”总数量，再进行设置"
-    }}</span>
-    <div>
-      <div v-for="item in selectedRule.ruleDetailList" :key="item.ruleDetailId">
-        <span>{{ item.value + item.unit }}</span
-        ><el-input
-          class="tl-input"
-          v-model="item.applyValue"
-          @blur="inputBlur(item)"
-        ></el-input
-        ><span>个</span>
-        <span v-if="item.showError">{{ item.errorText }}</span>
-      </div>
+    <div class="dl-group">
+      <dl v-for="item in selectedRule.ruleDetailList" :key="item.ruleDetailId">
+        <dd>
+          <div>
+            <span>{{ item.value + item.unit }}</span
+            ><el-input
+              class="tl-input w40"
+              v-model="item.applyValue"
+              @blur="inputBlur(item)"
+            ></el-input
+            ><span>个</span>
+          </div>
+          <span v-if="item.showError">{{ item.errorText }}</span>
+        </dd>
+      </dl>
     </div>
     <div class="operating-box">
       <el-button
@@ -73,6 +69,7 @@ export default {
         ],
       },
       selectedRule: {},
+      title: '',
     };
   },
   created() { },
@@ -102,6 +99,7 @@ export default {
         this.visible = true;
         this.$forceUpdate();
       });
+      this.title = `请线下确认“${this.selectedRule.ruleName}”总数量，再进行设置`;
     },
     cancel() {
 

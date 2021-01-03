@@ -89,7 +89,7 @@
         </div>
         <div class="adjust-rank">
           <span>调整绩效排名</span>
-          <em
+          <em v-if="sortMsg.orgSum > sortMsg.reviewedOrgSum"
             >你好，部门绩效需等到整体复核结束后，您才可以进行调整，请等待，谢谢！</em
           >
         </div>
@@ -349,7 +349,12 @@ export default {
         enableCommunicate: this.sortMsg.enableCommunicate,
       }).then((res) => {
         if (res.code == 200) {
-          this.assessmentSubmit(this.tableData);
+          this.$xconfirm({
+            content: '',
+            title: '确认提交当前排名吗？',
+          }).then(() => {
+            this.assessmentSubmit(this.tableData);
+          }).catch(() => {});
         } else if (res.code == 30000) {
           this.$refs.causesRank.show(res.data);
         }
