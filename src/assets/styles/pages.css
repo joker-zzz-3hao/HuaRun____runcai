@@ -7685,3 +7685,42 @@
 .edit-evaluate .item-group .add-delete-btn {
   width: 80px;
 }
+
+.edit-evaluate .evaluation-detail dt {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #28262a;
+}
+
+.edit-evaluate .evaluation-detail dd {
+  margin-bottom: 14px;
+  display: flex;
+}
+
+.edit-evaluate .evaluation-detail dd > span {
+  flex: 0 0 100px;
+  color: #acb6bf;
+}
+
+.edit-evaluate .evaluation-detail dd > em {
+  color: #28262a;
+}
+
+.edit-evaluate .evaluation-describe {
+  display: flex;
+  color: #acb6bf;
+}
+
+.edit-evaluate .evaluation-describe pre {
+  margin: 0;
+  padding: 0;
+}
+
+.edit-evaluate .evaluation-describe span {
+  margin-right: 10px;
+}
+
+.edit-evaluate .evaluation-results {
+  flex: 0 0 100px;
+  color: #28262a;
+}

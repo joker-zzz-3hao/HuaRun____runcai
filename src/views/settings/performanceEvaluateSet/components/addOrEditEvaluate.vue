@@ -107,21 +107,25 @@
         </el-form-item>
       </el-form>
     </div>
-    <div v-show="step == 2">
+    <div v-show="step == 2" class="evaluation-detail">
       <dl>
         <dt>{{ performanceData.ruleName }}</dt>
         <dd
           v-for="ruleItem in performanceData.ruleDetailList"
           :key="ruleItem.detailRandomId"
         >
-          <span>{{ ruleItem.value }}</span>
-          <span>{{ ruleItem.unit }}</span>
-          说明
-          <pre>{{ ruleItem.description || "--" }}</pre>
+          <div class="evaluation-results">
+            <em>{{ ruleItem.value }}</em>
+            <span>{{ ruleItem.unit }}</span>
+          </div>
+          <div class="evaluation-describe">
+            <span>说明</span>
+            <pre>{{ ruleItem.description || "--" }}</pre>
+          </div>
         </dd>
         <dd>
           <span>适用范围</span>
-          <span>{{ performanceData.ruleType == 1 ? " 部门" : " 个人" }}</span>
+          <em>{{ performanceData.ruleType == 1 ? " 部门" : " 个人" }}</em>
         </dd>
       </dl>
     </div>
