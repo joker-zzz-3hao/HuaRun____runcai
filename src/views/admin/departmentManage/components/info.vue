@@ -39,9 +39,9 @@
           <span>{{ orgName }}</span>
         </el-form-item>
         <el-form-item label="用户类型">
-          <span>{{
-            formData.ldapType == "Contractor" ? "外部员工" : "内部员工"
-          }}</span>
+          <span v-if="formData.ldapType == 'Contractor'">外部员工</span>
+          <span v-else-if="formData.ldapType == 'Full-Time'">内部员工</span>
+          <span v-else>--</span>
         </el-form-item>
       </el-form>
     </div>
