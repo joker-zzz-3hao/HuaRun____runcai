@@ -143,6 +143,8 @@ export default {
                 token: res.data,
               },
             });
+          } else if (res.code == '30000') {
+            // 存在多个租户，选择租户
           } else {
             self.isLoginError = true;
             self.focusName = '';
