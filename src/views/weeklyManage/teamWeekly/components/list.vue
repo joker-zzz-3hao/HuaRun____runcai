@@ -2,22 +2,26 @@
   <div class="teams-weekly">
     <div class="operating-area">
       <div class="operating-box">
-        查看其他团队周报
-        <el-cascader
-          v-model="orgIdList"
-          ref="cascader"
-          :options="treeData"
-          :show-all-levels="false"
-          :props="{
-            checkStrictly: true,
-            value: 'orgId',
-            label: 'orgName',
-            children: 'sonTree',
-          }"
-          @change="selectIdChange"
-          popper-class="tl-cascader-popper"
-          class="tl-cascader"
-        ></el-cascader>
+        <dl class="dl-item">
+          <dt>查看其他团队周报</dt>
+          <dd>
+            <el-cascader
+              v-model="orgIdList"
+              ref="cascader"
+              :options="treeData"
+              :show-all-levels="false"
+              :props="{
+                checkStrictly: true,
+                value: 'orgId',
+                label: 'orgName',
+                children: 'sonTree',
+              }"
+              @change="selectIdChange"
+              popper-class="tl-cascader-popper"
+              class="tl-cascader"
+            ></el-cascader>
+          </dd>
+        </dl>
         <!-- 按钮显示逻辑添加
         1、本周、上周的日历显示提醒写周报按钮，其余时间不显示
         2、当组织切换时不显示该按钮

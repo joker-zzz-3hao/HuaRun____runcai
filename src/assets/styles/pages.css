@@ -4528,6 +4528,12 @@
 }
 
 /* 团队周报 */
+.teams-weekly .teams-weekly {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .teams-weekly .operating-area .el-cascader {
   line-height: unset;
 }
@@ -4634,6 +4640,10 @@
   align-items: center;
   justify-content: space-between;
   color: #4d5155;
+}
+
+.teams-weekly .tl-card-list > dd:nth-of-type(1) {
+  height: 26px;
 }
 
 .teams-weekly .tl-card-list > dd > span {

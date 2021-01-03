@@ -1,17 +1,11 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年12月21日 15:39:06
-  备注：
--->
 <template>
-  <div>
-    <div v-show="isList">
-      <tl-list @showInfo="showInfo"></tl-list>
-    </div>
-    <div v-if="!isList">
-      <tl-info @showList="showList" :infoParams="infoParams"></tl-info>
-    </div>
+  <div class="teams-weekly">
+    <tl-list @showInfo="showInfo" v-show="isList"></tl-list>
+    <tl-info
+      v-if="!isList"
+      @showList="showList"
+      :infoParams="infoParams"
+    ></tl-info>
   </div>
 </template>
 
