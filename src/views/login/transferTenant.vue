@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-12-28 14:31:04
- * @LastEditTime: 2021-01-03 17:36:06
+ * @LastEditTime: 2021-01-03 22:30:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \cr-talent-web\src\views\login\transfer.vue
@@ -70,7 +70,6 @@ export default {
       adminFlag: false,
       loading: false,
       visible: false,
-      diaTitle: '',
       tipContent: '',
       tenantList: [],
       tenantId: '',
@@ -89,24 +88,7 @@ export default {
         this.$forceUpdate();
       }
     });
-    this.diaTitle = '请选择****组织架构，开启润才之旅';
-    this.tipContent = '因****组织架构调整，请选择默认组织架构';
-    // 判断是否有system权限，如果是system就直接跳转系统管理，如果不是就跳转润才首页
-    // const self = this;
-    // self.userInfo.privilegeList.forEach((item) => {
-    //   if (item.functionCode == 'sys_system') {
-    //     self.adminFlag = true;
-    //   }
-    // });
-    // if (self.adminFlag) {
-    //   self.$router.push({
-    //     name: 'tenantManage',
-    //   });
-    // } else {
-    //   self.$router.push({
-    //     name: this.userInfo.defaultJump || 'overview',
-    //   });
-    // }
+    this.tipContent = '因组织架构调整，请选择默认组织架构';
   },
   methods: {
     save() {
@@ -118,14 +100,13 @@ export default {
         tag: localStorage.getItem('tag'),
       }).then((res) => {
         if (res.code == 200) {
-          window.location.reload();
           localSave('token', res.data);
-          // this.$router.push({
-          //   name: 'transfer',
-          //   query: {
-          //     token: res.data,
-          //   },
-          // });
+          this.$router.push({
+            name: 'transfer',
+            query: {
+              token: res.data,
+            },
+          });
         }
       });
       // 请求结束后，跳转默认的路由

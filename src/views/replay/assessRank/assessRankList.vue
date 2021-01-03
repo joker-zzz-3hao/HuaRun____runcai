@@ -349,7 +349,12 @@ export default {
         enableCommunicate: this.sortMsg.enableCommunicate,
       }).then((res) => {
         if (res.code == 200) {
-          this.assessmentSubmit(this.tableData);
+          this.$xconfirm({
+            content: '',
+            title: '确认提交当前排名吗？',
+          }).then(() => {
+            this.assessmentSubmit(this.tableData);
+          }).catch(() => {});
         } else if (res.code == 30000) {
           this.$refs.causesRank.show(res.data);
         }
