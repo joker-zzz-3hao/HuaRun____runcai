@@ -10,14 +10,14 @@ const CYCLE_MAP = {
   3: '2020年第三季度',
 };
 const APPROVAL_STATUS_LIST = [
+  { label: '全部', value: '' },
   { label: '待审批', value: '0' },
   { label: '审批通过', value: '1' },
   { label: '被退回', value: '2' },
   { label: '撤回', value: '3' },
-  { label: '待审批', value: '4' },
-  { label: '待审批', value: '5' },
-  { label: '待审批', value: '6' },
-  { label: '全部', value: '' },
+  // { label: '待审批', value: '4' },
+  // { label: '待审批', value: '5' },
+  // { label: '待审批', value: '6' },
 ];
 const APPROVAL_STATUS_MAP = {
   0: '待审批',
