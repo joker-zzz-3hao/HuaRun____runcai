@@ -99,7 +99,7 @@
     </dl>
     <dl
       class="dl-card-panel"
-      v-if="hasApproval || canApproval"
+      v-if="hasApproval"
     >
       <dt>
         <em>审批</em>
@@ -286,6 +286,9 @@ export default {
           return true;
         }
         return false;
+      }
+      if (this.canApproval) {
+        return true;
       }
       return false;
     },
