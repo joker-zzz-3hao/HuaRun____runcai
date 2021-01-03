@@ -100,6 +100,8 @@ export default {
       }).then((res) => {
         if (res.code == '200') {
           this.summaryList = res.data;
+          const list = res.data.filter((item) => item.userId !== item.projectTeamLeader);
+          this.summaryList = list;
         }
       });
     },

@@ -209,7 +209,7 @@
                 <div v-else>--</div>
               </template>
             </el-table-column>
-            <el-table-column prop="userLevelName" label="级别" min-width="80">
+            <el-table-column prop="userLevelName" label="级别" min-width="90">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.userLevelName)">{{
                   scope.row.userLevelName
@@ -217,6 +217,16 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
+            <el-table-column label="所在组" min-width="100"
+              >>
+              <template slot-scope="scope">
+                <span v-if="hasValue(scope.row.projectTeamName)">{{
+                  scope.row.projectTeamName
+                }}</span>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+
             <el-table-column prop="orgName" label="所属部门" min-width="160">
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.orgName)">{{
@@ -277,7 +287,8 @@
                 <tl-create-select
                   :userList="queryList"
                   @getSelectId="getSelectId"
-                  btnText="移动到组"
+                  v-if="scope.row.projectTeamLeader !== scope.row.userId"
+                  btnText="小组管理"
                   :removeBtn="true"
                   @changeTab="$emit('changeTab')"
                   :listData="scope.row"

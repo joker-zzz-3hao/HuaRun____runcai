@@ -482,6 +482,7 @@ export default {
     },
     changeList() {
       this.searchList();
+      this.userId = '';
       this.summaryList();
     },
     queryProjectTeam() {

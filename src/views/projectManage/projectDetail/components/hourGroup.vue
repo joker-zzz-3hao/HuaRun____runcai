@@ -38,7 +38,7 @@
           <el-table-column fixed="right" label="操作" min-width="180">
             <template slot-scope="scope">
               <el-button type="text" @click="showEdit(scope.row)"
-                >管理</el-button
+                >编辑</el-button
               >
               <el-button
                 type="text"
