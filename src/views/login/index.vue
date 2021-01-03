@@ -143,25 +143,26 @@ export default {
                 token: res.data,
               },
             });
-          } else if (res.code == 30000) {
-            // 存在多个租户，选择租户
-            // localSave('token', res.data);
-            localStorage.setItem('tag', res.data);
-            localStorage.setItem('loginName', self.loginName);
-            localStorage.setItem('loginPwd', self.loginPwd);
-            self.go('transferTenant', {
-              // query: {
-              //   tag: res.data,
-              //   loginName: self.loginName,
-              //   loginPwd: self.loginPwd,
-              // },
-            });
           } else {
             self.isLoginError = true;
             self.focusName = '';
             self.errorMessage = res.msg;
           // self.$message.error(res.msg);
           }
+          //  else if (res.code == 30000) {
+          //   // 存在多个租户，选择租户
+          //   // localSave('token', res.data);
+          //   localStorage.setItem('tag', res.data);
+          //   localStorage.setItem('loginName', self.loginName);
+          //   localStorage.setItem('loginPwd', self.loginPwd);
+          //   self.go('transferTenant', {
+          //     // query: {
+          //     //   tag: res.data,
+          //     //   loginName: self.loginName,
+          //     //   loginPwd: self.loginPwd,
+          //     // },
+          //   });
+          // }
         });
       }
     },
