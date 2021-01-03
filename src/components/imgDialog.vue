@@ -7,8 +7,12 @@
     :close-on-click-modal="true"
     :append-to-body="true"
     :modal-append-to-body="false"
+    class="tl-dialog"
+    custom-class="custom-drawer img-dialog"
   >
-    <img width="100%" :src="imgUrl" alt />
+    <el-scrollbar>
+      <img :src="imgUrl" alt />
+    </el-scrollbar>
   </el-dialog>
 </template>
 <script>

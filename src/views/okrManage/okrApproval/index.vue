@@ -49,7 +49,7 @@ export default {
     // 查询综合管理员是否可审批
     getTypeConfig() {
       // 综合管理员默认不能审批
-      if (this.roleCode.includes('TEAM_ADMIN')) {
+      if (this.roleCode.includes('TEAM_ADMIN') && !this.roleCode.includes('ORG_ADMIN')) {
         this.canApproval = false;
         const params = {
           configType: 'OKR',

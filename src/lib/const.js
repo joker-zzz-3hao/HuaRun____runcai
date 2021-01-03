@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-01-03 10:35:03
+ * @LastEditTime: 2021-01-03 15:48:00
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \cr-talent-web\src\lib\const.js
+ */
 const bbb = 1;
 const CYCLE_LIST = [
   { label: '2020年第一季度', value: 1 },
@@ -10,21 +18,28 @@ const CYCLE_MAP = {
   3: '2020年第三季度',
 };
 const APPROVAL_STATUS_LIST = [
+  { label: '全部', value: '' },
   { label: '待审批', value: '0' },
   { label: '审批通过', value: '1' },
   { label: '被退回', value: '2' },
-  { label: '全部', value: '' },
+  { label: '撤回', value: '3' },
+  // { label: '待审批', value: '4' },
+  // { label: '待审批', value: '5' },
+  // { label: '待审批', value: '6' },
 ];
 const APPROVAL_STATUS_MAP = {
   0: '待审批',
   1: '审批通过',
   2: '被退回',
-  3: '全部',
+  3: '撤回',
+  4: '待审批',
+  5: '待审批',
+  6: '待审批',
 };
 const APPROVAL_TYPE_LIST = [
+  { label: '全部', value: '' },
   { label: '创建', value: '0' },
   { label: '变更', value: '1' },
-  { label: '全部', value: '' },
 ];
 const APPROVAL_TYPE_MAP = {
   0: '创建',
@@ -36,6 +51,9 @@ const APPROVAL_HISTROY_MAP = {
   1: '通过',
   2: '退回',
   3: '撤回',
+  4: '提交',
+  5: '提交',
+  6: '提交',
 };
 const IMAGES_MAP = {
   jpg: true,
@@ -44,7 +62,11 @@ const IMAGES_MAP = {
   bmp: true,
   gif: true,
 };
-
+const OKR_TYPE_MAP = {
+  1: '部门',
+  2: '个人',
+  3: '公司',
+};
 export default {
   bbb,
   CYCLE_LIST,
@@ -55,4 +77,5 @@ export default {
   APPROVAL_TYPE_MAP,
   APPROVAL_HISTROY_MAP,
   IMAGES_MAP,
+  OKR_TYPE_MAP,
 };

@@ -2300,6 +2300,10 @@
   border-radius: 2px;
 }
 
+.tl-cascader.has-bg .el-input__inner {
+  border-color: transparent;
+}
+
 .tl-cascader.el-cascader:not(.is-disabled):hover .el-input__inner,
 .tl-cascader.el-cascader .el-input .el-input__inner:focus,
 .tl-cascader.el-cascader .el-input.is-focus .el-input__inner {
@@ -3802,12 +3806,36 @@
   align-items: center;
 }
 
+.w60 {
+  width: 60px;
+}
+
+.w40 {
+  width: 40px;
+}
+
+.w70 {
+  width: 70px;
+}
+
+.w80 {
+  width: 80px;
+}
+
+.w90 {
+  width: 90px;
+}
+
 .w100 {
   width: 100px;
 }
 
 .w120 {
   width: 120px;
+}
+
+.w130 {
+  width: 130px;
 }
 
 .w180 {

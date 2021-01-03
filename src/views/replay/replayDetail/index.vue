@@ -61,6 +61,7 @@ export default {
         okrMainId: this.$route.query.okrId,
       }).then((res) => {
         this.okrMain = res.data;
+        console.log(this.okrMain.okrReviewPojoList);
       });
     },
 
