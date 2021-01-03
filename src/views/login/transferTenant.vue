@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-12-28 14:31:04
- * @LastEditTime: 2021-01-03 22:30:51
+ * @LastEditTime: 2021-01-03 22:43:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \cr-talent-web\src\views\login\transfer.vue
@@ -10,19 +10,7 @@
   <section class="login-layout">
     <div class="loading-box">
       <div>
-        <!-- <el-form ref="dataForm" :model="formData" label-width="120px">
-            <el-form-item
-              label="租户群组名称"
-              prop="groupName"
-              :rules="[
-                { required: true, message: '请填写群组名称', trigger: blur },
-              ]"
-            >
-              <el-input v-model="formData.groupName" maxlength="50"></el-input
-            ></el-form-item>
-          </el-form> -->
-        <span>{{ tipContent }}</span>
-
+        <div>{{ tipContent }}</div>
         <el-radio-group v-model="tenantId">
           <el-radio
             v-for="tenant in tenantList"
@@ -38,13 +26,6 @@
             class="tl-btn amt-bg-slip"
             @click="save"
             >确认</el-button
-          >
-          <el-button
-            :disabled="loading"
-            plain
-            class="tl-btn amt-border-fadeout"
-            @click="close"
-            >取消</el-button
           >
         </div>
       </div>
@@ -69,7 +50,6 @@ export default {
       server,
       adminFlag: false,
       loading: false,
-      visible: false,
       tipContent: '',
       tenantList: [],
       tenantId: '',
@@ -109,12 +89,8 @@ export default {
           });
         }
       });
-      // 请求结束后，跳转默认的路由
-      // this.visible = false;
     },
-    close() {
-      this.visible = false;
-    },
+
   },
 };
 </script>
