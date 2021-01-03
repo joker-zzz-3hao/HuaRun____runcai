@@ -153,7 +153,7 @@ export default {
       this.server.getLoginLogPage(params).then((res) => {
         if (res.code == '200') {
           this.historyTable = res.data.records;
-          this.pageSize = res.data.pageSize;
+          this.pageSize = res.data.size;
           this.total = res.data.total;
         }
       });
@@ -173,3 +173,11 @@ export default {
   watch: {},
 };
 </script>
+<style scoped>
+.monitor-data .tl-custom-btn em {
+  margin: 5px;
+}
+.monitor-data .tl-custom-btn {
+  cursor: pointer;
+}
+</style>

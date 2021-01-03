@@ -115,13 +115,13 @@
           :key="item.orgId + index"
           @click="getidentity(item)"
         >
-          <dt class="user-info">
+          <!-- <dt class="user-info">
             <img v-if="item.headUrl" :src="item.headUrl" alt />
             <div class="user-name" v-else>
               <em>{{ cutName(item.orgName) }}</em>
             </div>
-          </dt>
-          <dd>{{ cutOrgName(item.orgName) }}</dd>
+          </dt> -->
+          <span class="org-btn">{{ cutOrgName(item.orgName) }}</span>
         </dl>
       </div>
     </div>
@@ -366,3 +366,14 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.org-btn {
+  background: #f0effe;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  color: #685df1;
+  padding: 5px 7px;
+  margin-right: -8px;
+}
+</style>

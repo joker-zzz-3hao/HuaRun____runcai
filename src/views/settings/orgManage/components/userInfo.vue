@@ -38,6 +38,11 @@
             <span>{{ orgName }}</span>
           </span>
         </el-form-item>
+        <el-form-item label="用户类型">
+          <span v-if="formData.ldapType == 'Contractor'">外部员工</span>
+          <span v-else-if="formData.ldapType == 'Full-Time'">内部员工</span>
+          <span v-else>--</span>
+        </el-form-item>
       </el-form>
     </div>
     <div class="operating-box">
@@ -112,6 +117,7 @@ export default {
         tenantName: this.tenantName,
         userType: 2,
         newPwd: '',
+        ldapType: '',
       },
 
     };
@@ -133,6 +139,7 @@ export default {
           this.formData.userStatus = res.data.userStatus;
           this.formData.tenantName = res.data.tenantName;
           this.orgName = res.data.orgName;
+          this.formData.ldapType = res.data.ldapType;
         }
         this.visible = true;
       });

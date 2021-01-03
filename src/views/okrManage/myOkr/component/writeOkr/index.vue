@@ -426,7 +426,7 @@
               application/vnd.openxmlformats-officedocument.wordprocessingml.document,
               .pptx,
               .xlsx"
-              tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过30M"
+              tips="支持jpg、jpeg、png、doc、docx、xslx、pptx，最多上传10个文件，单个文件不超过10M"
             ></file-upload>
           </dd>
         </dl>
@@ -845,7 +845,9 @@ export default {
         } else if (!this.formData.reason && this.searchForm.approvalType == 1) {
           this.$message.error('请填写变更原因');
         } else {
-          this.$message.error(`您有 ${this.oerror} ${this.krerror} ${this.weighterror} ${this.checkerror} ${this.judgeerror}未填写`);
+          this.$nextTick(() => {
+            this.$message.error(`您有 ${this.oerror} ${this.krerror} ${this.weighterror} ${this.checkerror} ${this.judgeerror}未填写`);
+          });
         }
       });
     },

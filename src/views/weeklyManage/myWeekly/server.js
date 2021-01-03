@@ -7,9 +7,9 @@ export default class Server extends ServerBase {
   }
 
   // 查询项目:旧的
-  getProjectList(param) {
-    return this._ajaxPost('gateway/weekly-service/project/queryName', param);
-  }
+  // getProjectList(param) {
+  //   return this._ajaxPost('gateway/weekly-service/project/queryName', param);
+  // }
 
   // 查询周报
   queryWeekly(param) {
@@ -51,7 +51,7 @@ export default class Server extends ServerBase {
   }
 
   // 查询项目组织
-  queryOrg(param) {
-    return this._ajaxPost('gateway/weekly-service/project/org', param);
-  }
+  // queryOrg(param) {
+  //   return this._ajaxPost('gateway/weekly-service/project/org', param);
+  // }
 }

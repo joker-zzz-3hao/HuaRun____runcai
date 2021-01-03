@@ -1,5 +1,5 @@
 <template>
-  <div class="replay-link is-padding">
+  <div class="replay-link">
     <tl-replayUser :okrMain="okrMain"></tl-replayUser>
     <tl-kr-detail
       v-if="okrMain.okrMainVo.reviewType == 1"

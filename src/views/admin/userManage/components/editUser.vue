@@ -156,6 +156,14 @@
             style="width: 90%"
           ></el-cascader>
         </el-form-item>
+        <el-form-item label="用户类型">
+          <el-radio v-model="formData.ldapType" label="Full-Time"
+            >内部员工</el-radio
+          >
+          <el-radio v-model="formData.ldapType" label="Contractor"
+            >外部员工</el-radio
+          >
+        </el-form-item>
       </el-form>
     </div>
     <div class="operating-box">
@@ -237,6 +245,7 @@ export default {
         newPwd: '',
         confirmPwd: '',
         orgIdList: [],
+        ldapType: '',
       },
     };
   },
@@ -256,6 +265,7 @@ export default {
           this.formData.userMail = res.data.userMail;
           this.formData.userStatus = res.data.userStatus;
           this.formData.tenantName = res.data.tenantName;
+          this.formData.ldapType = res.data.ldapType;
           this.formData.newPwd = 'Wang@123456';
           this.setOrgIdList(res.data.orgId);
         }
@@ -307,6 +317,7 @@ export default {
         userName: this.formData.userName,
         userStatus: this.formData.userStatus,
         userType: this.formData.userType,
+        ldapType: this.formData.ldapType,
       };
       if (this.isEditPwd) {
         params.newPwd = this.Cryptojs.encrypt(this.formData.newPwd);

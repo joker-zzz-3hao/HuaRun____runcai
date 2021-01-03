@@ -56,12 +56,25 @@
           <el-input
             :disabled="!isEditPwd"
             v-model.trim="formData.newPwd"
-            style="width: 90%"
+            style="width: 66%"
             show-password
             clearable
           ></el-input>
-          <el-button v-if="!isEditPwd" @click="editPwd">修改密码</el-button>
-          <el-button v-if="isEditPwd" @click="cancelEditPwd">取消</el-button>
+          <el-button
+            v-if="!isEditPwd"
+            type="primary"
+            class="tl-btn amt-bg-slip"
+            @click="editPwd"
+            >修改密码</el-button
+          >
+          <el-button
+            v-if="isEditPwd"
+            class="tl-btn amt-border-fadeout"
+            @click="cancelEditPwd"
+            >取消</el-button
+          >
+          <!-- <el-button v-if="!isEditPwd" @click="editPwd">修改密码</el-button>
+          <el-button v-if="isEditPwd" @click="cancelEditPwd">取消</el-button> -->
         </el-form-item>
         <!-- <el-form-item
           v-if="isEditPwd"
@@ -147,6 +160,14 @@
             style="width: 90%"
           ></el-cascader>
         </el-form-item>
+        <el-form-item label="用户类型">
+          <el-radio v-model="formData.ldapType" label="Full-Time"
+            >内部员工</el-radio
+          >
+          <el-radio v-model="formData.ldapType" label="Contractor"
+            >外部员工</el-radio
+          >
+        </el-form-item>
       </el-form>
       <div class="operating-box">
         <el-button
@@ -229,6 +250,7 @@ export default {
         newPwd: '',
         confirmPwd: '',
         orgIdList: [],
+        ldapType: '',
       },
     };
   },
@@ -248,6 +270,7 @@ export default {
           this.formData.userMail = res.data.userMail;
           this.formData.userStatus = res.data.userStatus;
           this.formData.tenantName = res.data.tenantName;
+          this.formData.ldapType = res.data.ldapType;
           this.formData.newPwd = 'Wang@123456';
           this.setOrgIdList(res.data.orgId);
         }
@@ -299,6 +322,7 @@ export default {
         userName: this.formData.userName,
         userStatus: this.formData.userStatus,
         userType: this.formData.userType,
+        ldapType: this.formData.ldapType,
       };
       if (this.isEditPwd) {
         params.newPwd = this.Cryptojs.encrypt(this.formData.newPwd);

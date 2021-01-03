@@ -19,7 +19,7 @@
             @change="switchOrg"
             :popper-append-to-body="true"
             popper-class="tl-select-dropdown toggle-teams"
-            class="tl-select"
+            class="tl-select w220"
           >
             <el-option
               v-for="item in userInfo.orgList"
@@ -132,6 +132,7 @@ export default {
     },
     loginOut() {
       this.changeTestModel(false);
+      sessionStorage.removeItem('historyPer');
       loginOut();
     },
     switchOrg() {
