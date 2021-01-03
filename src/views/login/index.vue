@@ -134,7 +134,7 @@ export default {
           loginName: self.loginName,
           loginPwd: self.loginPwd,
         }).then((res) => {
-          if (res.code == '200') {
+          if (res.code == 200) {
             window.location.reload();
             localSave('token', res.data);
             this.$router.push({
@@ -143,8 +143,19 @@ export default {
                 token: res.data,
               },
             });
-          } else if (res.code == '30000') {
+          } else if (res.code == 30000) {
             // 存在多个租户，选择租户
+            // localSave('token', res.data);
+            localStorage.setItem('tag', res.data);
+            localStorage.setItem('loginName', self.loginName);
+            localStorage.setItem('loginPwd', self.loginPwd);
+            self.go('transferTenant', {
+              // query: {
+              //   tag: res.data,
+              //   loginName: self.loginName,
+              //   loginPwd: self.loginPwd,
+              // },
+            });
           } else {
             self.isLoginError = true;
             self.focusName = '';
