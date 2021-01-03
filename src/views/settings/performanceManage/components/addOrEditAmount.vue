@@ -6,10 +6,8 @@
     :close-on-click-modal="false"
     custom-class="custom-drawer edit-amount"
     class="tl-dialog"
+    :title="title"
   >
-    <span>{{
-      "请线下确认“" + selectedRule.ruleName + "”总数量，再进行设置"
-    }}</span>
     <div class="dl-group">
       <dl v-for="item in selectedRule.ruleDetailList" :key="item.ruleDetailId">
         <dd>
@@ -71,6 +69,7 @@ export default {
         ],
       },
       selectedRule: {},
+      title: '',
     };
   },
   created() { },
@@ -100,6 +99,7 @@ export default {
         this.visible = true;
         this.$forceUpdate();
       });
+      this.title = `请线下确认“${this.selectedRule.ruleName}”总数量，再进行设置`;
     },
     cancel() {
 
