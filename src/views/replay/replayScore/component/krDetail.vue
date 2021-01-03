@@ -92,6 +92,7 @@
                       <em @click="downFile(file)">下载</em>
                     </div>
                   </div>
+                  <div v-if="list.attachmentDtoList === null">暂无附件</div>
                 </dd>
               </dl>
               <dl>
@@ -368,15 +369,20 @@ export default {
       Promise.all(this.$refs[`${0}dataForm`].map(this.getFormPromise)).then((res) => {
         const validateResult = res.every((item) => !!item);
         if (validateResult) {
-          this.server.okrCheckSubmit(params).then((response) => {
-            this.submitLoad = false;
-            if (response.code == 200) {
-              this.$message.success('提交成功');
-              this.$router.push('/replayScore');
-            } else {
-              this.$message.error(response.msg);
-            }
-          });
+          this.$xconfirm({
+            content: '',
+            title: '确认提交复核得分吗？',
+          }).then(() => {
+            this.server.okrCheckSubmit(params).then((response) => {
+              this.submitLoad = false;
+              if (response.code == 200) {
+                this.$message.success('提交成功');
+                this.$router.push('/replayScore');
+              } else {
+                this.$message.error(response.msg);
+              }
+            });
+          }).catch(() => {});
         } else {
           this.$message.error('您有必填项「复核得分」未填，请检查');
         }
