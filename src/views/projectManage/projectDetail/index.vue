@@ -5,7 +5,6 @@
         <tl-project-info
           v-if="this.baseInfo.projectUserVoList && First"
           :queryList="queryList"
-          v-if="First"
           :server="server"
           @changeTab="changeTab"
           :baseInfo="baseInfo"
