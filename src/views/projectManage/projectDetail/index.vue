@@ -24,6 +24,7 @@
           @queryProjectTeam="queryProjectTeam"
           :summaryList="summaryList"
           :queryList="queryList"
+          :baseInfo="baseInfo"
           :server="server"
         ></tl-hour-group>
       </el-tab-pane>

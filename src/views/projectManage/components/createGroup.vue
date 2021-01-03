@@ -88,22 +88,16 @@ export default {
     };
   },
   components: {},
-
+  props: ['baseInfo'],
   computed: {},
   mounted() {
     this.getUser();
   },
   methods: {
     getUser() {
-      this.server.summaryList({
-        projectId: this.$route.query.projectId || '',
-      }).then((res) => {
-        if (res.code == '200') {
-          this.summaryList = res.data;
-          const list = res.data.filter((item) => item.userId !== item.projectTeamLeader);
-          this.summaryList = list;
-        }
-      });
+      this.summaryList = this.baseInfo;
+      const list = this.baseInfo.filter((item) => item.userId !== item.projectTeamLeader);
+      this.summaryList = list;
     },
     submitForm() {
       this.$refs.ruleForm.validate((valid) => {

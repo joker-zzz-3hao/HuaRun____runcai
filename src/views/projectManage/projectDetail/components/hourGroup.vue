@@ -51,7 +51,11 @@
         </el-table>
       </div>
     </tl-crcloud-table>
-    <tl-create-group ref="createGroup" @getList="getList"></tl-create-group>
+    <tl-create-group
+      ref="createGroup"
+      @getList="getList"
+      :baseInfo="baseInfo.projectUserVoList"
+    ></tl-create-group>
     <tl-edit-select ref="editGroup" @getList="getList"></tl-edit-select>
   </div>
 </template>
@@ -87,6 +91,12 @@ export default {
       type: Array,
       default() {
         return [];
+      },
+    },
+    baseInfo: {
+      type: Object,
+      default() {
+        return {};
       },
     },
     queryList: {

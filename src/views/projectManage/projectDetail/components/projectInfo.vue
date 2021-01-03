@@ -34,12 +34,12 @@
               `${baseInfo.projectDescription || "--"}`
             }}</em>
           </p>
-          <div class="toggle-state" v-if="pWidth == emWidth">
+          <!-- <div class="toggle-state" v-if="pWidth == emWidth">
             <span @click="openFlag = !openFlag">{{
               openFlag ? "收起" : "展开"
             }}</span
             ><i></i>
-          </div>
+          </div> -->
         </dd>
       </dl>
       <div class="dl-list">
@@ -72,7 +72,9 @@
             <tl-create-select
               v-if="baseInfo.projectAgentManagerUserId !== userInfo.userId"
               @getSelectUser="getSelectUser"
-              btnText="修改"
+              @cancelSetAc="getSelectUser('')"
+              :cancelSet="true"
+              :btnText="baseInfo.projectAgentManagerUserName ? '修改' : '设置'"
               :selectId="baseInfo.projectAgentManagerUserId"
               placeholderText="请输入成员"
               :userList="setUseDai"
@@ -217,7 +219,7 @@
                 <span v-else>--</span>
               </template>
             </el-table-column>
-            <el-table-column label="所在组" min-width="100"
+            <el-table-column label="所属组" min-width="100"
               >>
               <template slot-scope="scope">
                 <span v-if="hasValue(scope.row.projectTeamName)">{{
