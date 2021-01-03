@@ -99,7 +99,7 @@
     </dl>
     <dl
       class="dl-card-panel"
-      v-if="hasApproval && canApproval"
+      v-if="hasApproval || canApproval"
     >
       <dt>
         <em>审批</em>

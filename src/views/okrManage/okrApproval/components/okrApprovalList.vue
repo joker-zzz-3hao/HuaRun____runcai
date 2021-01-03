@@ -131,9 +131,8 @@
                 <el-button
                   type="text"
                   v-if="
-                    hasApproval(scope.row) &&
-                    hasPower('okr-approval-pass') &&
-                    canApproval
+                    (hasApproval(scope.row) || canApproval) &&
+                    hasPower('okr-approval-pass')
                   "
                   @click.native.prevent="okrApproval(scope.row)"
                   class="tl-btn"
