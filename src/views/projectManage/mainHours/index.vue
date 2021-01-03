@@ -42,7 +42,7 @@
     </div>
     <div class="cont-area">
       <div class="dl-list">
-        <div class="dl-item-group">
+        <div class="dl-item-group cancel">
           <dl class="dl-item">
             <dt>
               <span> 项目：{{ projectName }} </span>
@@ -481,8 +481,8 @@ export default {
       });
     },
     changeList() {
-      this.searchList();
       this.userId = '';
+      this.searchList();
       this.summaryList();
     },
     queryProjectTeam() {
