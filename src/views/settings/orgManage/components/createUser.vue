@@ -108,10 +108,14 @@
             style="width: 100%"
           ></el-cascader>
         </el-form-item>
-        <!-- <el-form-item prop="sortIndex">
-          <el-button :loading="loading" @click="saveUser">确定</el-button>
-          <el-button :disabled="loading" @click="cancel">取消</el-button>
-        </el-form-item> -->
+        <el-form-item label="用户类型">
+          <el-radio v-model="formData.ldapType" label="Full-Time"
+            >内部员工</el-radio
+          >
+          <el-radio v-model="formData.ldapType" label="Contractor"
+            >外部员工</el-radio
+          >
+        </el-form-item>
       </el-form>
       <div class="operating-box">
         <el-button
@@ -187,6 +191,7 @@ export default {
         userType: 2,
         newPwd: '',
         orgIdList: [],
+        ldapType: 'Full-Time',
       },
 
     };
@@ -256,6 +261,7 @@ export default {
         userName: this.formData.userName,
         userStatus: this.formData.userStatus,
         userType: this.formData.userType,
+        ldapType: this.formData.ldapType,
       };
       this.$refs.userForm.validate((valid) => {
         if (valid) {

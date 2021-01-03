@@ -6,7 +6,6 @@
     :before-close="close"
     title="添加成员"
     :close-on-click-modal="false"
-    :modal="true"
     custom-class="add-members"
     class="tl-dialog"
   >
@@ -70,7 +69,7 @@
                       class="tl-select"
                     >
                       <el-option
-                        v-for="item in levelList"
+                        v-for="item in scope.row.levelList"
                         :key="item.value"
                         :label="item.meaning"
                         :value="item.value"
@@ -132,7 +131,7 @@
                       class="tl-select"
                     >
                       <el-option
-                        v-for="item in companyList"
+                        v-for="item in scope.row.companyList"
                         :key="item.value"
                         :label="item.meaning"
                         :value="item.value"
@@ -198,7 +197,7 @@
 </template>
 
 <script>
-import addMember from '@/components/addMemberObject';
+import addMember from '@/components/addMember';
 import crcloudTable from '@/components/crcloudTable';
 import CONST from '../../const';
 
@@ -213,9 +212,11 @@ export default {
       keyword: '',
       projectManagerList: [],
       tableData: [],
-      levelList: [],
+      levelListInternal: [],
+      levelListProvider: [],
       funcList: [],
-      companyList: [],
+      companyListProvider: [],
+      companyListInternal: [],
       fictitiousList: [],
       selectListed: [],
       exist: false,
@@ -257,14 +258,20 @@ export default {
     });
     this.codes.forEach((item) => {
       switch (item.code) {
-        case 'PROJECT_EMPLOYEE_LEVEL':
-          this.levelList = item.subList;
+        case 'EMPLOYEE_LEVEL_INTERNAL':
+          this.levelListInternal = item.subList;
+          break;
+        case 'EMPLOYEE_LEVEL_PROVIDER':
+          this.levelListProvider = item.subList;
           break;
         case 'PROJECT_TECH_TYPE':
           this.funcList = item.subList;
           break;
-        case 'PROJECT_EMPLOYEE_COMPANY':
-          this.companyList = item.subList;
+        case 'EMPLOYEE_COMPANY_PROVIDER':
+          this.companyListProvider = item.subList;
+          break;
+        case 'EMPLOYEE_COMPANY_INTERNAL':
+          this.companyListInternal = item.subList;
           break;
         default:
           break;
@@ -273,10 +280,23 @@ export default {
   },
   methods: {
     listRoleUser(data) {
-      console.log(data);
-
       this.dataForm.tableData = data;
       this.selectListed = data;
+      // 给职级、公司数组赋值
+      this.dataForm.tableData.forEach((item) => {
+        item.companyList = [];
+        item.levelList = [];
+        // 内部员工
+        if (item.ldapType && item.ldapType == 'Full-Time') {
+          item.companyList = this.companyListInternal;
+          item.levelList = this.levelListInternal;
+        }
+        // 外部员工
+        if (item.ldapType && item.ldapType == 'Contractor') {
+          item.companyList = this.companyListProvider;
+          item.levelList = this.levelListProvider;
+        }
+      });
       this.exist = false;
     },
     addDotted() {

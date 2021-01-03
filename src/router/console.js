@@ -457,6 +457,7 @@ export default [{
       power: '',
     },
     component: () => import('@/views/projectManage/mainHours/components/HoursJoin'),
+
   },
   {
     // 周报管理
