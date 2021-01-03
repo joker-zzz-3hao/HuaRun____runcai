@@ -165,6 +165,10 @@ export default class Server extends ServerBase {
     return this._ajaxPost('gateway/project-service/project/query/queryProjectTeam', param);
   }
 
+  queryTeamUser(param) {
+    return this._ajaxPost('gateway/project-service/project/query/queryTeamUser', param);
+  }
+
   // 移除小组
   delUserProjectTeam(param) {
     return this._ajaxPost('gateway/project-service/project/delete/delUserProjectTeam', param);

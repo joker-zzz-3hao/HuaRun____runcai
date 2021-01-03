@@ -4,6 +4,7 @@
       <el-tab-pane label="项目信息" name="1">
         <tl-project-info
           :queryList="queryList"
+          v-if="First"
           :server="server"
           @changeTab="changeTab"
           :baseInfo="baseInfo"
@@ -12,12 +13,14 @@
       </el-tab-pane>
       <el-tab-pane label="项目统计数据" name="2">
         <tl-project-statistics
+          v-if="Second"
           :summaryList="summaryList"
           :server="server"
         ></tl-project-statistics>
       </el-tab-pane>
       <el-tab-pane label="项目小组" name="3">
         <tl-hour-group
+          v-if="three"
           @queryProjectTeam="queryProjectTeam"
           :summaryList="summaryList"
           :queryList="queryList"
@@ -55,6 +58,7 @@ export default {
       summaryList: [],
       First: true,
       Second: false,
+      three: false,
       queryList: [],
     };
   },
@@ -64,7 +68,7 @@ export default {
     'tl-project-statistics': projectStatistics,
     'tl-hour-group': hourGroup,
   },
-  mounted() {
+  created() {
     this.changeTab();
   },
   methods: {
@@ -96,12 +100,16 @@ export default {
       console.log(data);
       if (data.name === '1') {
         this.First = true;
-
+        this.three = false;
         this.Second = false;
       } else if (data.name === '2') {
         this.First = false;
-
+        this.three = false;
         this.Second = true;
+      } else if (data.name == '3') {
+        this.First = false;
+        this.three = true;
+        this.Second = false;
       }
       this.changeTab();
     },

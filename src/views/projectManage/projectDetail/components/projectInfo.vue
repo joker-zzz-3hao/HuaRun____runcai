@@ -70,11 +70,12 @@
           <dd>
             <em>{{ baseInfo.projectAgentManagerUserName }}</em>
             <tl-create-select
+              v-if="baseInfo.projectAgentManagerUserId !== userInfo.userId"
               @getSelectUser="getSelectUser"
               btnText="修改"
               :selectId="baseInfo.projectAgentManagerUserId"
               placeholderText="请输入成员"
-              :userList="summaryList"
+              :userList="setUseDai"
               :type="'user'"
             ></tl-create-select>
           </dd>
@@ -280,7 +281,7 @@
                   :removeBtn="true"
                   @changeTab="$emit('changeTab')"
                   :listData="scope.row"
-                  placeholderText="请输入成员"
+                  placeholderText="请输入组名"
                   :selectId="scope.row.projectTeamId"
                 ></tl-create-select>
               </template>
@@ -334,7 +335,8 @@ export default {
       pWidth: '',
       emWidth: '',
       DisuserId: {},
-      userList: ['徐佳佳', '候敏', '曾伟', '许志鹏'],
+      userList: [],
+      setUseDai: [],
     };
   },
   components: {
@@ -376,11 +378,11 @@ export default {
     }),
   },
   mounted() {
-    if (this.baseInfo.projectUserVoList.length == 0) {
-      this.isManage = true;
-      return false;
-    }
     if (this.baseInfo.projectUserVoList) {
+      this.setUseDai = JSON.parse(JSON.stringify(this.baseInfo.projectUserVoList));
+      const indexs = this.baseInfo.projectUserVoList.findIndex((item) => item.userPost == 'Project-Mng');
+      console.log(indexs);
+      this.setUseDai.splice(indexs, 1);
       this.baseInfo.projectUserVoList.forEach((item) => {
         if (item.projectUserType == '1') {
           if (item.userId == this.userInfo.userId) {
@@ -388,6 +390,8 @@ export default {
           }
         }
       });
+    } else {
+      this.isManage = true;
     }
     this.server.queryByCodes({
       codes: ['PROJECT_TECH_TYPE', 'PROJECT_EMPLOYEE_LEVEL', 'PROJECT_EMPLOYEE_COMPANY'],
@@ -525,6 +529,10 @@ export default {
           this.isManage = false;
           this.DisuserId = {};
           if (this.baseInfo.projectUserVoList) {
+            this.setUseDai = JSON.parse(JSON.stringify(this.baseInfo.projectUserVoList));
+            const indexs = this.baseInfo.projectUserVoList.findIndex((item) => item.userPost == 'Project-Mng');
+            console.log(indexs);
+            this.setUseDai.splice(indexs, 1);
             this.baseInfo.projectUserVoList.forEach((item) => {
               this.DisuserId[item.userId] = true;
               if (item.projectUserType == '1') {
@@ -552,7 +560,10 @@ export default {
       handler() {
         let flag = false;
         if (this.baseInfo.projectUserVoList.length > 0) {
-          console.log(this.baseInfo.projectUserVoList);
+          this.setUseDai = JSON.parse(JSON.stringify(this.baseInfo.projectUserVoList));
+          const indexs = this.baseInfo.projectUserVoList.findIndex((item) => item.userPost == 'Project-Mng');
+          console.log(indexs);
+          this.setUseDai.splice(indexs, 1);
           this.DisuserId = {};
           this.baseInfo.projectUserVoList.forEach((item) => {
             this.DisuserId[item.userId] = true;

@@ -44,7 +44,7 @@
                 type="text"
                 style="margin-left: 20px"
                 @click="remove(scope.row)"
-                >移除</el-button
+                >解散</el-button
               >
             </template>
           </el-table-column>
@@ -116,7 +116,8 @@ export default {
     },
 
     remove(row) {
-      this.$confirm('确认移除该组?', {
+      this.$confirm(`请谨慎操作，确认要解散"${row.projectTeamName}"? 
+      解散后，将不可恢复，工时审批不受影响`, {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       }).then(() => {

@@ -524,25 +524,9 @@ export default {
     }),
   },
   mounted() {
-    this.server.projectPageList({
-      currentPage: 1,
-      pageSize: 9999,
-      projectName: '',
-      userAccount: this.userInfo.userAccount,
-    }).then((res) => {
-      if (res.code == '200') {
-        this.projectList = res.data.content;
-        if (this.projectList.length > 0) {
-          this.formData.projectId = this.projectList[0].projectId;
-          if (this.$route.query.projectId) {
-            this.formData.projectId = this.$route.query.projectId;
-          }
-
-          this.summaryList();
-          this.searchList();
-        }
-      }
-    });
+    this.formData.projectId = this.$route.query.projectId;
+    this.summaryList();
+    this.searchList();
   },
   methods: {
     showDesc(row, day, text, week) {
