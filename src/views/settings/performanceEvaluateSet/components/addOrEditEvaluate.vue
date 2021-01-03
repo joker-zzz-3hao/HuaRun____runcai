@@ -1,9 +1,3 @@
-<!--
-  功能：
-  作者：王志任
-  时间：2020年12月02日 15:22:31
-  备注：
--->
 <template>
   <el-dialog
     :append-to-body="true"
@@ -25,7 +19,6 @@
         >
           <el-input
             class="tl-input"
-            style="width: 90%"
             v-model.trim="performanceData.ruleName"
             maxlength="30"
             placeholder="请填写名称"
@@ -36,12 +29,12 @@
           <div
             v-for="(ruleItem, index) in performanceData.ruleDetailList"
             :key="ruleItem.detailRandomId"
-            style="display: flex"
+            class="item-group"
           >
-            <div class="inline-flex">
-              <div>
+            <div class="flex-start">
+              <div class="edit-ipt">
                 <el-input
-                  class="tl-input input-value"
+                  class="tl-input w70"
                   :class="{ 'input-color': ruleItem.showContentError }"
                   v-model.trim="ruleItem.value"
                   maxlength="20"
@@ -52,20 +45,21 @@
                   {{ ruleItem.contentErrorText }}
                 </span>
               </div>
-              <el-input
-                class="tl-input input-unit"
-                v-model.trim="ruleItem.unit"
-                maxlength="20"
-                placeholder="如有单位，请填写"
-              ></el-input>
-              <span class="instruction-span">说明</span>
-              <div style="width: 100%">
+              <div class="edit-ipt">
+                <el-input
+                  class="tl-input w130"
+                  v-model.trim="ruleItem.unit"
+                  maxlength="20"
+                  placeholder="如有单位，请填写"
+                ></el-input>
+              </div>
+              <span>说明</span>
+              <div class="edit-ipt">
                 <el-input
                   v-model="ruleItem.description"
-                  class="tl-textarea textarea-content"
+                  class="tl-textarea"
                   :class="{ 'input-color': ruleItem.showRemarkError }"
                   type="textarea"
-                  style="width: 100%"
                   :autosize="{ minRows: 1, maxRows: 8 }"
                   placeholder="请填写说明"
                   maxlength="100"
@@ -75,44 +69,42 @@
                   {{ ruleItem.remarkErrorText }}
                 </span>
               </div>
-            </div>
-            <div class="add-delete-btn">
-              <el-button
-                class="btn-color"
-                type="text"
-                v-show="performanceData.ruleDetailList.length - 1 == index"
-                @click="addRuleItem(performanceData)"
-                >添加</el-button
-              >
-              <el-button
-                class="btn-color"
-                type="text"
-                @click="
-                  performanceData.ruleDetailList.length > 1
-                    ? deleteRuleItem(ruleItem)
-                    : ''
-                "
-                >删除</el-button
-              >
+              <div class="add-delete-btn">
+                <el-button
+                  class="tl-btn"
+                  type="text"
+                  v-show="performanceData.ruleDetailList.length - 1 == index"
+                  @click="addRuleItem(performanceData)"
+                  >添加</el-button
+                >
+                <el-button
+                  class="tl-btn"
+                  type="text"
+                  @click="
+                    performanceData.ruleDetailList.length > 1
+                      ? deleteRuleItem(ruleItem)
+                      : ''
+                  "
+                  >删除</el-button
+                >
+              </div>
             </div>
           </div>
         </el-form-item>
-        <div class="margin-top">
-          <el-form-item label="应用范围" prop="ruleType">
-            <el-radio
-              class="tl-radio"
-              v-model="performanceData.ruleType"
-              label="1"
-              >部门</el-radio
-            >
-            <el-radio
-              class="tl-radio"
-              v-model="performanceData.ruleType"
-              label="2"
-              >个人</el-radio
-            >
-          </el-form-item>
-        </div>
+        <el-form-item label="应用范围" prop="ruleType">
+          <el-radio
+            class="tl-radio"
+            v-model="performanceData.ruleType"
+            label="1"
+            >部门</el-radio
+          >
+          <el-radio
+            class="tl-radio"
+            v-model="performanceData.ruleType"
+            label="2"
+            >个人</el-radio
+          >
+        </el-form-item>
       </el-form>
     </div>
     <div v-show="step == 2">
@@ -339,37 +331,3 @@ export default {
   beforeDestroy() { },
 };
 </script>
-<style lang="css" scoped>
-.btn-color {
-  color: #685df1;
-}
-.inline-flex {
-  display: flex;
-  width: 90%;
-}
-.inline-flex .input-value {
-  width: 100px;
-}
-.inline-flex .input-unit {
-  width: 250px;
-}
-.inline-flex .textarea-content {
-  width: 100%;
-}
-.inline-flex .instruction-span {
-  width: 60px;
-  margin-left: 15px;
-}
-.inline-flex .error-text {
-  color: #f56c6c;
-}
-.add-delete-btn {
-  width: 84px;
-}
-.add-delete-btn .el-button--text {
-  margin-left: 10px;
-}
-.input-color .el-input__inner {
-  border-color: #f56c6c;
-}
-</style>

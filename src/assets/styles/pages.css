@@ -7605,3 +7605,83 @@
 .update-progress .okr-risk .tl-custom-popover {
   margin: 0px 42px 0 0;
 }
+
+/* 绩效管理 */
+.tl-dialog .edit-evaluate {
+  width: 1000px;
+}
+
+.edit-evaluate .el-form-item:nth-child(1) .el-form-item__content {
+  margin-right: 100px;
+}
+
+.edit-evaluate .el-form-item:nth-child(2) {
+  margin-bottom: 6px;
+}
+
+.edit-evaluate .el-form-item__content {
+  line-height: unset;
+}
+
+.edit-evaluate .tl-input {
+  margin: 0;
+}
+
+.edit-evaluate .el-button--text {
+  margin: 0;
+  padding: 0;
+  min-width: unset;
+}
+
+.edit-evaluate .el-button--text:not(:last-child) {
+  margin-right: 16px;
+}
+
+.edit-evaluate .el-input__inner {
+  padding: 0 5px;
+}
+
+.edit-evaluate .flex-start {
+  align-items: flex-start;
+}
+
+.edit-evaluate .flex-start .edit-ipt {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-evaluate .flex-start .edit-ipt .error-text {
+  margin-top: 3px;
+  color: #fb4c59;
+}
+
+.edit-evaluate .flex-start .edit-ipt:nth-child(1) .tl-input {
+  margin-right: 6px;
+}
+
+.edit-evaluate .flex-start > span {
+  margin: 10px 10px 0 30px;
+}
+
+.edit-evaluate .flex-start .el-textarea__inner {
+  min-height: 40px !important;
+}
+
+.edit-evaluate .flex-start .edit-ipt:nth-of-type(3) {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.edit-evaluate .el-form-item:nth-child(3) .el-form-item__content {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.edit-evaluate .item-group:not(:last-child) {
+  margin-bottom: 14px;
+}
+
+.edit-evaluate .item-group .add-delete-btn {
+  width: 80px;
+}
