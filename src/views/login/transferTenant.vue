@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-12-28 14:31:04
- * @LastEditTime: 2021-01-03 15:11:00
+ * @LastEditTime: 2021-01-03 17:36:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \cr-talent-web\src\views\login\transfer.vue
@@ -23,7 +23,7 @@
           </el-form> -->
         <span>{{ tipContent }}</span>
 
-        <el-radio-group v-model="radio">
+        <el-radio-group v-model="tenantId">
           <el-radio
             v-for="tenant in tenantList"
             :key="tenant.tenantId"
@@ -72,7 +72,6 @@ export default {
       visible: false,
       diaTitle: '',
       tipContent: '',
-      radio: '',
       tenantList: [],
       tenantId: '',
     };
@@ -83,9 +82,11 @@ export default {
     }),
   },
   mounted() {
-    this.server.getTenantList(this.$route.query.tag).then((res) => {
+    this.server.getTenantList(localStorage.getItem('tag')).then((res) => {
       if (res.code == 200) {
-        this.tenantList = res.data;
+        // eslint-disable-next-line prefer-destructuring
+        this.tenantList = res.data[0];
+        this.$forceUpdate();
       }
     });
     this.diaTitle = '请选择****组织架构，开启润才之旅';
@@ -112,7 +113,7 @@ export default {
       // 切换租户
       this.server.selectTenant({
         tenantId: this.tenantId,
-        localStorage: localStorage.getItem('localStorage'),
+        loginName: localStorage.getItem('loginName'),
         loginPwd: localStorage.getItem('loginPwd'),
         tag: localStorage.getItem('tag'),
       }).then((res) => {
@@ -128,7 +129,6 @@ export default {
         }
       });
       // 请求结束后，跳转默认的路由
-      console.log(this.radio);
       // this.visible = false;
     },
     close() {

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-28 14:31:04
- * @LastEditTime: 2021-01-03 15:14:04
+ * @LastEditTime: 2021-01-03 17:08:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \cr-talent-web\src\views\login\server.js
@@ -15,7 +15,7 @@ export default class Server extends ServerBase {
 
   // 获取租户列表
   getTenantList(param) {
-    return this._ajaxPost(`/gateway/account-service/outside/tenants?tag=${param}`, param);
+    return this._ajaxGet(`/gateway/account-service/outside/tenants?tag=${param}`, param);
   }
 
   // 切换组织架构
