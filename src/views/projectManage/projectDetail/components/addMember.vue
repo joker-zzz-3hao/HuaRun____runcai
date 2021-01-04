@@ -199,6 +199,7 @@
 <script>
 import addMember from '@/components/addMember';
 import crcloudTable from '@/components/crcloudTable';
+import { mapState } from 'vuex';
 import CONST from '../../const';
 
 export default {
@@ -249,8 +250,13 @@ export default {
       },
     },
   },
-  computed: {},
+  computed: {
+    ...mapState('common', {
+      userInfo: (state) => state.userInfo,
+    }),
+  },
   mounted() {
+    this.DisuserId[this.userInfo.userId] = true;
     this.server.projectUserList({ projectId: this.$route.query.projectId }).then((res) => {
       if (res.code == '200') {
         this.projectManagerList = res.data || [];

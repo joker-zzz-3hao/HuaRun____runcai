@@ -42,6 +42,13 @@
     </div>
     <div class="cont-area">
       <div class="dl-list">
+        <div class="dl-item-group cancel">
+          <dl class="dl-item">
+            <dt>
+              <span> 项目：{{ projectName }} </span>
+            </dt>
+          </dl>
+        </div>
         <div class="dl-item-group">
           <dl class="dl-item">
             <dt>
@@ -140,7 +147,7 @@
                 placeholder="请选择"
                 filterable
                 style="width: 118px"
-                @change="searchList"
+                @change="changeList"
                 popper-class="tl-select-dropdown"
                 class="tl-select"
               >
@@ -209,6 +216,18 @@
                 <span v-if="scope.row.ldapType == 'OTHER'">其他</span>
                 <span v-if="scope.row.ldapType == 'Full-Time'">内部</span>
                 <span v-if="!scope.row.ldapType">--</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="所属组"
+              prop="projectTeamName"
+              min-width="120"
+            >
+              <template slot-scope="scope">
+                <span v-if="scope.row.projectTeamName">{{
+                  scope.row.projectTeamName
+                }}</span>
+                <span v-else>--</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -342,6 +361,7 @@ export default {
       queryPrice: 0,
       teamList: [],
       projectTeamId: '',
+      projectName: '',
     };
   },
 
@@ -442,26 +462,33 @@ export default {
     },
     changeProject(projectId) {
       const projectName = this.projectList.filter((item) => item.projectId == projectId)[0].projectNameCn;
+      this.projectName = projectName;
       sessionStorage.setItem('projectName', projectName);
       sessionStorage.setItem('projectId', this.formData.projectId);
       this.closeProject = this.projectList.filter((item) => item.projectId == projectId)[0].projectStatus;
       this.userId = '';
       this.timeSheetList();
-      this.summaryList();
+
       this.searchList();
       this.getMoneyPrice();
       this.queryProjectTeam();
     },
     summaryList() {
-      this.server.summaryList({ projectId: this.formData.projectId }).then((res) => {
+      this.server.queryTeamUser({ projectId: this.formData.projectId, projectTeamId: this.projectTeamId }).then((res) => {
         if (res.code == 200) {
           this.options = res.data;
         }
       });
     },
+    changeList() {
+      this.userId = '';
+      this.searchList();
+      this.summaryList();
+    },
     queryProjectTeam() {
       this.server.queryProjectTeam({
         projectId: this.formData.projectId,
+
       }).then((res) => {
         this.teamList = res.data;
       });
@@ -513,6 +540,10 @@ export default {
             if (this.$route.query.projectId) {
               this.formData.projectId = this.$route.query.projectId;
             }
+            // eslint-disable-next-line no-trailing-spaces
+            // eslint-disable-next-line max-len
+            const projectName = this.projectList.filter((item) => item.projectId == this.formData.projectId)[0].projectNameCn;
+            this.projectName = projectName;
             this.timeSheetList();
             this.summaryList();
             this.searchList();

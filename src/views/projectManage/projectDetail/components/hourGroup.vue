@@ -38,20 +38,24 @@
           <el-table-column fixed="right" label="操作" min-width="180">
             <template slot-scope="scope">
               <el-button type="text" @click="showEdit(scope.row)"
-                >管理</el-button
+                >编辑</el-button
               >
               <el-button
                 type="text"
                 style="margin-left: 20px"
                 @click="remove(scope.row)"
-                >移除</el-button
+                >解散</el-button
               >
             </template>
           </el-table-column>
         </el-table>
       </div>
     </tl-crcloud-table>
-    <tl-create-group ref="createGroup" @getList="getList"></tl-create-group>
+    <tl-create-group
+      ref="createGroup"
+      @getList="getList"
+      :baseInfo="baseInfo.projectUserVoList"
+    ></tl-create-group>
     <tl-edit-select ref="editGroup" @getList="getList"></tl-edit-select>
   </div>
 </template>
@@ -89,6 +93,12 @@ export default {
         return [];
       },
     },
+    baseInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
     queryList: {
       type: Array,
       default() {
@@ -116,7 +126,8 @@ export default {
     },
 
     remove(row) {
-      this.$confirm('确认移除该组?', {
+      this.$confirm(`请谨慎操作，确认要解散"${row.projectTeamName}"? 
+      解散后，将不可恢复，工时审批不受影响`, {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       }).then(() => {

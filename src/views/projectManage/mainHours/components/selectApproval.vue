@@ -165,6 +165,7 @@ export default {
       total: 0,
       tableDataRow: [],
       type: '',
+      scope: {},
     };
   },
   components: {
@@ -188,8 +189,9 @@ export default {
         this.tableData = [res.data];
       });
     },
-    show(row, type, time) {
+    show(row, type, time, scope) {
       this.type = type;
+      this.scope = scope;
       if (type == 'change') {
         console.log(time);
         this.tableDataRow = row;
@@ -234,7 +236,10 @@ export default {
     },
     approval() {
       const { type } = this;
-      if (type == 'change' || type == 'one') {
+      console.log(this.scope);
+      if (type == 'change') {
+        this.$emit('alertSelectChange', this.scope, this.scope.row.remark);
+      } else if (type == 'one') {
         this.$emit('alertSelectOne', this.tableDataRow[0]);
       } else {
         this.$emit('alertSelectAll');

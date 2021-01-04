@@ -230,7 +230,7 @@
                         <el-button
                           type="primary"
                           class="tl-btn amt-bg-slip"
-                          @click="showRowchange(scope, 'change', true)"
+                          @click="showRowchange(scope, 'change', true, scope)"
                           >确认审批</el-button
                         >
                         <el-button
@@ -440,6 +440,7 @@
     ></tl-approval-detail>
     <tl-desc-model ref="descModel"></tl-desc-model>
     <tl-select-approval
+      @alertSelectChange="alertSelect"
       ref="selectApproval"
       @alertSelectAll="alertSelectAll"
       @alertSelectOne="alertSelectOne"
@@ -524,25 +525,9 @@ export default {
     }),
   },
   mounted() {
-    this.server.projectPageList({
-      currentPage: 1,
-      pageSize: 9999,
-      projectName: '',
-      userAccount: this.userInfo.userAccount,
-    }).then((res) => {
-      if (res.code == '200') {
-        this.projectList = res.data.content;
-        if (this.projectList.length > 0) {
-          this.formData.projectId = this.projectList[0].projectId;
-          if (this.$route.query.projectId) {
-            this.formData.projectId = this.$route.query.projectId;
-          }
-
-          this.summaryList();
-          this.searchList();
-        }
-      }
-    });
+    this.formData.projectId = this.$route.query.projectId;
+    this.summaryList();
+    this.searchList();
   },
   methods: {
     showDesc(row, day, text, week) {
@@ -708,6 +693,7 @@ export default {
       this.tableData[index].checkList = arrgo;
       this.timeSheetListapproval(this.tableData[index]);
       scope._self.$refs[`popover-${index}`].doClose();
+      this.$refs.selectApproval.close();
     },
     close(scope) {
       scope._self.$refs[`popover-${scope.$index}`].doClose();
@@ -734,17 +720,12 @@ export default {
         }
       }
 
-      this.$xconfirm({
-        title: '确认审批',
-        content: '工时确认后将不可再修改, 请确认',
-      }).then(() => {
-        if (desc) {
-          this.confirmTimeSheet(scope.$index, scope);
-        } else {
-          this.tableData[scope.$index].remark = '';
-          this.timeSheetListapproval(scope.row);
-        }
-      });
+      if (desc) {
+        this.confirmTimeSheet(scope.$index, scope);
+      } else {
+        this.tableData[scope.$index].remark = '';
+        this.timeSheetListapproval(scope.row);
+      }
     },
     showTableSelect() {
       if (this.workList.length == 0) {
@@ -766,7 +747,7 @@ export default {
         }
         this.$nextTick(() => {
           this.close(scope);
-          this.$refs.selectApproval.show([{ ...row }], type, this.checkList);
+          this.$refs.selectApproval.show([{ ...row }], type, this.checkList, scope);
         });
       } else if (type == 'one') {
         this.$nextTick(() => {

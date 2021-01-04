@@ -1,6 +1,19 @@
 <template>
-  <el-popover placement="left" width="250" trigger="click" @show="getshow">
+  <el-popover
+    placement="left"
+    width="250"
+    trigger="click"
+    @show="getshow"
+    ref="popover"
+  >
     <el-button type="text" v-if="removeBtn" @click="remove">移除分组</el-button>
+    <el-button
+      type="text"
+      :disabled="!selectId"
+      v-if="cancelSet"
+      @click="cancelSetAc"
+      >取消设置</el-button
+    >
     <el-input
       type="input"
       @input="searchKey"
@@ -28,7 +41,7 @@ import Server from '../server';
 
 const server = new Server();
 export default {
-  props: ['placeholderText', 'userList', 'btnText', 'selectId', 'listData', 'removeBtn', 'type'],
+  props: ['placeholderText', 'userList', 'btnText', 'selectId', 'listData', 'removeBtn', 'type', 'cancelSet'],
   data() {
     return {
       server,
@@ -67,6 +80,10 @@ export default {
         this.getSearchFun(this.userList, this.keyWord);
       }
     },
+    cancelSetAc() {
+      this.$emit('cancelSetAc', '');
+      this.$refs.popover.doClose();
+    },
     remove() {
       this.$confirm('确认移除分组?', {
         confirmButtonText: '确定',
@@ -92,6 +109,7 @@ export default {
     changeLeader(userId) {
       if (this.type == 'user') {
         this.$emit('getSelectUser', userId);
+        this.$refs.popover.doClose();
       } else {
         this.$emit('getSelectId', this.listData, userId);
       }
