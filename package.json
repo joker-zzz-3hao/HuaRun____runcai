@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --mode mock",
     "sit": "vue-cli-service serve --mode sit",
     "uat": "vue-cli-service serve --mode uat",
     "prod": "vue-cli-service serve --mode prod",
